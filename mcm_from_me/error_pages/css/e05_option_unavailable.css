@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Inter:wght@400;500&family=Playfair+Display:wght@500;600&display=swap");
+
+:root { --background:#050606; --panel:#121414; --gold:#f2ca50; --text:#e4e4e2; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { min-height:100%; }
+html { background:#030404; }
+body { overflow-x:hidden; color:var(--text); font-family:"Hanken Grotesk",sans-serif; }
+button { border:0; background:none; color:inherit; font:inherit; }
+
+.error-page { width:min(100%,415px); min-height:874px; margin:0 auto; position:relative; overflow:hidden; background:#050606; }
+.error-header { height:120px; position:relative; z-index:3; background:#000; }
+.menu-button { width:40px; height:40px; position:absolute; top:9px; left:17px; display:grid; place-items:center; cursor:pointer; }
+.menu-button img { width:20px; height:14px; display:block; }
+.error-header h1 { width:max-content; position:absolute; top:8px; left:50%; transform:translateX(-50%); color:#fff; font-family:"Playfair Display",serif; font-size:27px; font-weight:500; line-height:38px; white-space:nowrap; }
+
+.dimmed-content { position:absolute; z-index:0; inset:120px 0 0; overflow:hidden; background:radial-gradient(circle at 49% 57%,rgba(242,202,80,.1),transparent 42%),#060707; filter:blur(3px); opacity:.6; }
+.dimmed-content::after { position:absolute; inset:0; background:rgba(0,0,0,.46); content:""; }
+.dimmed-line { height:58px; position:absolute; right:25px; left:25px; border:1px solid rgba(242,202,80,.12); border-radius:7px; }
+.dimmed-line--top { top:104px; }
+.dimmed-line--middle { top:189px; }
+.underlying-next { width:calc(100% - 50px); height:60px; position:absolute; right:25px; bottom:35px; left:25px; border:1px solid rgba(242,202,80,.4); border-radius:7px; background:rgba(223,185,52,.72); color:#302500; font-size:14px; letter-spacing:2px; }
+
+.option-card { width:calc(100% - 48px); min-height:515px; position:absolute; z-index:2; top:174px; right:24px; left:24px; padding:59px 24px 38px; border:1px solid rgba(242,202,80,.5); border-radius:18px; background:rgba(18,20,20,.98); box-shadow:0 19px 32px rgba(0,0,0,.8),0 0 15px rgba(242,202,80,.06); text-align:center; }
+.option-icon-box { width:78px; height:78px; margin:0 auto; display:grid; place-items:center; border:1px solid rgba(242,202,80,.25); border-radius:12px; background:#151717; }
+.option-icon-box img { width:30px; height:30px; display:block; }
+.option-card h2 { margin-top:36px; font-family:"Playfair Display",serif; font-size:29px; font-weight:500; line-height:34px; }
+.option-card p { margin-top:16px; color:#c9a92f; font-size:16px; line-height:23px; word-break:keep-all; }
+.choose-option-button { width:100%; height:62px; margin-top:69px; border:1px solid var(--gold); border-radius:12px; color:var(--gold); font-size:12px; font-weight:600; line-height:1; letter-spacing:1.2px; cursor:pointer; }
+.choose-option-button:hover { background:rgba(242,202,80,.06); }
+.choose-option-button:active { transform:scale(.99); }
+
+@media (max-width:414px) { .error-page { width:100%; } }
