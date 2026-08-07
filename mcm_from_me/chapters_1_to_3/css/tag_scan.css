@@ -1,0 +1,339 @@
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&family=Playfair+Display:wght@500;600&display=swap");
+
+:root {
+  --background: #121414;
+  --text-primary: #e2e2e2;
+  --text-secondary: #d0c5af;
+  --gold: #f2ca50;
+  --button-gold: #d4af37;
+  --button-text: #3c2f00;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background-color: #080a0a;
+  color: var(--text-primary);
+  font-family: "Hanken Grotesk", sans-serif;
+}
+
+button {
+  border: 0;
+  font: inherit;
+}
+
+/* =========================
+   전체 화면
+========================= */
+
+.tag-scan-page {
+  width: min(100%, 415px);
+  min-height: 874px;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: visible;
+  background-color: var(--background);
+}
+
+/* =========================
+   헤더
+========================= */
+
+.header {
+  width: 100%;
+  height: 57px;
+  position: relative;
+}
+
+.menu-button {
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  position: absolute;
+  top: 12px;
+  left: 24px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  cursor: pointer;
+}
+
+.menu-button img {
+  width: 20px;
+  height: 14px;
+  display: block;
+}
+
+.brand-title {
+  width: 100%;
+  position: absolute;
+  top: 8px;
+  left: 0;
+  color: #ffffff;
+  font-family: "Playfair Display", serif;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 36px;
+  text-align: center;
+}
+
+/* =========================
+   챕터 영역
+========================= */
+
+.chapter-section {
+  width: 100%;
+  position: absolute;
+  top: 71px;
+  left: 0;
+  text-align: center;
+}
+
+.chapter-label {
+  color: var(--gold);
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 3.6px;
+}
+
+.chapter-title {
+  margin-top: 18px;
+  color: var(--text-primary);
+  font-family: "Playfair Display", serif;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 36px;
+}
+
+/* =========================
+   제품 이미지
+========================= */
+
+.product-section {
+  width: 315px;
+  height: 315px;
+  position: absolute;
+  top: 172px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================
+   인식 안내 카드
+========================= */
+
+.recognition-card {
+  width: 295px;
+  height: 139px;
+  padding: 22px 18px 18px 18px;
+  position: absolute;
+  top: 536px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-start;
+  gap: 19px;
+  border: 1px solid rgba(242, 202, 80, 0.4);
+  border-radius: 12px;
+}
+
+.recognition-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  position: relative;
+  margin-top: 6px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+}
+
+.recognition-dot {
+  width: 4px;
+  height: 4px;
+  position: absolute;
+  top: 18px;
+  left: 11px;
+  border-radius: 50%;
+  background-color: var(--gold);
+}
+
+.recognition-wave {
+  position: absolute;
+  border: 2px solid transparent;
+  border-right-color: var(--gold);
+  border-radius: 50%;
+}
+
+.recognition-wave--small {
+  width: 12px;
+  height: 18px;
+  top: 11px;
+  left: 9px;
+}
+
+.recognition-wave--large {
+  width: 20px;
+  height: 26px;
+  top: 7px;
+  left: 9px;
+}
+
+.recognition-content {
+  flex: 1;
+}
+
+.recognition-status {
+  color: var(--text-primary);
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  white-space: nowrap;
+}
+
+.recognition-description {
+  margin-top: 14px;
+  color: var(--text-secondary);
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+/* =========================
+   하단 버튼 영역
+========================= */
+
+.bottom-section {
+  width: 100%;
+  height: 211px;
+  position: absolute;
+  top: 663px;
+  left: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 20, 20, 0) 0%,
+    rgba(18, 20, 20, 0.9) 50%,
+    #121414 100%
+  );
+}
+
+.scan-button {
+  width: 342px;
+  height: 66px;
+  position: absolute;
+  top: 69px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid rgba(242, 202, 80, 0.5);
+  border-radius: 12px;
+  background-color: var(--button-gold);
+  color: var(--button-text);
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease;
+}
+
+.scan-button:hover {
+  filter: brightness(1.05);
+}
+
+.scan-button:active {
+  transform: translateX(-50%) scale(0.98);
+}
+
+.bottom-indicator {
+  width: 48px;
+  height: 1px;
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(242, 202, 80, 0.2);
+}
+
+/* =========================
+   작은 화면 대응
+========================= */
+
+@media (max-width: 414px) {
+  .tag-scan-page {
+    width: 100%;
+  }
+
+  .product-section {
+    width: calc(100% - 74px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .recognition-card {
+    width: calc(100% - 95px);
+  }
+
+  .scan-button {
+    width: calc(100% - 48px);
+  }
+}
+
+/* Camera overlay */
+body.camera-open { overflow: hidden; }
+.camera-screen { width: min(100%, 415px); height: min(100dvh, 874px); min-height: min(620px, 100dvh); position: fixed; z-index: 100; top: 0; left: 50%; transform: translateX(-50%); display: none; flex-direction: column; overflow: hidden; background: #101212; color: #fff; }
+.camera-screen.open { display: flex; }
+.camera-view { min-height: 0; position: relative; flex: 1; overflow: hidden; background: #050606; }
+#cameraVideo, .camera-preview { width: 100%; height: 100%; display: block; object-fit: cover; }
+.camera-preview { display: none; position: absolute; inset: 0; }
+.camera-preview.visible { display: block; }
+.camera-shade { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,.48), transparent 25%, transparent 65%, rgba(0,0,0,.76)); pointer-events: none; }
+.camera-toolbar { position: absolute; z-index: 3; top: 0; right: 0; left: 0; display: flex; justify-content: space-between; padding: max(10px, env(safe-area-inset-top)) 10px; }
+.camera-toolbar button { width: 44px; height: 44px; background: transparent; color: #eee; font-size: 25px; cursor: pointer; }
+#closeCameraButton { font-size: 34px; font-weight: 300; }
+.camera-guide { position: absolute; z-index: 2; inset: 17% 10% 7%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; text-shadow: 0 2px 8px #000; }
+.camera-guide-frame { width: min(62vw, 250px); aspect-ratio: .78; position: relative; margin-bottom: 24px; border: 1px dashed rgba(220,180,35,.8); border-radius: 8px; }
+.camera-guide-frame span { padding: 12px 10px; position: absolute; top: 42%; left: 50%; transform: translate(-50%,-50%); border: 3px solid rgba(213,173,26,.42); border-radius: 7px; color: rgba(231,192,35,.55); font-size: 18px; font-weight: 700; }
+.camera-guide strong { font-size: clamp(15px,4.2vw,18px); font-weight: 500; white-space: nowrap; }
+.camera-guide p { max-width: 320px; margin-top: 12px; color: #d0d0d0; font-size: 14px; line-height: 1.65; word-break: keep-all; }
+.camera-panel { height: 260px; flex: 0 0 260px; padding: 22px 24px max(18px,env(safe-area-inset-bottom)); border-top: 1px solid #222; background: #111313; }
+.camera-steps { display: flex; justify-content: center; gap: 30px; margin-bottom: 42px; }
+.camera-step { padding: 7px 0; position: relative; background: none; color: #737373; font-size: 10px; cursor: pointer; }
+.camera-step.active { color: #f1cd26; }
+.camera-step.active::after { width: 4px; height: 4px; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); border-radius: 50%; background: #f1cd26; content: ""; }
+.camera-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; justify-items: center; }
+.camera-thumbnail { width: 46px; aspect-ratio: .8; justify-self: start; overflow: hidden; border-radius: 4px; background: #222; }
+.camera-thumbnail img { width: 100%; height: 100%; display: none; object-fit: cover; }
+.camera-capture { width: 76px; height: 76px; padding: 6px; border: 4px solid #626262; border-radius: 22px; background: #333; box-shadow: 0 0 0 3px rgba(255,255,255,.1); cursor: pointer; }
+.camera-capture span { width: 100%; height: 100%; display: block; border-radius: 14px; background: #fafafa; }
+.camera-switch { width: 48px; height: 48px; justify-self: end; border-radius: 14px; background: #1e2020; color: #eee; font-size: 25px; cursor: pointer; }
+.camera-retake { display: block; margin: 14px auto 0; background: none; color: #e7ca4d; font-size: 11px; letter-spacing: .12em; cursor: pointer; }
+.camera-retake[hidden], .camera-error[hidden] { display: none; }
+.camera-error { position: absolute; z-index: 10; inset: 0; display: grid; place-content: center; padding: 32px; background: rgba(9,10,10,.97); text-align: center; }
+.camera-error p { max-width: 310px; line-height: 1.65; word-break: keep-all; }
+.camera-error button { margin: 18px auto 0; padding: 11px 20px; border: 1px solid var(--gold); background: transparent; color: var(--gold); cursor: pointer; }
+@media (max-height: 720px) { .camera-panel { height: 220px; flex-basis: 220px; } .camera-steps { margin-bottom: 24px; } .camera-guide { top: 13%; } }
