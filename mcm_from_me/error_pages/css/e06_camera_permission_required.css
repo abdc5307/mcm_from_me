@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Inter:wght@400;500&family=Noto+Sans+KR:wght@400;500&family=Playfair+Display:wght@500;600&display=swap");
+
+:root { --background:#101212; --gold:#f2ca50; --button-gold:#f4cd4f; --text:#f0f0ee; --accent:#d38e62; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { min-height:100%; }
+html { background:#080a0a; }
+body { overflow-x:hidden; color:var(--text); font-family:"Hanken Grotesk",sans-serif; }
+button { border:0; background:none; color:inherit; font:inherit; }
+
+.error-page { width:min(100%,415px); min-height:874px; margin:0 auto; position:relative; isolation:isolate; overflow:hidden; background:
+  repeating-linear-gradient(24deg,transparent 0 5px,rgba(255,255,255,.009) 5px 6px),
+  repeating-linear-gradient(156deg,transparent 0 7px,rgba(0,0,0,.025) 7px 8px),
+  radial-gradient(ellipse at 50% 34%,rgba(242,202,80,.13),transparent 39%),
+  radial-gradient(ellipse at 50% 79%,rgba(255,255,255,.018),transparent 32%),
+  var(--background); }
+.error-page::before { width:650px; height:650px; position:absolute; z-index:0; top:-35px; left:50%; transform:translateX(-50%); clip-path:inset(0 0 530px 0); border:1px solid rgba(242,202,80,.18); border-radius:50%; content:""; }
+.large-orbit { width:650px; height:650px; position:absolute; z-index:0; top:88px; left:50%; transform:translateX(-50%); border:1px solid rgba(242,202,80,.2); border-radius:50%; }
+.error-header,.permission-visual,.error-message,.error-actions { position:relative; z-index:1; }
+
+.error-header { height:61px; }
+.menu-button { width:40px; height:40px; position:absolute; top:9px; left:17px; display:grid; place-items:center; cursor:pointer; }
+.menu-button img { width:20px; height:14px; display:block; }
+.error-header h1 { width:max-content; position:absolute; top:8px; left:50%; transform:translateX(-50%); color:#fff; font-family:"Playfair Display",serif; font-size:27px; font-weight:500; line-height:38px; white-space:nowrap; }
+
+.permission-visual { width:128px; height:128px; margin:140px auto 0; }
+.permission-glow { width:128px; height:128px; position:absolute; z-index:0; top:62px; left:62px; transform:translate(-50%,-50%); border-radius:12px; background:rgba(242,202,80,.2); filter:blur(20px); }
+.camera-icon-box { width:124px; height:124px; position:relative; z-index:1; display:grid; place-items:center; border:1px solid rgba(242,202,80,.46); border-radius:12px; background:#202018; }
+.camera-off-icon { width:50px; height:50px; display:block; }
+.lock-badge { width:32px; height:32px; position:absolute; right:9px; bottom:9px; display:grid; place-items:center; border-radius:11px; background:var(--button-gold); }
+.lock-badge img { width:13px; height:17px; display:block; }
+
+.error-message { margin-top:49px; text-align:center; }
+.error-message h2 { font-family:"Playfair Display",serif; font-size:27px; font-weight:500; line-height:34px; }
+.error-message p { margin-top:35px; color:var(--accent); font-family:"Noto Sans KR","Inter",sans-serif; font-size:15px; font-style:normal; font-weight:500; line-height:25px; word-break:keep-all; }
+
+.error-actions { width:calc(100% - 58px); position:absolute; right:29px; bottom:52px; left:29px; display:grid; gap:12px; }
+.error-actions button { width:100%; height:48px; border-radius:12px; font-size:14px; line-height:1; letter-spacing:2.1px; cursor:pointer; }
+.open-settings-button { border:1px solid var(--button-gold); background:var(--button-gold); color:#3c2f00; }
+.continue-button { border:1px solid rgba(242,202,80,.48); color:var(--gold); }
+.open-settings-button:hover { filter:brightness(1.06); }
+.continue-button:hover { background:rgba(242,202,80,.06); }
+.error-actions button:active { transform:scale(.99); }
+
+@media (max-width:414px) { .error-page { width:100%; } }
