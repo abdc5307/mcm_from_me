@@ -23,8 +23,8 @@ const storyCopy = {
 function updatePreview() {
   const isCrossbody = selectedStyle.carry === "crossbody";
   previewImage.src = isCrossbody
-    ? "./images/Ella_Boston_bag_cross.png"
-    : "./images/Small_Ella_Boston_Bag.jpg";
+    ? "../images/Ella_Boston_bag_cross.png"
+    : "../images/Small_Ella_Boston_Bag.jpg";
   previewImage.classList.toggle("piece-preview--crossbody", isCrossbody);
   previewImage.classList.toggle("piece-preview--top-handle", !isCrossbody);
   previewImage.alt = `${isCrossbody ? "Crossbody" : "Top handle"} 스타일의 Ella Boston Bag`;
@@ -54,8 +54,8 @@ document.querySelectorAll(".option-group").forEach((group) => {
 document.getElementById("nextStepButton").addEventListener("click", () => {
   const isCrossbody = selectedStyle.carry === "crossbody";
   resultPreview.src = isCrossbody
-    ? "./images/Ella_Boston_bag_cross.png"
-    : "./images/Small_Ella_Boston_Bag.jpg";
+    ? "../images/Ella_Boston_bag_cross.png"
+    : "../images/Small_Ella_Boston_Bag.jpg";
   resultPreview.classList.toggle("result-image--crossbody", isCrossbody);
   resultPreview.classList.toggle("result-image--top-handle", !isCrossbody);
   resultPreview.alt = `${isCrossbody ? "Crossbody" : "Top handle"} 스타일로 완성된 Ella Boston Bag`;
