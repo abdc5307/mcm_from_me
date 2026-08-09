@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Product, Option, StyleCombination, UserStyleSelection
 from .serializers import StyleCombinationSerializer, UserStyleSelectionSerializer
+from .utils import generate_ai_narration
 
 #초기 기본 세팅
 class Chapter3DefaultOptionView(APIView):
@@ -67,11 +68,64 @@ class Chapter3CompleteView(APIView):
 
         serializer = UserStyleSelectionSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            instance = serializer.save()
+
+            try:
+                narration = generate_ai_narration(
+                    instance.product, instance.carry_option, instance.detail_option
+                )
+                if narration:
+                    instance.ai_narration = narration
+                    instance.save()
+            except Exception as e:
+                print(f"나레이션 생성 오류: {e}")
+
             return Response({
                 "status": "success",
                 "message": "스타일 선택이 성공적으로 저장되었습니다.",
-                "data": serializer.data
+                "data": UserStyleSelectionSerializer(instance).data,
+                "selection_id": instance.id
             }, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#summaty 내용
+class Chapter3SummaryView(APIView):
+
+    def get(self, request, selection_id):
+        try:
+            selection = UserStyleSelection.objects.select_related(
+                'product', 'carry_option', 'detail_option'
+            ).get(id=selection_id)
+        except UserStyleSelection.DoesNotExist:
+            return Response(
+                {"error": "선택 데이터를 찾을 수 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        #누락값 발생 예외 처리
+        if not selection.carry_option or not selection.detail_option:
+            selection.refresh_from_db()
+            if not selection.carry_option or not selection.detail_option:
+                return Response(
+                    {"error": "옵션 데이터가 누락되었습니다."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        #나래이션 생성 실패 예외
+        narration = selection.ai_narration if selection.ai_narration else None
+
+        data = {
+            "product_image": selection.product.image_url if hasattr(selection.product, 'image_url') else None,
+            "ai_narration": narration,
+            "style_summary": {
+                "product": selection.product.name,
+                "carry_option": selection.carry_option.code_name,
+                "detail_option": selection.detail_option.code_name,
+            }
+        }
+
+        return Response({
+            "status": "success",
+            "data": data
+        }, status=status.HTTP_200_OK)

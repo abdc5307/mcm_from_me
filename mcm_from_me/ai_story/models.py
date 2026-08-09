@@ -39,7 +39,8 @@ class UserStyleSelection(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     carry_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="user_selected_carry", limit_choices_to={'group': 'carry'})
     detail_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="user_selected_detail", limit_choices_to={'group': 'detail'})
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="선택 완료 시간")
+    ai_narration = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"선택됨: {self.carry_option.name} / {self.detail_option.name}"
