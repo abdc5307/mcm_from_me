@@ -20,7 +20,7 @@ def check_blur(image_file):
     return blur_score
 
 #사진 품질 확인
-def validate_photo_quality(image_file, brightness_threshold=40, blur_threshold=100):
+def photo_quality(image_file, brightness_threshold=40, blur_threshold=100):
     brightness = check_brightness(image_file)
     blur = check_blur(image_file)
 

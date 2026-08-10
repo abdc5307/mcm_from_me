@@ -5,7 +5,7 @@ from rest_framework import status
 from .models import CapturedPhoto
 from .serializers import CapturedPhotoSerializer
 from .errors import error_response
-from .utils import validate_photo_quality, photo_quality, check_in_frame
+from .utils import photo_quality, check_in_frame
 from ai_story.models import UserStyleSelection
 
 #촬영 준비 화면

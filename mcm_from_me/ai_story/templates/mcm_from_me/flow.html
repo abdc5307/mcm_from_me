@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Chapter 3 - Shape Your Story</h2>
+
+    {% if not selection %}
+        <form method="post">
+            {% csrf_token %}
+            <p>CARRY 옵션 선택</p>
+            {% for opt in carry_options %}
+                <label><input type="radio" name="carry_option" value="{{ opt.id }}"> {{ opt.name }}</label><br>
+            {% endfor %}
+
+            <p>DETAIL 옵션 선택</p>
+            {% for opt in detail_options %}
+                <label><input type="radio" name="detail_option" value="{{ opt.id }}"> {{ opt.name }}</label><br>
+            {% endfor %}
+
+            <br><button type="submit">NEXT STEP</button>
+        </form>
+    {% else %}
+        <h3>YOUR STYLE</h3>
+        <p>PIECE: {{ selection.product.name }}</p>
+        <p>CARRY: {{ selection.carry_option.name }}</p>
+        <p>DETAIL: {{ selection.detail_option.name }}</p>
+        <p>{{ selection.ai_narration|default:"내레이션 준비 중" }}</p>
+
+        {% if selection.is_completed %}
+            <p><strong>스타일 선택이 완료되었습니다.</strong></p>
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="selection_id" value="{{ selection.id }}">
+                <button type="submit" name="complete">COMPLETE MY STYLE</button>
+            </form>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

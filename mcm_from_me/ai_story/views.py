@@ -641,3 +641,111 @@ class Chapter5RecommendationShareView(APIView):
             "status": "success",
             "share_url": share_url
         }, status=status.HTTP_200_OK)
+
+
+
+
+
+#템플릿 확인용 뷰
+from django.shortcuts import render, redirect, get_object_or_404
+
+def chapter3_flow_view(request, selection_id=None):
+    carry_options = Option.objects.filter(group='carry')
+    detail_options = Option.objects.filter(group='detail')
+    selection = None
+
+    if selection_id:
+        selection = get_object_or_404(UserStyleSelection, id=selection_id)
+
+    if request.method == 'POST':
+        if 'complete' in request.POST:
+            sel_id = request.POST.get('selection_id')
+            if not sel_id:
+                return render(request, 'mcm_from_me/flow.html', {
+                    'carry_options': carry_options,
+                    'detail_options': detail_options,
+                    'error_message': "완료할 선택 항목이 없습니다."
+                })
+            selection = get_object_or_404(UserStyleSelection, id=sel_id)
+            selection.is_completed = True
+            selection.save()
+            return redirect('chapter3-flow-detail', selection_id=selection.id)
+        else:
+            carry_id = request.POST.get('carry_option')
+            detail_id = request.POST.get('detail_option')
+
+            if not carry_id or not detail_id:
+                return render(request, 'mcm_from_me/flow.html', {
+                    'carry_options': carry_options,
+                    'detail_options': detail_options,
+                    'error_message': "Carry와 Detail 옵션을 모두 선택해주세요!",
+                })
+
+            product = Product.objects.first()  # 데모용
+            carry = Option.objects.filter(id=carry_id).first()
+            detail = Option.objects.filter(id=detail_id).first()
+
+            selection = UserStyleSelection.objects.create(
+                product=product, carry_option=carry, detail_option=detail
+            )
+            return redirect('chapter3-flow-detail', selection_id=selection.id)
+
+    return render(request, 'mcm_from_me/flow.html', {
+        'carry_options': carry_options,
+        'detail_options': detail_options,
+        'selection': selection,
+    })
+
+def chapter5_discover_view(request, selection_id):
+    cards = JourneyCard.objects.filter(style_selection_id=selection_id, status='completed')
+
+    if request.method == 'POST':
+        card_id = request.POST.get('card_id')
+        card = get_object_or_404(JourneyCard, id=card_id)
+        if 'choose' in request.POST:
+            JourneyCard.objects.filter(style_selection=card.style_selection).update(is_selected=False)
+            card.is_selected = True
+            card.save()
+            return redirect('chapter5-result-view', selection_id=selection_id)
+        elif 'deciding' in request.POST:
+            return redirect('chapter5-hesitation-view', selection_id=selection_id)
+
+    return render(request, 'mcm_from_me/discover.html', {
+        'cards': cards,
+        'selection_id': selection_id,
+    })
+
+
+def chapter5_result_view(request, selection_id):
+    selection = get_object_or_404(UserStyleSelection, id=selection_id)
+    card = JourneyCard.objects.filter(style_selection=selection, is_selected=True).first()
+
+    if request.method == 'POST' and 'complete' in request.POST:
+        selection.is_completed = True
+        selection.save()
+        return redirect('chapter5-result-view', selection_id=selection_id)
+
+    return render(request, 'mcm_from_me/result.html', {
+        'selection': selection,
+        'card': card,
+    })
+
+
+def chapter5_hesitation_view(request, selection_id):
+    selection = get_object_or_404(UserStyleSelection, id=selection_id)
+    reasons = ['SIZE', 'WEIGHT', 'STORAGE', 'COMFORT', 'PRICE', 'DESIGN']
+
+    if request.method == 'POST':
+        reason = request.POST.get('reason')
+        HesitationReason.objects.update_or_create(
+            style_selection=selection, defaults={'reason': reason}
+        )
+        return redirect('chapter5-hesitation-view', selection_id=selection_id)
+
+    hesitation = HesitationReason.objects.filter(style_selection=selection).first()
+
+    return render(request, 'mcm_from_me/hesitation.html', {
+        'selection': selection,
+        'reasons': reasons,
+        'hesitation': hesitation,
+    })

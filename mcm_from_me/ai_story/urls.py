@@ -23,3 +23,20 @@ urlpatterns = [
     path('chapter5/recommendation/advisor-connect/', Chapter5RecommendationAdvisorConnectView.as_view(), name="chapter5-recommendation-advisor-connect"),
     path('chapter5/recommendation/<int:recommendation_id>/share/', Chapter5RecommendationShareView.as_view(), name="chapter5-recommendation-share"),
 ]
+
+
+#템플릿 확인용 url
+from .views import (
+    chapter3_flow_view,
+    chapter5_discover_view,
+    chapter5_result_view,
+    chapter5_hesitation_view,
+)
+
+urlpatterns += [
+    path('view/chapter3/', chapter3_flow_view, name='chapter3-flow'),
+    path('view/chapter3/<int:selection_id>/', chapter3_flow_view, name='chapter3-flow-detail'),
+    path('view/chapter5/discover/<int:selection_id>/', chapter5_discover_view, name='chapter5-discover-view'),
+    path('view/chapter5/result/<int:selection_id>/', chapter5_result_view, name='chapter5-result-view'),
+    path('view/chapter5/hesitation/<int:selection_id>/', chapter5_hesitation_view, name='chapter5-hesitation-view'),
+]
