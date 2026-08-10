@@ -5,7 +5,7 @@ from rest_framework import status
 from .models import CapturedPhoto
 from .serializers import CapturedPhotoSerializer
 from .errors import error_response
-from .utils import validate_photo_quality
+from .utils import validate_photo_quality, photo_quality, check_in_frame
 from ai_story.models import UserStyleSelection
 
 #촬영 준비 화면
@@ -56,18 +56,37 @@ class Chapter4CaptureUploadView(APIView):
             }, status=status.HTTP_404_NOT_FOUND)
 
         try:
-            is_valid, error_code, scores = validate_photo_quality(image_file)
+            in_frame = check_in_frame(image_file)
         except Exception:
-            return Response(
-                {"error": error_response('E-07')},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": error_response('E-07')}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not in_frame:
+            return Response({
+                "status": "fail",
+                "error": error_response('E-08'),
+                "redirect_to": "C4-05"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            is_valid, error_code, scores = photo_quality(image_file)
+        except Exception:
+            return Response({"error": error_response('E-07')}, status=status.HTTP_400_BAD_REQUEST)
 
         if not is_valid:
+            image_file.seek(0)
+            photo = CapturedPhoto.objects.create(
+                style_selection=selection,
+                image=image_file,
+                shot_mode=shot_mode,
+                brightness_score=scores['brightness'],
+                blur_score=scores['blur'],
+                is_in_frame=True,
+            )
             return Response({
                 "status": "fail",
                 "error": error_response(error_code),
                 "scores": scores,
+                "photo_id": photo.id,
                 "redirect_to": "C4-05"
             }, status=status.HTTP_400_BAD_REQUEST)
 
@@ -134,4 +153,63 @@ class Chapter4PhotoActionView(APIView):
             "message": "사진이 선택되었습니다.",
             "data": CapturedPhotoSerializer(photo, context={'request': request}).data,
             "redirect_to": "C5-01"
+        }, status=status.HTTP_200_OK)
+
+#카메라
+class Chapter4OpenCameraView(APIView):
+
+    def post(self, request):
+        camera_permission = request.data.get('camera_permission')
+
+        if camera_permission == 'denied':
+            return Response({
+                "status": "fail",
+                "error": error_response('E-06'),
+            }, status=status.HTTP_403_FORBIDDEN)
+
+        if camera_permission == 'unavailable':
+            return Response({
+                "status": "fail",
+                "error": error_response('E-07'),
+            }, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+        return Response({
+            "status": "success",
+            "redirect_to": "C4-05"
+        }, status=status.HTTP_200_OK)
+
+#사진 없이 
+class Chapter4ContinueWithoutPhotoView(APIView):
+
+    def post(self, request):
+        selection_id = request.data.get('selection_id')
+
+        if not selection_id:
+            return Response(
+                {"error": "selection_id가 필요합니다."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response({
+            "status": "success",
+            "message": "사진 없이 진행합니다.",
+            "redirect_to": "C5-01"
+        }, status=status.HTTP_200_OK)
+
+#재시도, 직원
+class Chapter4CameraRetryView(APIView):
+
+    def post(self, request):
+        action = request.data.get('action')
+
+        if action == 'ask_staff':
+            return Response({
+                "status": "success",
+                "message": "직원 호출이 요청되었습니다.",
+                "redirect_to": None 
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "status": "success",
+            "redirect_to": "C4-05"
         }, status=status.HTTP_200_OK)

@@ -8,6 +8,8 @@ from .utils import generate_ai_narration, generate_journey_card_text, generate_a
 from .errors import error_response
 
 import uuid
+import logging
+logger = logging.getLogger('journey_save')
 
 
 #초기 기본 세팅
@@ -177,7 +179,8 @@ class Chapter5GenerateCardsView(APIView):
                     status='completed' if card_text else 'failed'
                 )
                 created_cards.append(card)
-        except Exception:
+        except Exception as e:
+            logger.error(f"카드 생성 실패 (selection_id={selection_id}): {e}")
             return Response(
                 {"error": error_response('E-11')},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -256,7 +259,8 @@ class Chapter5CardSelectView(APIView):
 
             card.is_selected = True
             card.save()
-        except Exception:
+        except Exception as e:
+            logger.error(f"카드 선택 저장 실패 (card_id={card_id}): {e}")
             return Response({
                 "error": error_response('E-11'),
                 "redirect_to": None
@@ -409,9 +413,16 @@ class Chapter5CompleteJourneyView(APIView):
             }, status=status.HTTP_200_OK)
 
         from django.utils import timezone
-        selection.is_completed = True
-        selection.completed_at = timezone.now()
-        selection.save()
+        try:
+            selection.is_completed = True
+            selection.completed_at = timezone.now()
+            selection.save()
+        except Exception as e:
+            logger.error(f"Journey 완료 저장 실패 (selection_id={selection_id}): {e}")
+            return Response(
+                {"error": error_response('E-11')},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
         return Response({
             "status": "success",
@@ -446,7 +457,8 @@ class Chapter5HesitationReasonView(APIView):
                 style_selection=selection,
                 defaults={'reason': reason}
             )
-        except Exception:
+        except Exception as e:
+            logger.error(f"고민 이유 저장 실패 (selection_id={selection_id}): {e}")
             return Response(
                 {"error": error_response('E-11')},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -499,7 +511,8 @@ class Chapter5SubmitToAIView(APIView):
             hesitation.ai_reconsidered_card = new_card
             hesitation.save()
 
-        except Exception:
+        except Exception as e:
+            logger.error(f"AI 재생성 실패 (selection_id={selection_id}): {e}")
             return Response({
                 "error": error_response('E-11'),
                 "redirect_to": None
