@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Option, StyleCombination, UserStyleSelection
+from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard
 
 class OptionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,3 +19,13 @@ class UserStyleSelectionSerializer(serializers.ModelSerializer):
         model = UserStyleSelection
         fields = ['id', 'product', 'carry_option', 'detail_option', 'ai_narration', 'created_at']
         read_only_fields = ['created_at']
+
+class JourneyCardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JourneyCard
+        fields = [
+            'id', 'style_selection', 'captured_photo',
+            'title', 'card_text', 'order',
+            'is_selected', 'status', 'created_at'
+        ]
+        read_only_fields = ['status', 'created_at']

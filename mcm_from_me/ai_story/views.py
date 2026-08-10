@@ -2,9 +2,10 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Product, Option, StyleCombination, UserStyleSelection
-from .serializers import StyleCombinationSerializer, UserStyleSelectionSerializer
-from .utils import generate_ai_narration
+from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard
+from .serializers import StyleCombinationSerializer, UserStyleSelectionSerializer, JourneyCardSerializer
+from .utils import generate_ai_narration, generate_journey_card_text
+from .errors import error_response
 
 #초기 기본 세팅
 class Chapter3DefaultOptionView(APIView):
@@ -128,4 +129,139 @@ class Chapter3SummaryView(APIView):
         return Response({
             "status": "success",
             "data": data
+        }, status=status.HTTP_200_OK)
+
+#카드 생성 요청시
+class Chapter5GenerateCardsView(APIView):
+
+    def post(self, request):
+        selection_id = request.data.get('selection_id')
+        card_count = int(request.data.get('card_count', 1))
+
+        if not selection_id:
+            return Response(
+                {"error": "selection_id가 필요합니다."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            selection = UserStyleSelection.objects.select_related(
+                'product', 'carry_option', 'detail_option'
+            ).get(id=selection_id)
+        except UserStyleSelection.DoesNotExist:
+            return Response(
+                {"error": "선택 데이터를 찾을 수 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        captured_photo = selection.captured_photos.filter(is_used=True).first()
+
+        created_cards = []
+        try:
+            for i in range(card_count):
+                card_text = generate_journey_card_text(
+                    selection.product,
+                    selection.carry_option,
+                    selection.detail_option,
+                    selection.ai_narration
+                )
+
+                card = JourneyCard.objects.create(
+                    style_selection=selection,
+                    captured_photo=captured_photo,
+                    card_text=card_text,
+                    order=i,
+                    status='completed' if card_text else 'failed'
+                )
+                created_cards.append(card)
+        except Exception:
+            return Response(
+                {"error": error_response('E-11')},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        valid_cards = [c for c in created_cards if c.status == 'completed']
+        if not valid_cards:
+            return Response(
+                {"error": error_response('E-11')},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        serializer = JourneyCardSerializer(valid_cards, many=True, context={'request': request})
+
+        redirect_to = "C5-05" if len(valid_cards) == 1 else "C5-06"
+
+        return Response({
+            "status": "success",
+            "card_count": len(valid_cards),
+            "data": serializer.data,
+            "redirect_to": redirect_to
+        }, status=status.HTTP_201_CREATED)
+
+#생성된 카드 조회
+class Chapter5CardListView(APIView):
+
+    def get(self, request, selection_id):
+        cards = JourneyCard.objects.filter(
+            style_selection_id=selection_id,
+            status='completed'
+        ).order_by('order')
+
+        if not cards.exists():
+            return Response(
+                {"error": error_response('E-11')},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = JourneyCardSerializer(cards, many=True, context={'request': request})
+        return Response({
+            "status": "success",
+            "card_count": cards.count(),
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+
+#카드 선택
+class Chapter5CardSelectView(APIView):
+
+    def post(self, request, card_id):
+        action = request.data.get('action')
+
+        if action not in ['choose', 'deciding']:
+            return Response(
+                {"error": "action 값은 'choose' 또는 'deciding'이어야 합니다."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            card = JourneyCard.objects.get(id=card_id)
+        except JourneyCard.DoesNotExist:
+            return Response(
+                {"error": "카드를 찾을 수 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if action == 'deciding':
+            return Response({
+                "status": "success",
+                "redirect_to": "C5-15"
+            }, status=status.HTTP_200_OK)
+
+        try:
+            JourneyCard.objects.filter(
+                style_selection=card.style_selection
+            ).exclude(id=card.id).update(is_selected=False)
+
+            card.is_selected = True
+            card.save()
+        except Exception:
+            return Response({
+                "error": error_response('E-11'),
+                "redirect_to": None
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response({
+            "status": "success",
+            "message": "카드가 선택되었습니다.",
+            "data": JourneyCardSerializer(card, context={'request': request}).data,
+            "redirect_to": "C5-09"
         }, status=status.HTTP_200_OK)

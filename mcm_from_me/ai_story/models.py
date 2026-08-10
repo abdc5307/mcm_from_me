@@ -2,6 +2,7 @@ from django.db import models
 
 #선택된 제품 클래스
 class Product(models.Model):
+
     name = models.CharField(max_length=100, verbose_name="제품명")
     description = models.TextField(verbose_name="제품 설명")
 
@@ -10,6 +11,7 @@ class Product(models.Model):
 
 #제품 옵션 구분
 class Option(models.Model):
+
     GROUP_CHOICES = [
         ('carry', 'Carry Option'),
         ('detail', 'Detail Option'),
@@ -24,6 +26,7 @@ class Option(models.Model):
 
 #옵션 조합에 따른 이미지, 설명 
 class StyleCombination(models.Model):
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="제품")
     carry_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="carry_combinations", limit_choices_to={'group': 'carry'}, verbose_name="캐리 옵션")
     detail_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="detail_combinations", limit_choices_to={'group': 'detail'}, verbose_name="디테일 옵션")
@@ -36,6 +39,7 @@ class StyleCombination(models.Model):
 
 #최종 스타일 정하는 곳
 class UserStyleSelection(models.Model):
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     carry_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="user_selected_carry", limit_choices_to={'group': 'carry'})
     detail_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="user_selected_detail", limit_choices_to={'group': 'detail'})
@@ -44,3 +48,40 @@ class UserStyleSelection(models.Model):
 
     def __str__(self):
         return f"선택됨: {self.carry_option.name} / {self.detail_option.name}"
+
+#생성된 카드 관련 기능
+class JourneyCard(models.Model):
+
+    STATUS_CHOICES = [
+        ('processing', 'Processing'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+    ]
+
+    style_selection = models.ForeignKey(
+        'UserStyleSelection',
+        on_delete=models.CASCADE,
+        related_name='journey_cards'
+    )
+    captured_photo = models.ForeignKey(
+        'product.CapturedPhoto',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='journey_cards'
+    )
+
+    title = models.CharField(max_length=100, default='My MCM Story Card')
+    card_text = models.TextField(null=True, blank=True) 
+    order = models.PositiveIntegerField(default=0) 
+
+    is_selected = models.BooleanField(default=False) 
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='processing')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', 'created_at']
+
+    def __str__(self):
+        return f"Card #{self.id} ({self.status}) - selection {self.style_selection_id}"
+    
