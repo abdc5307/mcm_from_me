@@ -12,7 +12,7 @@ class CapturedPhoto(models.Model):
     ]
 
     style_selection = models.ForeignKey(
-        'UserStyleSelection',
+        UserStyleSelection,
         on_delete=models.CASCADE,
         related_name='captured_photos'
     )
