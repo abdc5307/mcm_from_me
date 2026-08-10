@@ -2,6 +2,7 @@ from django.urls import path
 from .views import (Chapter3DefaultOptionView, Chapter3SelectOptionView, Chapter3CompleteView, Chapter3SummaryView)
 from .views import (Chapter5GenerateCardsView, Chapter5CardListView, Chapter5CardSelectView)
 from .views import (Chapter5FinalJourneyView, Chapter5AdvisorConnectView, Chapter5ShareView, Chapter5ProductDetailView, Chapter5CompleteJourneyView, Chapter5HesitationReasonView, Chapter5SubmitToAIView,)
+from .views import (Chapter5AnalysisResultView, Chapter5RecommendationAdvisorConnectView, Chapter5RecommendationShareView)
 
 urlpatterns = [
     path('Chapter3/option', Chapter3DefaultOptionView.as_view(), name='chapter3-option'),
@@ -18,4 +19,7 @@ urlpatterns = [
     path('chapter5/complete/<int:selection_id>/', Chapter5CompleteJourneyView.as_view(), name="chapter5-complete"),
     path('chapter5/hesitation/', Chapter5HesitationReasonView.as_view(), name="chapter5-hesitation"),
     path('chapter5/submit-to-ai/', Chapter5SubmitToAIView.as_view(), name="chapter5-submit-to-ai"),
+    path('chapter5/analysis/<int:hesitation_id>/', Chapter5AnalysisResultView.as_view(), name="chapter5-analysis"),
+    path('chapter5/recommendation/advisor-connect/', Chapter5RecommendationAdvisorConnectView.as_view(), name="chapter5-recommendation-advisor-connect"),
+    path('chapter5/recommendation/<int:recommendation_id>/share/', Chapter5RecommendationShareView.as_view(), name="chapter5-recommendation-share"),
 ]

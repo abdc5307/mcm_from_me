@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard, HesitationReason
+from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard, HesitationReason, ProductRecommendation
 
 class OptionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,3 +35,16 @@ class HesitationReasonSerializer(serializers.ModelSerializer):
         model = HesitationReason
         fields = ['id', 'style_selection', 'reason', 'ai_reconsidered_card', 'created_at']
         read_only_fields = ['ai_reconsidered_card', 'created_at']
+
+class ProductRecommendationSerializer(serializers.ModelSerializer):
+    reason_tags_list = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ProductRecommendation
+        fields = [
+            'id', 'hesitation', 'recommended_product',
+            'analysis_text', 'reason_tags_list', 'created_at'
+        ]
+
+    def get_reason_tags_list(self, obj):
+        return obj.get_reason_tags_list()

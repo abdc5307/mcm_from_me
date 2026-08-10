@@ -1,6 +1,8 @@
 from google import genai
 from django.conf import settings
 
+import json
+
 client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
 #이전 선택 ai api
@@ -48,4 +50,54 @@ Detail 옵션: {detail_option.code_name}
         return response.text.strip()
     except Exception as e:
         print(f"카드 생성 중 Gemini 오류: {e}")
+        return None
+
+#제품 추천 프롬프트
+def generate_ai_analysis_and_recommendation(selection, reason, all_products):
+
+    product_list_text = "\n".join(
+        [f"- id:{p.id}, name:{p.name}" for p in all_products]
+    )
+
+    prompt = f"""
+당신은 럭셔리 브랜드의 AI 스타일 컨설턴트입니다.
+고객이 아래와 같은 이유로 구매를 고민하고 있습니다.
+
+현재 선택 제품: {selection.product.name}
+고민 이유: {reason}
+기존 무드: NEW JOURNEY
+
+다음 형식의 JSON으로만 답변해주세요. 다른 설명은 붙이지 마세요.
+{{
+  "keyword_analysis": "선택 키워드(NEW JOURNEY)와 고객 답변을 연결한 한 문장 분석",
+  "current_product_interpretation": "현재 제품이 왜 아쉬웠는지 해석하는 한 문장",
+  "question_suggestion": "같은 무드를 유지하며 다른 방향을 제안하는 질문형 한 문장",
+  "recommended_product_id": "아래 제품 목록 중 가장 적합한 제품의 id (정수)",
+  "reason_tags": ["추천 근거 태그 2~3개, 예: 넉넉한 수납, 양손이 자유로운 이동, NEW JOURNEY 무드"]
+}}
+
+제품 목록:
+{product_list_text}
+"""
+    try:
+        model = genai.GenerativeModel('gemini-2.0-flash')
+        response = model.generate_content(prompt)
+        raw = response.text.strip()
+
+        raw = raw.replace('```json', '').replace('```', '').strip()
+        parsed = json.loads(raw)
+
+        analysis_text = " ".join([
+            parsed.get("keyword_analysis", ""),
+            parsed.get("current_product_interpretation", ""),
+            parsed.get("question_suggestion", ""),
+        ]).strip()
+
+        return {
+            "analysis_text": analysis_text,
+            "recommended_product_id": int(parsed.get("recommended_product_id")),
+            "reason_tags": ", ".join(parsed.get("reason_tags", [])),
+        }
+    except Exception as e:
+        print(f"AI 분석/추천 생성 오류: {e}")
         return None

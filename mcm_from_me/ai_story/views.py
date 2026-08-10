@@ -2,9 +2,9 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard, HesitationReason
-from .serializers import StyleCombinationSerializer, UserStyleSelectionSerializer, JourneyCardSerializer, HesitationReasonSerializer
-from .utils import generate_ai_narration, generate_journey_card_text
+from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard, HesitationReason, ProductRecommendation
+from .serializers import StyleCombinationSerializer, UserStyleSelectionSerializer, JourneyCardSerializer, HesitationReasonSerializer, ProductRecommendationSerializer
+from .utils import generate_ai_narration, generate_journey_card_text, generate_ai_analysis_and_recommendation
 from .errors import error_response
 
 import uuid
@@ -510,3 +510,121 @@ class Chapter5SubmitToAIView(APIView):
             "data": JourneyCardSerializer(new_card, context={'request': request}).data,
             "redirect_to": "C5-19"
         }, status=status.HTTP_201_CREATED)
+
+class Chapter5AnalysisResultView(APIView):
+
+    def get(self, request, hesitation_id):
+        try:
+            hesitation = HesitationReason.objects.select_related(
+                'style_selection'
+            ).get(id=hesitation_id)
+        except HesitationReason.DoesNotExist:
+            return Response(
+                {"error": "고민 이유 데이터를 찾을 수 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        recommendation = ProductRecommendation.objects.filter(hesitation=hesitation).first()
+
+        if not recommendation:
+            selection = hesitation.style_selection
+            all_products = Product.objects.exclude(id=selection.product_id)
+
+            result = generate_ai_analysis_and_recommendation(
+                selection, hesitation.reason, all_products
+            )
+
+            if not result:
+                recommendation = ProductRecommendation.objects.create(
+                    hesitation=hesitation,
+                    recommended_product=None,
+                    analysis_text="고객님의 선택을 바탕으로 새로운 여정을 계속 찾아드릴게요.",
+                    reason_tags=""
+                )
+            else:
+                try:
+                    product = Product.objects.get(id=result["recommended_product_id"])
+                except Product.DoesNotExist:
+                    product = None
+
+                recommendation = ProductRecommendation.objects.create(
+                    hesitation=hesitation,
+                    recommended_product=product,
+                    analysis_text=result["analysis_text"],
+                    reason_tags=result["reason_tags"]
+                )
+
+        product_image_url = None
+        if recommendation.recommended_product and hasattr(recommendation.recommended_product, 'image'):
+            try:
+                product_image_url = recommendation.recommended_product.image.url
+            except Exception:
+                product_image_url = None
+
+        data = {
+            "analysis_text": recommendation.analysis_text,
+            "recommended_product": {
+                "id": recommendation.recommended_product.id if recommendation.recommended_product else None,
+                "name": recommendation.recommended_product.name if recommendation.recommended_product else "추천 제품 준비 중",
+                "image_url": product_image_url,
+            },
+            "reason_tags": recommendation.get_reason_tags_list(),
+            "recommendation_id": recommendation.id,
+        }
+
+        return Response({"status": "success", "data": data}, status=status.HTTP_200_OK)
+
+#상담원 연결
+class Chapter5RecommendationAdvisorConnectView(APIView):
+
+    def post(self, request):
+        recommendation_id = request.data.get('recommendation_id')
+
+        try:
+            ProductRecommendation.objects.get(id=recommendation_id)
+        except ProductRecommendation.DoesNotExist:
+            return Response(
+                {"error": "추천 데이터를 찾을 수 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
+            connect_url = "/support/advisor-chat/"
+        except Exception:
+            return Response(
+                {"error": error_response('E-01')},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        return Response({
+            "status": "success",
+            "redirect_to": connect_url
+        }, status=status.HTTP_200_OK)
+
+#결과 공유
+class Chapter5RecommendationShareView(APIView):
+
+    def post(self, request, recommendation_id):
+        try:
+            recommendation = ProductRecommendation.objects.get(id=recommendation_id)
+        except ProductRecommendation.DoesNotExist:
+            return Response(
+                {"error": "추천 데이터를 찾을 수 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
+            if not recommendation.share_token:
+                recommendation.share_token = uuid.uuid4().hex
+                recommendation.save()
+            share_url = f"/journey/recommendation/share/{recommendation.share_token}/"
+        except Exception:
+            return Response({
+                "status": "fail",
+                "message": "공유에 실패했습니다. 현재 화면을 유지합니다."
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "status": "success",
+            "share_url": share_url
+        }, status=status.HTTP_200_OK)

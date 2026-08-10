@@ -78,7 +78,7 @@ class JourneyCard(models.Model):
 
     is_selected = models.BooleanField(default=False) 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='processing')
-    
+
     created_at = models.DateTimeField(auto_now_add=True)
     share_token = models.CharField(max_length=64, null=True, blank=True, unique=True)
 
@@ -116,3 +116,30 @@ class HesitationReason(models.Model):
 
     def __str__(self):
         return f"Hesitation({self.reason}) - selection {self.style_selection_id}"
+
+
+#분석, 추천
+class ProductRecommendation(models.Model):
+
+    hesitation = models.ForeignKey(
+        'HesitationReason',
+        on_delete=models.CASCADE,
+        related_name='recommendations'
+    )
+    recommended_product = models.ForeignKey(
+        'Product',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='recommended_from'
+    )
+
+    analysis_text = models.TextField(null=True, blank=True)
+    reason_tags = models.CharField(max_length=300, null=True, blank=True)
+    share_token = models.CharField(max_length=64, null=True, blank=True, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_reason_tags_list(self):
+        return [t.strip() for t in self.reason_tags.split(',')] if self.reason_tags else []
+
+    def __str__(self):
+        return f"Recommendation #{self.id} - hesitation {self.hesitation_id}"
