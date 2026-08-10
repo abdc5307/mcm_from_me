@@ -45,6 +45,8 @@ class UserStyleSelection(models.Model):
     detail_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="user_selected_detail", limit_choices_to={'group': 'detail'})
     ai_narration = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_completed = models.BooleanField(default=False)
+    completed_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"선택됨: {self.carry_option.name} / {self.detail_option.name}"
@@ -76,12 +78,41 @@ class JourneyCard(models.Model):
 
     is_selected = models.BooleanField(default=False) 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='processing')
-
+    
     created_at = models.DateTimeField(auto_now_add=True)
+    share_token = models.CharField(max_length=64, null=True, blank=True, unique=True)
 
     class Meta:
         ordering = ['order', 'created_at']
 
     def __str__(self):
         return f"Card #{self.id} ({self.status}) - selection {self.style_selection_id}"
-    
+
+#고민 이유 선택
+class HesitationReason(models.Model):
+
+    REASON_CHOICES = [
+        ('SIZE', 'Size'),
+        ('WEIGHT', 'Weight'),
+        ('STORAGE', 'Storage'),
+        ('COMFORT', 'Comfort'),
+        ('PRICE', 'Price'),
+        ('DESIGN', 'Design'),
+    ]
+
+    style_selection = models.ForeignKey(
+        'UserStyleSelection',
+        on_delete=models.CASCADE,
+        related_name='hesitation_reasons'
+    )
+    reason = models.CharField(max_length=20, choices=REASON_CHOICES)
+    ai_reconsidered_card = models.ForeignKey(
+        'JourneyCard',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='reconsideration_source'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Hesitation({self.reason}) - selection {self.style_selection_id}"

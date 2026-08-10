@@ -2,10 +2,13 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard
-from .serializers import StyleCombinationSerializer, UserStyleSelectionSerializer, JourneyCardSerializer
+from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard, HesitationReason
+from .serializers import StyleCombinationSerializer, UserStyleSelectionSerializer, JourneyCardSerializer, HesitationReasonSerializer
 from .utils import generate_ai_narration, generate_journey_card_text
 from .errors import error_response
+
+import uuid
+
 
 #초기 기본 세팅
 class Chapter3DefaultOptionView(APIView):
@@ -265,3 +268,245 @@ class Chapter5CardSelectView(APIView):
             "data": JourneyCardSerializer(card, context={'request': request}).data,
             "redirect_to": "C5-09"
         }, status=status.HTTP_200_OK)
+
+#최종 선택 카드
+class Chapter5FinalJourneyView(APIView):
+
+    def get(self, request, selection_id):
+        try:
+            selection = UserStyleSelection.objects.select_related(
+                'product', 'carry_option', 'detail_option'
+            ).get(id=selection_id)
+        except UserStyleSelection.DoesNotExist:
+            return Response(
+                {"error": "선택 데이터를 찾을 수 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        card = JourneyCard.objects.filter(
+            style_selection=selection, is_selected=True
+        ).first()
+
+        if not card:
+            return Response(
+                {"error": "선택된 카드가 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        image_url = None
+        if card.captured_photo and card.captured_photo.image:
+            try:
+                image_url = card.captured_photo.image.url
+            except Exception:
+                image_url = None
+
+        data = {
+            "card_text": card.card_text,
+            "image_url": image_url, 
+            "selection_info": {
+                "product_name": selection.product.name,
+                "carry_option": selection.carry_option.code_name,
+                "detail_option": selection.detail_option.code_name,
+            }
+        }
+
+        return Response({"status": "success", "data": data}, status=status.HTTP_200_OK)
+
+#상담원 연결
+class Chapter5AdvisorConnectView(APIView):
+
+    def post(self, request):
+        selection_id = request.data.get('selection_id')
+
+        try:
+            UserStyleSelection.objects.get(id=selection_id)
+        except UserStyleSelection.DoesNotExist:
+            return Response(
+                {"error": "선택 데이터를 찾을 수 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
+            connect_url = "!!상담원 연결 기능 추가한 후 url 넣어두기!!"
+        except Exception:
+            return Response(
+                {"error": error_response('E-01')},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        return Response({
+            "status": "success",
+            "redirect_to": connect_url
+        }, status=status.HTTP_200_OK)
+
+#결과 공유
+class Chapter5ShareView(APIView):
+
+    def post(self, request, card_id):
+        try:
+            card = JourneyCard.objects.get(id=card_id)
+        except JourneyCard.DoesNotExist:
+            return Response(
+                {"error": "카드를 찾을 수 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
+            if not card.share_token:
+                card.share_token = uuid.uuid4().hex
+                card.save()
+            share_url = f"/journey/share/{card.share_token}/"
+        except Exception:
+            return Response({
+                "status": "fail",
+                "message": "공유에 실패했습니다. 현재 화면을 유지합니다."
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "status": "success",
+            "share_url": share_url
+        }, status=status.HTTP_200_OK)
+
+#제품 상세 보기
+class Chapter5ProductDetailView(APIView):
+
+    def get(self, request, product_id):
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return Response(
+                {"error": error_response('E-04')},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        return Response({
+            "status": "success",
+            "data": {
+                "id": product.id,
+                "name": product.name, 
+                #!!필요한 모델 필드 확인하고 다시 만들어두기!!
+            }
+        }, status=status.HTTP_200_OK)
+
+
+#완료
+class Chapter5CompleteJourneyView(APIView):
+
+    def post(self, request, selection_id):
+        try:
+            selection = UserStyleSelection.objects.get(id=selection_id)
+        except UserStyleSelection.DoesNotExist:
+            return Response(
+                {"error": "선택 데이터를 찾을 수 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if selection.is_completed:
+            return Response({
+                "status": "success",
+                "message": "이미 완료 처리된 Journey입니다.",
+                "redirect_to": "F-01"
+            }, status=status.HTTP_200_OK)
+
+        from django.utils import timezone
+        selection.is_completed = True
+        selection.completed_at = timezone.now()
+        selection.save()
+
+        return Response({
+            "status": "success",
+            "message": "Journey가 완료되었습니다.",
+            "redirect_to": "F-01"
+        }, status=status.HTTP_200_OK)
+
+#고민 선택시 고민 이유
+class Chapter5HesitationReasonView(APIView):
+
+    def post(self, request):
+        selection_id = request.data.get('selection_id')
+        reason = request.data.get('reason')
+
+        valid_reasons = ['SIZE', 'WEIGHT', 'STORAGE', 'COMFORT', 'PRICE', 'DESIGN']
+        if not selection_id or reason not in valid_reasons:
+            return Response(
+                {"error": "selection_id와 유효한 reason이 필요합니다."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            selection = UserStyleSelection.objects.get(id=selection_id)
+        except UserStyleSelection.DoesNotExist:
+            return Response(
+                {"error": error_response('E-11')},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
+            hesitation, _ = HesitationReason.objects.update_or_create(
+                style_selection=selection,
+                defaults={'reason': reason}
+            )
+        except Exception:
+            return Response(
+                {"error": error_response('E-11')},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        return Response({
+            "status": "success",
+            "data": HesitationReasonSerializer(hesitation).data
+        }, status=status.HTTP_200_OK)
+
+#ai 재생성
+class Chapter5SubmitToAIView(APIView):
+
+    def post(self, request):
+        selection_id = request.data.get('selection_id')
+
+        try:
+            selection = UserStyleSelection.objects.select_related(
+                'product', 'carry_option', 'detail_option'
+            ).get(id=selection_id)
+        except UserStyleSelection.DoesNotExist:
+            return Response(
+                {"error": error_response('E-11')},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        hesitation = HesitationReason.objects.filter(style_selection=selection).first()
+        if not hesitation:
+            return Response(
+                {"error": "고민 이유가 선택되지 않았습니다."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            card_text = generate_journey_card_text(
+                selection.product,
+                selection.carry_option,
+                selection.detail_option,
+                selection.ai_narration
+            )
+            if not card_text:
+                raise ValueError("카드 텍스트 생성 실패")
+
+            new_card = JourneyCard.objects.create(
+                style_selection=selection,
+                card_text=card_text,
+                order=JourneyCard.objects.filter(style_selection=selection).count(),
+                status='completed'
+            )
+            hesitation.ai_reconsidered_card = new_card
+            hesitation.save()
+
+        except Exception:
+            return Response({
+                "error": error_response('E-11'),
+                "redirect_to": None
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response({
+            "status": "success",
+            "data": JourneyCardSerializer(new_card, context={'request': request}).data,
+            "redirect_to": "C5-19"
+        }, status=status.HTTP_201_CREATED)

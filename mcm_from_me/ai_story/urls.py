@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import Chapter3DefaultOptionView, Chapter3SelectOptionView, Chapter3CompleteView, Chapter3SummaryView
+from .views import (Chapter3DefaultOptionView, Chapter3SelectOptionView, Chapter3CompleteView, Chapter3SummaryView)
 from .views import (Chapter5GenerateCardsView, Chapter5CardListView, Chapter5CardSelectView)
+from .views import (Chapter5FinalJourneyView, Chapter5AdvisorConnectView, Chapter5ShareView, Chapter5ProductDetailView, Chapter5CompleteJourneyView, Chapter5HesitationReasonView, Chapter5SubmitToAIView,)
 
 urlpatterns = [
     path('Chapter3/option', Chapter3DefaultOptionView.as_view(), name='chapter3-option'),
@@ -10,4 +11,11 @@ urlpatterns = [
     path('chapter5/generate/', Chapter5GenerateCardsView.as_view(), name="chapter5-generate"),
     path('chapter5/cards/<int:selection_id>/', Chapter5CardListView.as_view(), name="chapter5-cards"),
     path('chapter5/card/<int:card_id>/select/', Chapter5CardSelectView.as_view(), name="chapter5-card-select"),
+    path('chapter5/final/<int:selection_id>/', Chapter5FinalJourneyView.as_view(), name="chapter5-final"),
+    path('chapter5/advisor-connect/', Chapter5AdvisorConnectView.as_view(), name="chapter5-advisor-connect"),
+    path('chapter5/share/<int:card_id>/', Chapter5ShareView.as_view(), name="chapter5-share"),
+    path('chapter5/product/<int:product_id>/', Chapter5ProductDetailView.as_view(), name="chapter5-product-detail"),
+    path('chapter5/complete/<int:selection_id>/', Chapter5CompleteJourneyView.as_view(), name="chapter5-complete"),
+    path('chapter5/hesitation/', Chapter5HesitationReasonView.as_view(), name="chapter5-hesitation"),
+    path('chapter5/submit-to-ai/', Chapter5SubmitToAIView.as_view(), name="chapter5-submit-to-ai"),
 ]

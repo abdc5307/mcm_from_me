@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard
+from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard, HesitationReason
 
 class OptionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,3 +29,9 @@ class JourneyCardSerializer(serializers.ModelSerializer):
             'is_selected', 'status', 'created_at'
         ]
         read_only_fields = ['status', 'created_at']
+
+class HesitationReasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HesitationReason
+        fields = ['id', 'style_selection', 'reason', 'ai_reconsidered_card', 'created_at']
+        read_only_fields = ['ai_reconsidered_card', 'created_at']
