@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCM FROM ME — Camera</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/chapter4.css" />
+</head>
+<body>
+    <div class="app-container">
+        <div class="camera-page">
+
+            <!-- top bar -->
+            <header class="camera-topbar">
+                <button type="button" class="cam-icon-btn" id="btnClose" aria-label="닫기">
+                    <img src="../images/icon_close.svg" alt="닫기" />
+                </button>
+                <button type="button" class="cam-icon-btn" id="btnFlash" aria-label="플래시">
+                    <img src="../images/icon_flash_off.svg" alt="플래시" />
+                </button>
+            </header>
+
+            <!-- viewport: live video feed -->
+            <main class="camera-viewport">
+                <!-- 실제 카메라 스트림이 출력되는 비디오 태그 -->
+                <video id="webcam" autoplay playsinline muted></video>
+                
+                <!-- 캡처용 숨김 캔버스 -->
+                <canvas id="captureCanvas" style="display: none;"></canvas>
+
+                <!-- 화면 전체 모서리 꺾쇠 프레임 -->
+                <div class="viewfinder-frame">
+                    <div class="corner top-left"></div>
+                    <div class="corner top-right"></div>
+                    <div class="corner bottom-left"></div>
+                    <div class="corner bottom-right"></div>
+                </div>
+
+                <!-- 중앙 노란 가이드 박스 -->
+                <div class="focus-frame">
+                    <div class="corner corner-tl"></div>
+                    <div class="corner corner-tr"></div>
+                    <div class="corner corner-bl"></div>
+                    <div class="corner corner-br"></div>
+                    <img src="../images/png_icon.svg" alt="png 아이콘" class="scan-badge-img" />
+                </div>
+
+                <!-- 안내 문구 -->
+                <div class="camera-guide-text">
+                    <p class="guide-en">Place your piece inside the frame.</p>
+                    <p class="guide-kr">가방과 스트랩이 잘 보이도록 몸을 살짝 돌려주세요.</p>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="camera-footer">
+                <div class="camera-tabs" role="tablist" aria-label="촬영 각도">
+                    <button type="button" class="tab active" role="tab">FRONT 45°<span class="dot"></span></button>
+                    <button type="button" class="tab" role="tab">SIDE<span class="dot"></span></button>
+                    <button type="button" class="tab" role="tab">DETAIL<span class="dot"></span></button>
+                </div>
+
+                <div class="camera-bottom-controls">
+                    <div class="thumb-preview" aria-label="최근 촬영본"></div>
+                    <button type="button" class="shutter-btn" id="btnShutter" aria-label="촬영"></button>
+                    <button type="button" class="flip-btn" id="btnFlip" aria-label="카메라 전환">
+                        <img src="../images/icon_flip.svg" alt="카메라 전환" />
+                    </button>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+    <script src="../js/camera.js"></script>
+</body>
+</html>
