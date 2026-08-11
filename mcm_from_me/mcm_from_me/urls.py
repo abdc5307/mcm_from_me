@@ -16,8 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/ai_story/', include('ai_story.urls')),
+    path('api/product/', include('product.urls')),
+    path('', RedirectView.as_view(url='/api/ai_story/view/chapter3/')), #확인용 메인 url
     path('api/journey/', include('journey.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

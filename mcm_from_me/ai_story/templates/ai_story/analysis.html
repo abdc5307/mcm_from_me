@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Continue Your Journey</h2>
+    <p>Your next step, curated by AI.</p>
+
+    <h3>AI Analysis</h3>
+    <p>{{ recommendation.analysis_text }}</p>
+
+    <hr>
+    <h3>AI Recommendation</h3>
+
+    {% if recommendation.recommended_product %}
+        <p><strong>{{ recommendation.recommended_product.name }}</strong></p>
+        <p>{{ recommendation.recommended_product.description }}</p>
+        <p>추천 태그: {{ recommendation.get_reason_tags_list|join:", " }}</p>
+    {% else %}
+        <p>추천 제품을 찾지 못했습니다.</p>
+    {% endif %}
+
+    <hr>
+
+    {% if selection.is_completed %}
+        <p><strong>Journey가 완료되었습니다.</strong></p>
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="complete">COMPLETE MY JOURNEY</button>
+        </form>
+    {% endif %}
+</body>
+</html>
