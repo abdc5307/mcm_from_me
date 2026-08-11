@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard, HesitationReason, ProductRecommendation
+from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard, HesitationReason, ProductRecommendation, JourneyCardTemplate
 
 class OptionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -48,3 +48,9 @@ class ProductRecommendationSerializer(serializers.ModelSerializer):
 
     def get_reason_tags_list(self, obj):
         return obj.get_reason_tags_list()
+
+class JourneyCardTemplateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JourneyCardTemplate
+        fields = ['id', 'theme_name', 'subtitle', 'card_text']
+        

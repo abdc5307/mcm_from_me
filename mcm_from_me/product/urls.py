@@ -10,3 +10,13 @@ urlpatterns = [
     path('chapter4/camera/continue-without-photo/', Chapter4ContinueWithoutPhotoView.as_view()),
     path('chapter4/camera/retry/', Chapter4CameraRetryView.as_view()),
 ]
+
+
+#템플릿 확인용 url
+from .views import (chapter4_ready_view, chapter4_camera_view, chapter4_review_view)
+
+urlpatterns += [
+    path('view/chapter4/ready/<int:selection_id>/', chapter4_ready_view, name='chapter4-ready-view'),
+    path('view/chapter4/camera/<int:selection_id>/', chapter4_camera_view, name='chapter4-camera-view'),
+    path('view/chapter4/review/<int:photo_id>/', chapter4_review_view, name='chapter4-review-view'),
+]

@@ -2,10 +2,11 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard, HesitationReason, ProductRecommendation
+from .models import Product, Option, StyleCombination, UserStyleSelection, JourneyCard, HesitationReason, ProductRecommendation, JourneyCardTemplate
 from .serializers import StyleCombinationSerializer, UserStyleSelectionSerializer, JourneyCardSerializer, HesitationReasonSerializer, ProductRecommendationSerializer
 from .utils import generate_ai_narration, generate_journey_card_text, generate_ai_analysis_and_recommendation
 from .errors import error_response
+from product.models import CapturedPhoto
 
 import uuid
 import logging
@@ -331,7 +332,7 @@ class Chapter5AdvisorConnectView(APIView):
             )
 
         try:
-            connect_url = "!!상담원 연결 기능 추가한 후 url 넣어두기!!"
+            connect_url = "상담원 연결 url로 설정해두기!"
         except Exception:
             return Response(
                 {"error": error_response('E-01')},
@@ -388,7 +389,6 @@ class Chapter5ProductDetailView(APIView):
             "data": {
                 "id": product.id,
                 "name": product.name, 
-                #!!필요한 모델 필드 확인하고 다시 만들어두기!!
             }
         }, status=status.HTTP_200_OK)
 
@@ -688,31 +688,53 @@ def chapter3_flow_view(request, selection_id=None):
             selection = UserStyleSelection.objects.create(
                 product=product, carry_option=carry, detail_option=detail
             )
+            try:
+                narration = generate_ai_narration(
+                    selection.product, selection.carry_option, selection.detail_option
+                )
+                if narration:
+                    selection.ai_narration = narration
+                    selection.save()
+            except Exception as e:
+                print(f"나레이션 생성 오류: {e}")
+            
             return redirect('chapter3-flow-detail', selection_id=selection.id)
 
-    return render(request, 'mcm_from_me/flow.html', {
+    return render(request, 'ai_story/flow.html', {
         'carry_options': carry_options,
         'detail_options': detail_options,
         'selection': selection,
     })
 
 def chapter5_discover_view(request, selection_id):
-    cards = JourneyCard.objects.filter(style_selection_id=selection_id, status='completed')
+    selection = get_object_or_404(UserStyleSelection, id=selection_id)
+    templates = JourneyCardTemplate.objects.filter(is_active=True)
 
     if request.method == 'POST':
-        card_id = request.POST.get('card_id')
-        card = get_object_or_404(JourneyCard, id=card_id)
+        template_id = request.POST.get('template_id')
+        template = get_object_or_404(JourneyCardTemplate, id=template_id)
+        photo = CapturedPhoto.objects.filter(style_selection=selection, is_used=True).first()
+
         if 'choose' in request.POST:
-            JourneyCard.objects.filter(style_selection=card.style_selection).update(is_selected=False)
-            card.is_selected = True
-            card.save()
+            JourneyCard.objects.filter(style_selection=selection).update(is_selected=False)
+
+            card = JourneyCard.objects.create(
+                style_selection=selection,
+                captured_photo=photo,
+                template=template,
+                title=template.theme_name,
+                card_text=template.card_text,
+                is_selected=True,
+                status='completed'
+            )
             return redirect('chapter5-result-view', selection_id=selection_id)
+
         elif 'deciding' in request.POST:
             return redirect('chapter5-hesitation-view', selection_id=selection_id)
 
-    return render(request, 'mcm_from_me/discover.html', {
-        'cards': cards,
-        'selection_id': selection_id,
+    return render(request, 'ai_story/discover.html', {
+        'templates': templates,
+        'selection': selection,
     })
 
 
@@ -725,7 +747,7 @@ def chapter5_result_view(request, selection_id):
         selection.save()
         return redirect('chapter5-result-view', selection_id=selection_id)
 
-    return render(request, 'mcm_from_me/result.html', {
+    return render(request, 'ai_story/result.html', {
         'selection': selection,
         'card': card,
     })
@@ -737,15 +759,52 @@ def chapter5_hesitation_view(request, selection_id):
 
     if request.method == 'POST':
         reason = request.POST.get('reason')
-        HesitationReason.objects.update_or_create(
+        hesitation, _ = HesitationReason.objects.update_or_create(
             style_selection=selection, defaults={'reason': reason}
         )
-        return redirect('chapter5-hesitation-view', selection_id=selection_id)
+        return redirect('chapter5-analysis-view', hesitation_id=hesitation.id)
 
     hesitation = HesitationReason.objects.filter(style_selection=selection).first()
 
-    return render(request, 'mcm_from_me/hesitation.html', {
+    return render(request, 'ai_story/hesitation.html', {
         'selection': selection,
         'reasons': reasons,
         'hesitation': hesitation,
+    })
+
+
+def chapter5_analysis_view(request, hesitation_id):
+    hesitation = get_object_or_404(HesitationReason, id=hesitation_id)
+    selection = hesitation.style_selection
+
+    recommendation = ProductRecommendation.objects.filter(hesitation=hesitation).first()
+
+    if not recommendation:
+        all_products = Product.objects.exclude(id=selection.product_id)
+        result = generate_ai_analysis_and_recommendation(selection, hesitation.reason, all_products)
+
+        if not result:
+            recommendation = ProductRecommendation.objects.create(
+                hesitation=hesitation,
+                recommended_product=None,
+                analysis_text="고객님의 선택을 바탕으로 새로운 여정을 계속 찾아드릴게요.",
+                reason_tags=""
+            )
+        else:
+            product = Product.objects.filter(id=result["recommended_product_id"]).first()
+            recommendation = ProductRecommendation.objects.create(
+                hesitation=hesitation,
+                recommended_product=product,
+                analysis_text=result["analysis_text"],
+                reason_tags=result["reason_tags"]
+            )
+
+    if request.method == 'POST' and 'complete' in request.POST:
+        selection.is_completed = True
+        selection.save()
+        return redirect('chapter5-analysis-view', hesitation_id=hesitation_id)
+
+    return render(request, 'ai_story/analysis.html', {
+        'selection': selection,
+        'recommendation': recommendation,
     })

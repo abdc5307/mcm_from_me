@@ -26,12 +26,7 @@ urlpatterns = [
 
 
 #템플릿 확인용 url
-from .views import (
-    chapter3_flow_view,
-    chapter5_discover_view,
-    chapter5_result_view,
-    chapter5_hesitation_view,
-)
+from .views import (chapter3_flow_view, chapter5_discover_view, chapter5_result_view, chapter5_hesitation_view, chapter5_analysis_view)
 
 urlpatterns += [
     path('view/chapter3/', chapter3_flow_view, name='chapter3-flow'),
@@ -39,4 +34,5 @@ urlpatterns += [
     path('view/chapter5/discover/<int:selection_id>/', chapter5_discover_view, name='chapter5-discover-view'),
     path('view/chapter5/result/<int:selection_id>/', chapter5_result_view, name='chapter5-result-view'),
     path('view/chapter5/hesitation/<int:selection_id>/', chapter5_hesitation_view, name='chapter5-hesitation-view'),
+    path('view/chapter5/analysis/<int:hesitation_id>/', chapter5_analysis_view, name='chapter5-analysis-view'),
 ]

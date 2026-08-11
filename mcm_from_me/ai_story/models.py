@@ -82,11 +82,30 @@ class JourneyCard(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     share_token = models.CharField(max_length=64, null=True, blank=True, unique=True)
 
+    template = models.ForeignKey(
+        'JourneyCardTemplate',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='journey_cards'
+    )
+
     class Meta:
         ordering = ['order', 'created_at']
 
     def __str__(self):
         return f"Card #{self.id} ({self.status}) - selection {self.style_selection_id}"
+
+#카드 선택 - 미리 만들어두기
+class JourneyCardTemplate(models.Model):
+
+    theme_name = models.CharField(max_length=50)
+    subtitle = models.CharField(max_length=100, blank=True)
+    card_text = models.TextField()
+    background_image = models.ImageField(upload_to='journey_templates/', null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.theme_name
 
 #고민 이유 선택
 class HesitationReason(models.Model):

@@ -213,3 +213,44 @@ class Chapter4CameraRetryView(APIView):
             "status": "success",
             "redirect_to": "C4-05"
         }, status=status.HTTP_200_OK)
+
+
+
+
+
+
+#템플릿용 뷰
+from django.shortcuts import render, redirect, get_object_or_404
+
+
+def chapter4_ready_view(request, selection_id):
+    selection = get_object_or_404(UserStyleSelection, id=selection_id)
+    return render(request, 'product/ready.html', {'selection': selection})
+
+
+def chapter4_camera_view(request, selection_id):
+    selection = get_object_or_404(UserStyleSelection, id=selection_id)
+    return render(request, 'product/camera.html', {'selection': selection})
+
+
+def chapter4_review_view(request, photo_id):
+    photo = get_object_or_404(CapturedPhoto, id=photo_id)
+
+    if request.method == 'POST':
+        if 'use' in request.POST:
+            selection = photo.style_selection
+
+            CapturedPhoto.objects.filter(
+                style_selection=selection
+            ).exclude(id=photo.id).update(is_used=False)
+            photo.is_used = True
+            photo.save()
+
+            return redirect('chapter5-discover-view', selection_id=selection.id)
+
+        elif 'retake' in request.POST:
+            selection_id = photo.style_selection.id
+            photo.delete()
+            return redirect('chapter4-camera-view', selection_id=selection_id)
+
+    return render(request, 'product/review.html', {'photo': photo})

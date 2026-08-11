@@ -6,37 +6,19 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Chapter 4 - Capture Your Chapter</h2>
+    <h2>CHAPTER 4 - Capture your chapter</h2>
     <p>Your styling is complete. Now capture your look and make it yours.</p>
 
-    <hr>
+    <p>PIECE: {{ selection.product.name }}</p>
+    <p>CARRY: {{ selection.carry_option.code_name }}</p>
+    <p>DETAIL: {{ selection.detail_option.code_name }}</p>
 
-    <h3>SELECTED STYLE INFO</h3>
-    <p><strong>Product:</strong> {{ selection.product.name }}</p>
-    <p><strong>Carry Option:</strong> {{ selection.carry_option.name }}</p>
-    <p><strong>Detail Option:</strong> {{ selection.detail_option.name }}</p>
-
-    {% if selection.product.image %}
-        <p><img src="{{ selection.product.image.url }}" alt="{{ selection.product.name }}" width="200"></p>
-    {% endif %}
-
-    <hr>
-
-    <form id="camera-open-form" method="post" action="/api/ai_story/chapter4/camera/open/">
-        {% csrf_token %}
-        <input type="hidden" name="camera_permission" value="granted">
-        <button type="submit">OPEN CAMERA</button>
-    </form>
-
-    <br>
-
-    <form method="post" action="/api/ai_story/chapter4/camera/continue-without-photo/">
-        {% csrf_token %}
-        <input type="hidden" name="selection_id" value="{{ selection.id }}">
-        <button type="submit">CONTINUE WITHOUT PHOTO</button>
-    </form>
-
-    <br>
-    <a href="{% url 'chapter3-flow-detail' selection.id %}">BACK TO STYLE</a>
+    <a href="{% url 'chapter4-camera-view' selection.id %}">
+        <button>OPEN CAMERA</button>
+    </a>
+    <br><br>
+    <a href="{% url 'chapter3-flow-detail' selection.id %}">
+        <button>BACK TO STYLE</button>
+    </a>
 </body>
 </html>

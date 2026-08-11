@@ -1,27 +1,31 @@
 from google import genai
 from django.conf import settings
-
 import json
 
 client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
-#이전 선택 ai api
-def generate_ai_narration(product, carry_option, detail_option):
 
+def generate_ai_narration(product, carry_option, detail_option):
     prompt = f"""
 당신은 럭셔리 가방 브랜드의 카피라이터입니다.
-아래 제품 정보를 바탕으로 감성적이고 간결한 영문 카피 한 줄을 작성해주세요.
-형식은 "Built to move. Made to be yours." 처럼 짧고 임팩트 있게 작성해주세요.
+아래 제품 정보를 바탕으로 두 부분으로 구성된 카피를 작성해주세요.
+
+1번째 줄: 감성적이고 간결한 영문 카피 한 줄. "Built to move. Made to be yours." 처럼 짧고 임팩트 있게 작성해주세요.
+2번째 부분: 위 영문 카피를 자연스럽게 풀어낸 한국어 해설 문단 (3~4문장). 제품의 클래식한 구조와 선택한 옵션의 특징을 감성적으로 녹여서 작성해주세요.
 
 제품: {product.name}
 Carry 옵션: {carry_option.code_name}
 Detail 옵션: {detail_option.code_name}
 
-결과는 카피 문구만 출력하고, 다른 설명은 붙이지 마세요.
+출력 형식은 아래와 같이 정확히 지켜주세요. 다른 설명은 붙이지 마세요.
+
+[영문 카피]
+
+[한국어 해설]
 """
     try:
         response = client.models.generate_content(
-            model="gemini-2.0-flash", contents=prompt
+            model="gemini-flash-latest", contents=prompt
         )
         return response.text.strip()
     except Exception as e:
@@ -29,9 +33,7 @@ Detail 옵션: {detail_option.code_name}
         return None
 
 
-#최종 선택 ai api
 def generate_journey_card_text(product, carry_option, detail_option, narration):
-
     prompt = f"""
 당신은 럭셔리 브랜드의 스토리텔러입니다.
 아래 정보를 바탕으로 사용자의 스타일링 여정을 담은 짧은 카드 문구를 작성해주세요.
@@ -45,16 +47,16 @@ Detail 옵션: {detail_option.code_name}
 결과는 카드 문구만 출력하고, 다른 설명은 붙이지 마세요.
 """
     try:
-        model = genai.GenerativeModel('gemini-2.0-flash')
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model="gemini-flash-latest", contents=prompt
+        )
         return response.text.strip()
     except Exception as e:
         print(f"카드 생성 중 Gemini 오류: {e}")
         return None
 
-#제품 추천 프롬프트
-def generate_ai_analysis_and_recommendation(selection, reason, all_products):
 
+def generate_ai_analysis_and_recommendation(selection, reason, all_products):
     product_list_text = "\n".join(
         [f"- id:{p.id}, name:{p.name}" for p in all_products]
     )
@@ -80,10 +82,10 @@ def generate_ai_analysis_and_recommendation(selection, reason, all_products):
 {product_list_text}
 """
     try:
-        model = genai.GenerativeModel('gemini-2.0-flash')
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model="gemini-flash-latest", contents=prompt
+        )
         raw = response.text.strip()
-
         raw = raw.replace('```json', '').replace('```', '').strip()
         parsed = json.loads(raw)
 

@@ -32,6 +32,9 @@
 
         {% if selection.is_completed %}
             <p><strong>스타일 선택이 완료되었습니다.</strong></p>
+            <a href="{% url 'chapter4-ready-view' selection.id %}">
+                <button>GO TO CAPTURE</button>
+            </a>
         {% else %}
             <form method="post">
                 {% csrf_token %}
