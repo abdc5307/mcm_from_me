@@ -1,0 +1,54 @@
+[
+{
+  "model": "journey.product",
+  "pk": "AREN_SHOPPER",
+  "fields": {
+    "nfc_tag_id": "NFC_AREN_003",
+    "qr_code_id": "QR_AREN_003",
+    "name": "Aren Shopper",
+    "image_url": "https://mcmcompany.com/images/aren_shopper.jpg",
+    "story_title": "슬림 데일리 토트백",
+    "story_desc": "슬림하고 아담한 미니 초경량 토트/쇼퍼백, 데일리하게 가볍게 들기 좋음 (사이즈/착용감 고민 추천)",
+    "is_supported": true
+  }
+},
+{
+  "model": "journey.product",
+  "pk": "ELLA_BOSTON_BAG",
+  "fields": {
+    "nfc_tag_id": "NFC_ELLA_001",
+    "qr_code_id": "QR_ELLA_001",
+    "name": "Ella Boston Bag",
+    "image_url": "https://mcmcompany.com/images/ella_boston_bag.jpg",
+    "story_title": "MCM 시그니처 보스턴백",
+    "story_desc": "MCM 시그니처 비세토스 패턴의 클래식 보스턴백. 고급스럽고 포멀한 착장 및 클래식한 무드 연출에 최적화",
+    "is_supported": true
+  }
+},
+{
+  "model": "journey.product",
+  "pk": "HIMMEL_BACKPACK",
+  "fields": {
+    "nfc_tag_id": "NFC_HIMMEL_002",
+    "qr_code_id": "QR_HIMMEL_002",
+    "name": "Himmel Backpack",
+    "image_url": "https://mcmcompany.com/images/himmel_backpack.jpg",
+    "story_title": "초경량 비세토스 백팩",
+    "story_desc": "Visetos Original Warm Sand, 실용적인 넉넉한 수납공간과 양손이 자유로운 초경량 백팩 (수납/무게 고민 추천)",
+    "is_supported": true
+  }
+},
+{
+  "model": "journey.product",
+  "pk": "KLASSIK_CROSSBODY",
+  "fields": {
+    "nfc_tag_id": "NFC_KLASSIK_004",
+    "qr_code_id": "QR_KLASSIK_004",
+    "name": "Klassik Crossbody",
+    "image_url": "https://mcmcompany.com/images/klassik_crossbody.jpg",
+    "story_title": "컴팩트 크로스바디",
+    "story_desc": "세련되고 트렌디한 포인트 디자인, 컴팩트하면서 부담 없는 가격대의 크로스바디백 (디자인/가격 고민 추천)",
+    "is_supported": true
+  }
+}
+]
