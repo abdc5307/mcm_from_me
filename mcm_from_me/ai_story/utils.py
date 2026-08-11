@@ -58,7 +58,7 @@ Detail 옵션: {detail_option.code_name}
 
 def generate_ai_analysis_and_recommendation(selection, reason, all_products):
     product_list_text = "\n".join(
-        [f"- id:{p.id}, name:{p.name}" for p in all_products]
+        [f"- ID: {p.id} | 제품명: {p.name} | 특징: {p.description}" for p in all_products]
     )
 
     prompt = f"""
