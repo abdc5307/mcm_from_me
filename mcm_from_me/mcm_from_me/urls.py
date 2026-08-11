@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/ai_story/', include('ai_story.urls')),
     path('api/product/', include('product.urls')),
     path('', RedirectView.as_view(url='/api/ai_story/view/chapter3/')), #확인용 메인 url
+    path('api/journey/', include('journey.urls')),
 ]
 
 if settings.DEBUG:
