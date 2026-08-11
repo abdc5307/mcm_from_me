@@ -2,8 +2,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q
+
 from .models import JourneySession, Product
+from .serializers import JourneySessionSerializer, ProductSerializer
 from .decorators import validate_chapter_access
+
 
 # [H-01 / H-02] 세션 초기화 및 Resume 확인 (E-12)
 @api_view(['GET'])
@@ -19,13 +22,7 @@ def init_or_check_session(request):
                     'errorCode': 'E-12',
                     'message': 'Would you like to continue your journey?',
                     'lastActiveScreen': session.last_active_screen,
-                    'session': {
-                        'id': str(session.id),
-                        'current_chapter': session.current_chapter,
-                        'selected_moment': session.selected_moment,
-                        'product_id': session.product.id if session.product else None,
-                        'product_name': session.product.name if session.product else None
-                    }
+                    'session': JourneySessionSerializer(session).data  # Serializer 활용
                 }, status=status.HTTP_200_OK)
         except JourneySession.DoesNotExist:
             pass
@@ -123,13 +120,7 @@ def verify_product_tag(request):
         return Response({
             'status': 'SUCCESS',
             'nextScreen': 'C2-07',
-            'product': {
-                'id': product.id,
-                'name': product.name,
-                'story_title': product.story_title,
-                'story_desc': product.story_desc,
-                'image_url': product.image_url
-            }
+            'product': ProductSerializer(product).data  # Serializer 활용
         }, status=status.HTTP_200_OK)
 
     except Exception:
