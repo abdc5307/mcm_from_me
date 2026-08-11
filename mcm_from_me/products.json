@@ -7,8 +7,8 @@
     "qr_code_id": "QR_AREN_003",
     "name": "Aren Shopper",
     "image_url": "https://mcmcompany.com/images/aren_shopper.jpg",
-    "story_title": "½½¸² µ¥ÀÏ¸® ÅäÆ®¹é",
-    "story_desc": "½½¸²ÇÏ°í ¾Æ´ãÇÑ ¹Ì´Ï ÃÊ°æ·® ÅäÆ®/¼îÆÛ¹é, µ¥ÀÏ¸®ÇÏ°Ô °¡º±°Ô µé±â ÁÁÀ½ (»çÀÌÁî/Âø¿ë°¨ °í¹Î ÃßÃµ)",
+    "story_title": "ìŠ¬ë¦¼ ë°ì¼ë¦¬ í† íŠ¸ë°±",
+    "story_desc": "ìŠ¬ë¦¼í•˜ê³  ì•„ë‹´í•œ ë¯¸ë‹ˆ ì´ˆê²½ëŸ‰ í† íŠ¸/ì‡¼í¼ë°±, ë°ì¼ë¦¬í•˜ê²Œ ê°€ë³ê²Œ ë“¤ê¸° ì¢‹ìŒ (ì‚¬ì´ì¦ˆ/ì°©ìš©ê° ê³ ë¯¼ ì¶”ì²œ)",
     "is_supported": true
   }
 },
@@ -20,8 +20,8 @@
     "qr_code_id": "QR_ELLA_001",
     "name": "Ella Boston Bag",
     "image_url": "https://mcmcompany.com/images/ella_boston_bag.jpg",
-    "story_title": "MCM ½Ã±×´ÏÃ³ º¸½ºÅÏ¹é",
-    "story_desc": "MCM ½Ã±×´ÏÃ³ ºñ¼¼Åä½º ÆĞÅÏÀÇ Å¬·¡½Ä º¸½ºÅÏ¹é. °í±Ş½º·´°í Æ÷¸ÖÇÑ ÂøÀå ¹× Å¬·¡½ÄÇÑ ¹«µå ¿¬Ãâ¿¡ ÃÖÀûÈ­",
+    "story_title": "MCM ì‹œê·¸ë‹ˆì²˜ ë³´ìŠ¤í„´ë°±",
+    "story_desc": "MCM ì‹œê·¸ë‹ˆì²˜ ë¹„ì„¸í† ìŠ¤ íŒ¨í„´ì˜ í´ë˜ì‹ ë³´ìŠ¤í„´ë°±. ê³ ê¸‰ìŠ¤ëŸ½ê³  í¬ë©€í•œ ì°©ì¥ ë° í´ë˜ì‹í•œ ë¬´ë“œ ì—°ì¶œì— ìµœì í™”",
     "is_supported": true
   }
 },
@@ -33,8 +33,8 @@
     "qr_code_id": "QR_HIMMEL_002",
     "name": "Himmel Backpack",
     "image_url": "https://mcmcompany.com/images/himmel_backpack.jpg",
-    "story_title": "ÃÊ°æ·® ºñ¼¼Åä½º ¹éÆÑ",
-    "story_desc": "Visetos Original Warm Sand, ½Ç¿ëÀûÀÎ ³Ë³ËÇÑ ¼ö³³°ø°£°ú ¾ç¼ÕÀÌ ÀÚÀ¯·Î¿î ÃÊ°æ·® ¹éÆÑ (¼ö³³/¹«°Ô °í¹Î ÃßÃµ)",
+    "story_title": "ì´ˆê²½ëŸ‰ ë¹„ì„¸í† ìŠ¤ ë°±íŒ©",
+    "story_desc": "Visetos Original Warm Sand, ì‹¤ìš©ì ì¸ ë„‰ë„‰í•œ ìˆ˜ë‚©ê³µê°„ê³¼ ì–‘ì†ì´ ììœ ë¡œìš´ ì´ˆê²½ëŸ‰ ë°±íŒ© (ìˆ˜ë‚©/ë¬´ê²Œ ê³ ë¯¼ ì¶”ì²œ)",
     "is_supported": true
   }
 },
@@ -46,8 +46,8 @@
     "qr_code_id": "QR_KLASSIK_004",
     "name": "Klassik Crossbody",
     "image_url": "https://mcmcompany.com/images/klassik_crossbody.jpg",
-    "story_title": "ÄÄÆÑÆ® Å©·Î½º¹Ùµğ",
-    "story_desc": "¼¼·ÃµÇ°í Æ®·»µğÇÑ Æ÷ÀÎÆ® µğÀÚÀÎ, ÄÄÆÑÆ®ÇÏ¸é¼­ ºÎ´ã ¾ø´Â °¡°İ´ëÀÇ Å©·Î½º¹Ùµğ¹é (µğÀÚÀÎ/°¡°İ °í¹Î ÃßÃµ)",
+    "story_title": "ì»´íŒ©íŠ¸ í¬ë¡œìŠ¤ë°”ë””",
+    "story_desc": "ì„¸ë ¨ë˜ê³  íŠ¸ë Œë””í•œ í¬ì¸íŠ¸ ë””ìì¸, ì»´íŒ©íŠ¸í•˜ë©´ì„œ ë¶€ë‹´ ì—†ëŠ” ê°€ê²©ëŒ€ì˜ í¬ë¡œìŠ¤ë°”ë””ë°± (ë””ìì¸/ê°€ê²© ê³ ë¯¼ ì¶”ì²œ)",
     "is_supported": true
   }
 }
