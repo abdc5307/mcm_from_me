@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCM FROM ME - Product Details Unavailable</title>
+    <link rel="stylesheet" href="../css/e04_product_details_unavailable.css" />
+  </head>
+
+  <body>
+    <main class="error-page">
+      <header class="error-header">
+        <button type="button" class="menu-button" aria-label="메뉴 열기">
+          <img src="../images/hamburger_bar.svg" alt="" aria-hidden="true" />
+        </button>
+        <h1>MCM FROM ME</h1>
+      </header>
+
+      <section class="unavailable-visual" aria-label="제품 정보 일시 이용 불가">
+        <div class="orbit orbit--outer">
+          <div class="orbit orbit--inner">
+            <div class="product-icon">
+              <img src="../images/bag_product.svg" alt="제품 가방" />
+              <span class="retry-mark" aria-label="다시 시도">
+                <span class="retry-symbol" aria-hidden="true"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="error-message">
+        <h2>
+          Product details are<br />
+          temporarily unavailable.
+        </h2>
+        <p>
+          제품 정보를 불러오지 못했습니다.<br />
+          잠시 후 다시 시도해 주세요.
+        </p>
+      </section>
+
+      <div class="error-actions">
+        <button type="button" class="retry-button">
+          <span>RETRY</span>
+          <img src="../images/retry.svg" alt="" aria-hidden="true" />
+        </button>
+        <button type="button" class="ask-staff-button">
+          <img src="../images/help_circle.svg" alt="" aria-hidden="true" />
+          <span>ASK STAFF</span>
+        </button>
+      </div>
+
+      <div class="bottom-indicator" aria-hidden="true"></div>
+    </main>
+  </body>
+</html>
