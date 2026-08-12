@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Tell Us One Thing</h2>
+    <p>What made you hesitate?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for r in reasons %}
+            <label>
+                <input type="radio" name="reason" value="{{ r }}"
+                    {% if hesitation.reason == r %}checked{% endif %}>
+                {{ r }}
+            </label><br>
+        {% endfor %}
+        <br><button type="submit">SUBMIT TO AI</button>
+    </form>
+
+    {% if hesitation %}
+        <p>현재 선택된 이유: {{ hesitation.reason }}</p>
+    {% endif %}
+
+    <a href="{% url 'chapter5-hesitation-view' selection.id %}">STILL DECIDING</a>
+    
+</body>
+</html>
