@@ -37,22 +37,36 @@ class Chapter3SelectOptionView(APIView):
     def post(self, request):
         carry_code = request.data.get('carry')
         detail_code = request.data.get('detail')
+        product_id = request.data.get('product_id')
 
         if not carry_code or not detail_code:
             return Response({"error": "Carry와 Detail 옵션 값이 모두 필요합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        combination = StyleCombination.objects.filter(
-            carry_option__code_name=carry_code,
-            detail_option__code_name=detail_code
-        ).first()
+        try:
+            carry_option = Option.objects.get(code_name=carry_code, option_type='carry')
+            detail_option = Option.objects.get(code_name=detail_code, option_type='detail')
+            
+            product = Product.objects.get(id=product_id)
+        except (Option.DoesNotExist, Product.DoesNotExist):
+            return Response({"error": "존재하지 않는 옵션 또는 제품입니다."}, status=status.HTTP_404_NOT_FOUND)
 
-        if not combination:
-            return Response({"error": "해당하는 옵션 조합을 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+        ai_narration_text = generate_ai_narration(product, carry_option, detail_option)
 
-        serializer = StyleCombinationSerializer(combination)
+        if not ai_narration_text:
+            ai_narration_text = "내레이션을 생성하는 중 문제가 발생했습니다."
+
+        data = {
+            "ai_narration": ai_narration_text,
+            "style_summary": {
+                "product": product.name,
+                "carry_option": carry_option.code_name,
+                "detail_option": detail_option.code_name,
+            }
+        }
+
         return Response({
             "status": "success",
-            "data": serializer.data
+            "data": data
         }, status=status.HTTP_200_OK)
 
 #작성 완료하고 내용 저장
