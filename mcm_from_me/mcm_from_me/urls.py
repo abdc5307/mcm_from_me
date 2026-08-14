@@ -28,6 +28,21 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
     path('chapter1/', TemplateView.as_view(template_name='chapter1.html'), name='chapter1'),
     path(
+        'tag-scan/',
+        TemplateView.as_view(
+            template_name='tag_scan.html',
+            extra_context={
+                'is_development': settings.DEBUG,
+                'development_tag_code': 'NFC_ELLA_001',
+            },
+        ),
+        name='tag_scan',
+    ),
+    path('chapter2/', TemplateView.as_view(template_name='chapter2.html'), name='chapter2'),
+    path('errors/tag-not-recognized/', TemplateView.as_view(template_name='e02_qr_scan_failed.html'), name='error_e02'),
+    path('errors/unsupported-product/', TemplateView.as_view(template_name='e03_unsupported_product.html'), name='error_e03'),
+    path('errors/product-unavailable/', TemplateView.as_view(template_name='e04_product_details_unavailable.html'), name='error_e04'),
+    path(
         'hamburger-menu/',
         xframe_options_sameorigin(TemplateView.as_view(template_name='hamburger_menu.html')),
         name='hamburger_menu',

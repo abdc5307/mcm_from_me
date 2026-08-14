@@ -9,9 +9,154 @@ const captureButton = $("captureButton");
 const retakeButton = $("retakeButton");
 const flashButton = $("flashButton");
 const errorBox = $("cameraError");
+const devTestTagButton = $("devTestTagButton");
 let stream = null;
 let facingMode = "environment";
 let torchOn = false;
+let recognitionGeneration = 0;
+let nfcAbortController = null;
+let verifyingTag = false;
+
+function stopTagRecognition() {
+  recognitionGeneration += 1;
+  nfcAbortController?.abort();
+  nfcAbortController = null;
+}
+
+function normalizeTagCode(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+
+  try {
+    const parsed = JSON.parse(text);
+    return String(parsed.tag_code || parsed.tagCode || text).trim();
+  } catch {
+    return text;
+  }
+}
+
+async function verifyProductTag(tagCode) {
+  const normalizedTagCode = normalizeTagCode(tagCode);
+  if (!normalizedTagCode || verifyingTag) return;
+
+  const sessionId = localStorage.getItem("journeySessionId");
+  if (!sessionId) {
+    window.location.assign(document.body.dataset.errorE04Url);
+    return;
+  }
+
+  verifyingTag = true;
+  stopTagRecognition();
+
+  try {
+    const response = await fetch(document.body.dataset.verifyUrl, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        session_id: sessionId,
+        tag_code: normalizedTagCode,
+      }),
+    });
+    const data = await response.json();
+
+    if (response.ok && data.status === "SUCCESS" && data.nextScreen === "C2-07" && data.product) {
+      sessionStorage.setItem("journeyProduct", JSON.stringify(data.product));
+      stopCamera();
+      window.location.assign(document.body.dataset.chapter2Url);
+      return;
+    }
+
+    const errorUrl = {
+      "E-02": document.body.dataset.errorE02Url,
+      "E-03": document.body.dataset.errorE03Url,
+      "E-04": document.body.dataset.errorE04Url,
+    }[data.errorCode] || document.body.dataset.errorE04Url;
+    window.location.assign(errorUrl);
+  } catch (error) {
+    console.error("Product verification failed", error);
+    window.location.assign(document.body.dataset.errorE04Url);
+  }
+}
+
+async function startQrRecognition(generation) {
+  if (!("BarcodeDetector" in window)) return false;
+
+  try {
+    const formats = await BarcodeDetector.getSupportedFormats();
+    if (!formats.includes("qr_code")) return false;
+    const detector = new BarcodeDetector({ formats: ["qr_code"] });
+
+    const detectFrame = async () => {
+      if (generation !== recognitionGeneration || !stream || verifyingTag) return;
+      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        try {
+          const codes = await detector.detect(video);
+          if (codes[0]?.rawValue) {
+            await verifyProductTag(codes[0].rawValue);
+            return;
+          }
+        } catch (error) {
+          console.error("QR recognition failed", error);
+        }
+      }
+      window.setTimeout(detectFrame, 180);
+    };
+
+    detectFrame();
+    return true;
+  } catch (error) {
+    console.error("QR detector initialization failed", error);
+    return false;
+  }
+}
+
+async function startNfcRecognition(generation) {
+  if (!("NDEFReader" in window)) return false;
+
+  try {
+    const reader = new NDEFReader();
+    nfcAbortController = new AbortController();
+    await reader.scan({ signal: nfcAbortController.signal });
+    reader.addEventListener("reading", async (event) => {
+      if (generation !== recognitionGeneration || verifyingTag) return;
+      for (const record of event.message.records) {
+        if (!record.data) continue;
+        const encoding = record.encoding || "utf-8";
+        const tagCode = new TextDecoder(encoding).decode(record.data);
+        if (normalizeTagCode(tagCode)) {
+          await verifyProductTag(tagCode);
+          return;
+        }
+      }
+    });
+    return true;
+  } catch (error) {
+    if (error.name !== "AbortError") console.error("NFC recognition failed", error);
+    return false;
+  }
+}
+
+async function startTagRecognition() {
+  stopTagRecognition();
+  verifyingTag = false;
+  const generation = recognitionGeneration;
+  const [qrAvailable, nfcAvailable] = await Promise.all([
+    startQrRecognition(generation),
+    startNfcRecognition(generation),
+  ]);
+
+  if (!qrAvailable && !nfcAvailable) {
+    if (devTestTagButton) {
+      devTestTagButton.hidden = false;
+      showError("자동 인식을 지원하지 않는 개발 환경입니다. 아래 테스트 태그로 백엔드 연동을 확인할 수 있습니다.");
+    } else {
+      showError("이 브라우저에서는 NFC/QR 자동 인식을 지원하지 않습니다.");
+    }
+  }
+}
 
 async function startCamera() {
   stopCamera();
@@ -63,10 +208,12 @@ scanButton.addEventListener("click", async () => {
   cameraScreen.setAttribute("aria-hidden", "false");
   document.body.classList.add("camera-open");
   await startCamera();
+  if (stream) await startTagRecognition();
 });
 
 $("closeCameraButton").addEventListener("click", () => {
   stopCamera();
+  stopTagRecognition();
   resetPreview();
   errorBox.hidden = true;
   cameraScreen.classList.remove("open");
@@ -74,11 +221,19 @@ $("closeCameraButton").addEventListener("click", () => {
   document.body.classList.remove("camera-open");
 });
 
-$("retryCameraButton").addEventListener("click", startCamera);
+$("retryCameraButton").addEventListener("click", async () => {
+  await startCamera();
+  if (stream) await startTagRecognition();
+});
+devTestTagButton?.addEventListener("click", async () => {
+  devTestTagButton.disabled = true;
+  await verifyProductTag(devTestTagButton.dataset.tagCode);
+});
 $("switchCameraButton").addEventListener("click", async () => {
   facingMode = facingMode === "environment" ? "user" : "environment";
   resetPreview();
   await startCamera();
+  if (stream) await startTagRecognition();
 });
 
 flashButton.addEventListener("click", async () => {
@@ -121,6 +276,16 @@ document.querySelectorAll(".camera-step").forEach((step) => {
 
 document.addEventListener("visibilitychange", () => {
   const open = cameraScreen.classList.contains("open");
-  if (document.hidden && open) stopCamera();
-  if (!document.hidden && open && !stream) startCamera();
+  if (document.hidden && open) {
+    stopCamera();
+    stopTagRecognition();
+  }
+  if (!document.hidden && open && !stream) {
+    startCamera().then(() => {
+      if (stream) startTagRecognition();
+    });
+  }
 });
+
+// 개발 환경에서 실제 fixture의 태그 값으로 백엔드 연동을 확인할 때 사용합니다.
+document.addEventListener("mcm:tag-code", (event) => verifyProductTag(event.detail));

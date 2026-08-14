@@ -179,7 +179,7 @@ button {
 }
 
 .chapter-item--current::before {
-  background: var(--panel-background);
+  background: var(--gold);
 }
 
 .chapter-link {

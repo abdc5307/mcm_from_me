@@ -57,12 +57,19 @@
         </button>
       </section>
 
-      <button type="button" class="continue-button" id="continueButton" hidden>
+      <button
+        type="button"
+        class="continue-button"
+        id="continueButton"
+        data-save-url="{% url 'save_moment' %}"
+        data-next-url="{% url 'tag_scan' %}"
+        hidden
+      >
         CONTINUE
       </button>
     </main>
 
-    <script src="{% static 'js/chapter1.js' %}" defer></script>
+    <script src="{% static 'js/chapter1.js' %}?v=moment-save-1" defer></script>
     <script src="{% static 'js/menu_toggle.js' %}" defer></script>
   </body>
 </html>

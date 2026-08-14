@@ -1,17 +1,18 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MCM FROM ME - Product Details Unavailable</title>
-    <link rel="stylesheet" href="../css/e04_product_details_unavailable.css" />
+    <link rel="stylesheet" href="{% static 'css/e04_product_details_unavailable.css' %}" />
   </head>
 
   <body>
     <main class="error-page">
       <header class="error-header">
         <button type="button" class="menu-button" aria-label="메뉴 열기">
-          <img src="../images/hamburger_bar.svg" alt="" aria-hidden="true" />
+          <img src="{% static 'images/hamburger_bar.svg' %}" alt="" aria-hidden="true" />
         </button>
         <h1>MCM FROM ME</h1>
       </header>
@@ -20,7 +21,7 @@
         <div class="orbit orbit--outer">
           <div class="orbit orbit--inner">
             <div class="product-icon">
-              <img src="../images/bag_product.svg" alt="제품 가방" />
+              <img src="{% static 'images/bag_product.svg' %}" alt="제품 가방" />
               <span class="retry-mark" aria-label="다시 시도">
                 <span class="retry-symbol" aria-hidden="true"></span>
               </span>
@@ -41,17 +42,18 @@
       </section>
 
       <div class="error-actions">
-        <button type="button" class="retry-button">
+        <button type="button" class="retry-button" data-retry-url="{% url 'tag_scan' %}">
           <span>RETRY</span>
-          <img src="../images/retry.svg" alt="" aria-hidden="true" />
+          <img src="{% static 'images/retry.svg' %}" alt="" aria-hidden="true" />
         </button>
         <button type="button" class="ask-staff-button">
-          <img src="../images/help_circle.svg" alt="" aria-hidden="true" />
+          <img src="{% static 'images/help_circle.svg' %}" alt="" aria-hidden="true" />
           <span>ASK STAFF</span>
         </button>
       </div>
 
       <div class="bottom-indicator" aria-hidden="true"></div>
     </main>
+    <script src="{% static 'js/tag_error.js' %}" defer></script>
   </body>
 </html>

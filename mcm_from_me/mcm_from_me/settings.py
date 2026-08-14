@@ -66,7 +66,10 @@ ROOT_URLCONF = 'mcm_from_me.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'frontend' / 'pages'],
+        'DIRS': [
+            BASE_DIR / 'frontend' / 'pages',
+            BASE_DIR / 'frontend' / 'errors',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
