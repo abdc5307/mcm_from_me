@@ -18,6 +18,11 @@ let recognitionGeneration = 0;
 let nfcAbortController = null;
 let verifyingTag = false;
 
+function getCookie(name) {
+  const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
+  return match ? match.pop() : "";
+}
+
 function setHamburgerButtonVisible(visible) {
   if (!hamburgerButton) return;
   hamburgerButton.hidden = !visible;
@@ -58,9 +63,11 @@ async function verifyProductTag(tagCode) {
   try {
     const response = await fetch(document.body.dataset.verifyUrl, {
       method: "POST",
+      credentials: "same-origin",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"),
       },
       body: JSON.stringify({
         session_id: sessionId,
