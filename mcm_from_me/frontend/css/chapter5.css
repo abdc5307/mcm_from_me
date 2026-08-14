@@ -1,0 +1,925 @@
+/*================================= chapter5_processing.html =================================*/
+.processing-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.processing-content {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 96px 24px 96px;
+  text-align: center;
+}
+
+/* 상단 타이틀 (Completing your journey...) */
+.processing-title {
+  font-family: "Playfair Display", serif;
+  letter-spacing: -0.5px;
+  color: #f2ca50;
+  text-align: center;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 35px;
+  margin: 48px 0 24px;
+}
+
+/* 카드 박스 */
+.progress-card {
+  width: 280px;
+  display: flex;
+  height: 280px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  border: 1px solid rgba(242, 202, 80, 0.2);
+  background: rgba(18, 20, 20, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: relative;
+  margin-bottom: 24px;
+}
+.progress-card::before {
+  content: "";
+  width: 360px;
+  height: 360px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(242, 202, 80, 0.35) 0%,
+    rgba(242, 202, 80, 0.12) 40%,
+    rgba(242, 202, 80, 0) 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+.percentage-group,
+.progress-label {
+  position: relative;
+  z-index: 2;
+}
+.percentage-group {
+  display: flex;
+  align-items: flex-start;
+  font-family: "Playfair Display", serif;
+  text-shadow: 0 0 16px rgba(242, 202, 80, 0.35);
+  line-height: 1;
+  margin-bottom: 8px;
+  color: #f2ca50;
+  font-size: 60px;
+  font-weight: 400;
+  line-height: 60px;
+}
+
+/* JOURNEY IN PROGRESS 라벨 */
+.progress-label {
+  font-family: "Hanken Grotesk", sans-serif;
+  color: rgba(242, 202, 80, 0.7);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* 하단 단계 섹션 */
+.step-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 70px;
+}
+.step-item {
+  font-family: "Hanken Grotesk", sans-serif;
+  color: rgba(242, 202, 80, 0.4);
+  text-align: center;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* 현재 활성화된 단계 */
+.step-item.active {
+  color: #f2ca50;
+  text-shadow: 0 0 8px rgba(242, 202, 80, 0.3);
+  font-weight: 600;
+}
+
+/* 최하단 안내 문구 (This may take a few moments.) */
+.processing-footer-text {
+  font-family: "Hanken Grotesk", sans-serif;
+  color: rgba(208, 197, 175, 0.4);
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 0.55px;
+}
+
+/*================================= chapter5_discover.html =================================*/
+.discover-container {
+  background: var(--background);
+}
+.page-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 63px);
+}
+.discover-content {
+  padding: 28px 0 24px;
+}
+
+/* 상단 챕터 헤더 */
+.discover-header-group {
+  padding: 0 24px;
+  margin-bottom: 68px;
+  text-align: center;
+}
+.discover-label {
+  display: block;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  color: #f2ca50;
+  font-family: "Hanken Grotesk";
+  font-size: 12px;
+  font-style: normal;
+  line-height: 16px;
+  letter-spacing: 2.4px;
+}
+.discover-title {
+  letter-spacing: -0.4px;
+  color: #e2e2e2;
+  text-align: center;
+  font-family: "Playfair Display";
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 36px;
+}
+
+/* Swiper 캐러셀 영역 */
+.discover-carousel-wrapper {
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 8px;
+}
+.discover-swiper {
+  width: 100%;
+  overflow: visible !important;
+}
+.discover-swiper .swiper-wrapper {
+  align-items: center;
+}
+
+/* 개별 카드 (peek 되는 좌우 카드는 축소 + 흐림 처리) */
+.discover-swiper .swiper-slide.discover-card {
+  width: 228px;
+  height: 380px;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--soft-border);
+  background: var(--card);
+  transform: scale(0.86);
+  opacity: 0.45;
+  filter: blur(1.5px);
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease,
+    filter 0.4s ease,
+    border-color 0.4s ease;
+}
+.discover-swiper .swiper-slide-active.discover-card {
+  transform: scale(1);
+  opacity: 1;
+  filter: none;
+  border-color: rgba(242, 202, 80, 0.5);
+  box-shadow: 0 0 28px 0 rgba(242, 202, 80, 0.14);
+}
+.discover-card-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.discover-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.discover-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 20, 20, 0) 38%,
+    rgba(18, 20, 20, 0.78) 78%,
+    rgba(12, 13, 13, 0.94) 100%
+  );
+}
+.discover-card-body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 20px 22px 24px;
+}
+.discover-card-caption {
+  display: block;
+  color: #f2ca50;
+  font-family: "Hanken Grotesk";
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 15px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.discover-card-title {
+  font-size: 27px;
+  letter-spacing: -0.4px;
+  color: #e2e2e2;
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 300;
+  line-height: 32px;
+}
+.discover-card-desc {
+  color: #d0c5af;
+  font-family: "Hanken Grotesk";
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+/* Swiper 페이지네이션 도트 */
+.discover-dots {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 90px 0 10px;
+}
+.discover-dots .swiper-pagination-bullet {
+  width: 6px;
+  height: 6px;
+  margin: 0;
+  border-radius: 50%;
+  background: rgba(208, 197, 175, 0.3);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+.discover-dots .swiper-pagination-bullet-active {
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  box-shadow: 0 0 6px 0 rgba(242, 202, 80, 0.6);
+}
+
+/* 하단 버튼 그룹 */
+.discover-actions {
+  width: 100%;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+/* 공통 버튼 구조 (높이, 폰트, 모서리 알약 형태) */
+.discover-btn-filled,
+.discover-btn-outline {
+  display: flex;
+  width: 100%;
+  height: 52px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  font-family:
+    "Hanken Grotesk",
+    -apple-system,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+/* CHOOSE THIS JOURNEY 버튼 */
+.discover-btn-filled {
+  color: #000;
+  border: 1px solid rgba(242, 202, 80, 0.4);
+  background: #f2ca50;
+}
+.discover-btn-filled:active,
+.discover-btn-filled:hover {
+  background: #e5bd42;
+  border-color: #e5bd42;
+}
+
+/* STILL DECIDING 버튼 */
+.discover-btn-outline {
+  background: transparent;
+  color: #f2ca50;
+  border: 1px solid rgba(242, 202, 80, 0.4);
+}
+.discover-btn-outline:active,
+.discover-btn-outline:hover {
+  background: rgba(242, 202, 80, 0.08);
+  border-color: rgba(242, 202, 80, 0.7);
+}
+
+/* ================================================== chapter5.result_choose.html ================================================== */
+.result-choose-container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.result-choose-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.result-choose-img {
+  width: 100%;
+  height: 804.59px;
+  object-fit: cover;
+  display: block;
+}
+.result-choose-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 7, 6, 0.6) 0%,
+    rgba(8, 7, 6, 0) 20%,
+    rgba(8, 7, 6, 0.2) 55%,
+    rgba(8, 7, 6, 0.85) 75%,
+    #080706 92%
+  );
+}
+
+/* 콘텐츠 레이아웃 */
+.result-choose-content {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 48px 24px 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* 상단 헤더 */
+.result-choose-header {
+  margin-top: 50px;
+}
+.result-choose-label {
+  display: block;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  color: #000;
+  text-align: center;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  font-family: "Hanken Grotesk";
+  font-size: 12px;
+  line-height: 16px;
+}
+.result-choose-title {
+  color: #e2e2e2;
+  text-align: center;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  font-family: "Playfair Display";
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 56px;
+  letter-spacing: -1.4px;
+  text-transform: uppercase;
+}
+.result-choose-quote {
+  margin-top: 350px;
+  margin-bottom: 25px;
+}
+.result-choose-quote p {
+  font-weight: 300;
+  color: rgba(226, 226, 226, 0.9);
+  text-align: center;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  font-family: "Playfair Display";
+  font-size: 30px;
+  font-style: italic;
+  line-height: 38.5px;
+}
+
+/* 제품/키워드 태그 영역 */
+.result-choose-keywords {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  margin-bottom: 60px;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+}
+.keyword-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #f2ca50;
+  text-align: center;
+  font-family: "Hanken Grotesk";
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px; /* 236.364% */
+  letter-spacing: 0.55px;
+  text-transform: uppercase;
+}
+.keyword-dot {
+  color: #f2ca50;
+  font-size: 10px;
+}
+
+/* 하단 버튼 */
+.result-choose-actions {
+  width: 100%;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.result-btn-outline {
+  display: flex;
+  width: 272px;
+  height: 58px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background: transparent;
+  border: 1px solid rgba(242, 202, 80, 0.4);
+  color: #f2ca50;
+  text-align: center;
+  font-family: "Hanken Grotesk";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 3.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.result-btn-outline:active {
+  background: rgba(242, 202, 80, 0.1);
+}
+
+/* 맨 하단 3개 아이콘 탭바 */
+.result-bottom-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  gap: 50px;
+  padding: 12px 0 20px;
+  background: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin: 0 -24px;
+  width: calc(100% + 48px);
+}
+.bottom-tab-btn {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #f2ca50;
+  cursor: pointer;
+}
+.bottom-tab-btn span {
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(225, 225, 223, 0.7);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.tab-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  display: block;
+}
+
+/* ================================================== chapter5.still_deciding.html ================================================== */
+.still-container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.still-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 36px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* 상단 질문 타이틀 */
+.still-title-group {
+  margin-top: 10px;
+  margin-bottom: 70px;
+}
+.still-label {
+  display: block;
+  margin-bottom: 10px;
+  color: #f2ca50;
+  font-family: "Hanken Grotesk";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+}
+.still-title {
+  margin-bottom: 8px;
+  color: #e2e2e2;
+  text-align: center;
+  font-family: "Playfair Display";
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 36px;
+}
+.still-subtext {
+  letter-spacing: 0.2px;
+  color: #d0c5af;
+  text-align: center;
+  font-family: "Hanken Grotesk";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 20px;
+}
+
+/* 옵션 리스트 버튼들 */
+.still-option-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.still-option-btn {
+  display: flex;
+  width: 100%;
+  height: 48px;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background: transparent;
+  border-radius: 12px;
+  border: 1px solid rgba(242, 202, 80, 0.4);
+  color: #fff;
+  font-family: "Hanken Grotesk";
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 3.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  box-sizing: border-box;
+}
+.option-img,
+.option-icon {
+  position: absolute;
+  left: 120px;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+  transition: filter 0.25s ease;
+}
+.still-option-btn span {
+  display: inline-block;
+  text-align: center;
+}
+
+/* 활성화 상태 (Active) */
+.still-option-btn.is-active {
+  background: #f2ca50;
+  border-color: #f2ca50;
+  color: #121414;
+}
+.still-option-btn.is-active .option-img {
+  filter: brightness(0);
+}
+.still-option-btn.is-active .option-icon {
+  stroke: #000;
+}
+
+/* 하단 푸터 제출 영역 */
+.still-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+.still-footer-text {
+  color: #d0c5af;
+  text-align: center;
+  font-family: "Hanken Grotesk";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+.still-submit-btn {
+  display: flex;
+  width: 100%;
+  height: 52px;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  border-radius: 12px;
+  border: 1px solid rgba(242, 202, 80, 0.4);
+  color: #f2ca50;
+  text-align: center;
+  font-family: "Hanken Grotesk";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 3.2px;
+  text-transform: uppercase;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.still-submit-btn:active {
+  background: rgba(242, 202, 80, 0.1);
+}
+
+/* ================================================== chapter5.still_deciding.html ================================================== */
+.still-result-container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.still-result-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 20px 0;
+  text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* 상단 타이틀 그룹 */
+.still-result-title-group {
+  margin-top: 20px;
+  margin-bottom: 24px;
+}
+
+.still-result-title {
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+  color: #e2e2e2;
+  text-align: center;
+  font-family: "Playfair Display";
+  line-height: 36px;
+}
+
+.still-result-subtext {
+  color: #d0c5af;
+  text-align: center;
+  font-family: "Hanken Grotesk";
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+/* 1. AI Analysis 분석 카드 */
+.ai-analysis-card {
+  width: 100%;
+  padding: 21px;
+  text-align: left;
+  margin-bottom: 34px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid rgba(242, 202, 80, 0.2);
+  background: rgba(30, 32, 32, 0.4);
+  backdrop-filter: blur(20px);
+}
+
+.ai-analysis-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 14px;
+}
+
+.ai-sparkle-img {
+  width: 18px;
+  height: 18px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.ai-analysis-title {
+  color: #F2CA50;
+  font-family: "Playfair Display";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 25px;
+}
+
+.ai-analysis-desc {
+  word-break: keep-all;
+  color: #E2E2E2;
+  font-family: "Hanken Grotesk";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22.75px;
+}
+
+/* 2. AI RECOMMENDATION 구분선 */
+.ai-divider-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 35px;
+}
+
+.ai-divider-text {
+  font-weight: 600;
+  color: #F2CA50;
+  text-align: center;
+  font-family: "Hanken Grotesk";
+  font-size: 12px;
+  font-style: normal;
+  line-height: 16px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+/* 3. 추천 제품 카드 */
+.ai-product-card {
+  display: flex;
+  width: 100%;
+  gap: 19px;
+  text-align: left;
+  margin-bottom: 45px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid rgba(242, 202, 80, 0.30);
+  background: rgba(30, 32, 32, 0.40);
+  backdrop-filter: blur(32px);
+}
+
+.product-card-img-wrapper {
+  width: 170px;
+  height: 100%;
+  border-radius: 7px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.product-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.product-title {
+  color: #E2E2E2;
+  font-family: "Playfair Display";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 25px;
+  margin-bottom: 10px;
+}
+
+.product-sub {
+  color: #D0C5AF;
+  font-family: "Hanken Grotesk";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 19.5px;
+  margin-bottom: 3px;
+}
+
+.product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.product-tag {
+  display: inline-flex;
+  height: 23.5px;
+  padding: 3px 8px 4.5px 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 12px;
+  border: 1px solid rgba(242, 202, 80, 0.40);
+  backdrop-filter: blur(2px);
+  color: #F2CA50;
+  font-family: "Hanken Grotesk";
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 13.5px;
+  letter-spacing: 0.45px;
+  text-transform: uppercase;
+}
+
+/* COMPACT STORAGE 태그 개별 줄바꿈 대응 */
+.product-tag.tag-full {
+  display: inline-flex;
+}
+
+/* 하단 버튼 */
+.still-result-actions {
+  width: 100%;
+  margin-bottom: 26px;
+  display: flex;
+  justify-content: center;
+  padding: 6px 24px 26px 24px;
+}
+
+.still-result-actions .result-btn-outline {
+  width: 100%;
+  height: 52px;
+}
+
+.result-bottom-bar.still-result-bar {
+  background: transparent;
+}

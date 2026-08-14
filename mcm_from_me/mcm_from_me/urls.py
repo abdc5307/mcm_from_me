@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import RedirectView
+from django.views.generic import TemplateView
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,7 +25,29 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/ai_story/', include('ai_story.urls')),
     path('api/product/', include('product.urls')),
-    path('', RedirectView.as_view(url='/api/ai_story/view/chapter3/')), #확인용 메인 url
+    path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
+    path('chapter1/', TemplateView.as_view(template_name='chapter1.html'), name='chapter1'),
+    path(
+        'tag-scan/',
+        TemplateView.as_view(
+            template_name='tag_scan.html',
+            extra_context={
+                'is_development': settings.DEBUG,
+                'development_tag_code': 'NFC_ELLA_001',
+            },
+        ),
+        name='tag_scan',
+    ),
+    path('chapter2/', TemplateView.as_view(template_name='chapter2.html'), name='chapter2'),
+    path('errors/tag-not-recognized/', TemplateView.as_view(template_name='e02_qr_scan_failed.html'), name='error_e02'),
+    path('errors/unsupported-product/', TemplateView.as_view(template_name='e03_unsupported_product.html'), name='error_e03'),
+    path('errors/product-unavailable/', TemplateView.as_view(template_name='e04_product_details_unavailable.html'), name='error_e04'),
+    path(
+        'hamburger-menu/',
+        xframe_options_sameorigin(TemplateView.as_view(template_name='hamburger_menu.html')),
+        name='hamburger_menu',
+    ),
+    path('api/journey/', include('journey.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCM FROM ME - Network Error</title>
+    <link rel="stylesheet" href="../css/e01_network_error.css" />
+  </head>
+
+  <body>
+    <main class="error-page">
+      <header class="error-header">
+        <button type="button" class="menu-button" aria-label="메뉴 열기">
+          <img src="../images/hamburger_bar.svg" alt="" aria-hidden="true" />
+        </button>
+        <h1>MCM FROM ME</h1>
+      </header>
+
+      <section class="network-visual" aria-hidden="true">
+        <div class="network-frame network-frame--outer">
+          <div class="network-frame network-frame--middle">
+            <div class="network-frame network-frame--inner">
+              <img src="../images/no_wifi.svg" alt="" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="error-message">
+        <h2>Connection lost.</h2>
+        <p>
+          네트워크 연결을 확인한 후 다시<br />
+          시도 해주세요.
+        </p>
+      </section>
+
+      <div class="error-actions">
+        <button type="button" class="retry-button">RETRY</button>
+        <button type="button" class="back-button">BACK</button>
+      </div>
+
+      <div class="bottom-indicator" aria-hidden="true"></div>
+    </main>
+  </body>
+</html>

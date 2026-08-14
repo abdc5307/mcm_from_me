@@ -1,0 +1,446 @@
+/* ==========================================================================
+    chapter4_Camera Page
+   ========================================================================== */
+.camera-page {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+}
+
+/* ---------- Top Bar ---------- */
+.camera-topbar {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 17px 0;
+}
+
+.cam-icon-btn {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #fff;
+  flex: 0 0 auto;
+}
+
+.cam-icon-btn img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* ---------- Viewport & Frame ---------- */
+.camera-viewport {
+  position: relative;
+  flex: 1;
+  margin-top: 14px;
+  overflow: hidden;
+  background: #0c0c0c;
+}
+
+#webcam {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+/* 화면 모서리 외곽 꺾쇠 프레임 */
+.viewfinder-frame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.viewfinder-frame .corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: #8e8e8e;
+  border-style: solid;
+  border-width: 0;
+}
+
+.viewfinder-frame .corner.top-left {
+  top: 0;
+  left: 0;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.viewfinder-frame .corner.top-right {
+  top: 0;
+  right: 0;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.viewfinder-frame .corner.bottom-left {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.viewfinder-frame .corner.bottom-right {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+/* ---------- Focus Frame (단일 노란 점선 프레임) ---------- */
+.focus-frame {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  width: 72%;
+  height: 54%;
+  transform: translateX(-50%);
+  border-radius: 8px;
+  border: 2px dashed rgba(242, 202, 80, 0.45);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* ---------- 가이드 문구 영역 ---------- */
+.camera-guide-text {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  width: 88%;
+  text-align: center;
+  z-index: 5;
+  transition: opacity 0.3s ease;
+}
+
+.guide-en {
+  margin-bottom: 8px;
+  color: #e2e2e2;
+  text-align: center;
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.9px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.guide-kr {
+  color: rgba(226, 226, 226, 0.7);
+  text-align: center;
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+/* E-08 전용 한국어 문구 제어 */
+.e08-desc {
+  display: none;
+}
+
+/* ---------- Footer ---------- */
+.camera-footer {
+  position: relative;
+  z-index: 20;
+  background: #000;
+  padding-top: 10px;
+}
+
+/* Angle Tabs */
+.camera-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+  padding-bottom: 14px;
+}
+
+.tab {
+  position: relative;
+  padding-bottom: 10px;
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(225, 225, 223, 0.45);
+  cursor: pointer;
+}
+
+.tab.active {
+  color: var(--gold);
+}
+
+.tab .dot {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  transform: translateX(-50%);
+  opacity: 0;
+}
+
+.tab.active .dot {
+  opacity: 1;
+}
+
+/* Bottom Controls */
+.camera-bottom-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 30px 28px;
+}
+
+.thumb-preview {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--soft-border);
+  background: var(--card);
+  flex: 0 0 auto;
+}
+
+.shutter-btn {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid rgba(225, 225, 223, 0.3);
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.shutter-btn:active {
+  background: #e9e9e9;
+}
+
+.flip-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: grid;
+  place-items: center;
+  color: var(--text-primary);
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.flip-btn img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 360px) {
+  .camera-tabs {
+    gap: 24px;
+  }
+  .camera-bottom-controls {
+    padding: 6px 22px 24px;
+  }
+}
+
+/* ==========================================================================
+   에러 상태별 스타일 (E-08, E-09, E-10)
+   ========================================================================== */
+
+/* ---------- E-08: 프레임 이탈/정렬 (문구 교체 및 골드 강조) ---------- */
+.camera-page.state-e08 .focus-frame {
+  border-color: var(--gold);
+  border-width: 2px;
+  box-shadow: 0 0 12px rgba(242, 202, 80, 0.35);
+}
+
+.camera-page.state-e08 .guide-en {
+  color: #F2CA50;
+  text-shadow: 0 0 8px rgba(242, 202, 80, 0.4);
+  margin-top: 30px;
+}
+
+.camera-page.state-e08 .default-desc {
+  display: none;
+}
+
+.camera-page.state-e08 .e08-desc {
+  display: block;
+  color: #D0C5AF;
+}
+/* ---------- E-09: Too Dark 경고 카드 ---------- */
+.dark-warning-card {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  background: rgba(24, 26, 26, 0.92);
+  border: 1px solid var(--soft-border);
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+  z-index: 15;
+  backdrop-filter: blur(8px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+.camera-page.state-e09 .dark-warning-card,
+.dark-warning-card.active {
+  display: flex;
+}
+
+.camera-page.state-e09 .camera-guide-text {
+  display: none;
+}
+
+.warning-icon-box {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--soft-border);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+}
+
+.warning-icon-box img {
+  width: 20px;
+  height: 20px;
+}
+
+.dark-title-en {
+  font-family: "Playfair Display", serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.dark-desc-kr {
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 13px;
+  color: rgba(225, 225, 223, 0.7);
+  line-height: 1.4;
+}
+
+/* ---------- E-10: Photo Blurry 바텀시트 모달 ---------- */
+.blurry-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.blurry-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.blurry-modal-card {
+  width: 100%;
+  background: var(--card);
+  border-top: 1px solid var(--soft-border);
+  border-radius: 20px 20px 0 0;
+  padding: 32px 24px 36px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.blurry-modal-overlay.active .blurry-modal-card {
+  transform: translateY(0);
+}
+
+.alert-icon-box {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--soft-border);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+}
+
+.alert-icon-box img {
+  width: 22px;
+  height: 22px;
+}
+
+.blurry-title-en {
+  font-family: "Playfair Display", serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.blurry-desc-kr {
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 13px;
+  color: rgba(225, 225, 223, 0.75);
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+
+.blurry-btn-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-use-anyway {
+  width: 100%;
+  height: 48px;
+  background: var(--gold);
+  color: #121414;
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-retake {
+  width: 100%;
+  height: 48px;
+  background: transparent;
+  border: 1px solid var(--soft-border);
+  color: var(--text-primary);
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border-radius: 8px;
+  cursor: pointer;
+}

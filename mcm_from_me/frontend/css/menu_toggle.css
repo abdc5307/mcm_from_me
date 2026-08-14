@@ -1,0 +1,26 @@
+.menu-button {
+  z-index: 1001;
+}
+
+body.menu-open .common-header,
+body.menu-open .chapter1-header,
+body.menu-open .header,
+body.menu-open .chapter-header {
+  z-index: 1001;
+}
+
+.journey-menu-frame {
+  width: min(100%, 415px);
+  height: 100vh;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 0;
+  background: #050605;
+}
+
+body.menu-open {
+  overflow: hidden;
+}

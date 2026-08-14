@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Inter:wght@400;500&family=Noto+Sans+KR:wght@400;500&family=Playfair+Display:wght@500;600&display=swap");
+
+:root { --background:#101212; --gold:#f2ca50; --button-gold:#dfb934; --text:#e8e8e6; --muted:#aaa49a; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { min-height:100%; }
+html { background:#080a0a; }
+body { overflow-x:hidden; color:var(--text); font-family:"Hanken Grotesk",sans-serif; }
+button { border:0; background:none; color:inherit; font:inherit; }
+
+.error-page { width:min(100%,415px); min-height:874px; margin:0 auto; position:relative; isolation:isolate; overflow:hidden; background:
+  repeating-linear-gradient(27deg,transparent 0 5px,rgba(255,255,255,.009) 5px 6px),
+  repeating-linear-gradient(153deg,transparent 0 8px,rgba(0,0,0,.025) 8px 9px),
+  radial-gradient(ellipse at 49% 43%,rgba(242,202,80,.13),transparent 37%),
+  radial-gradient(ellipse at 50% 78%,rgba(255,255,255,.015),transparent 34%),
+  var(--background); }
+.error-header,.camera-visual,.error-message,.error-actions { position:relative; z-index:1; }
+.error-header { height:61px; }
+.menu-button { width:40px; height:40px; position:absolute; top:9px; left:17px; display:grid; place-items:center; cursor:pointer; }
+.menu-button img { width:20px; height:14px; display:block; }
+.error-header h1 { width:max-content; position:absolute; top:8px; left:50%; transform:translateX(-50%); color:#fff; font-family:"Playfair Display",serif; font-size:27px; font-weight:500; line-height:38px; white-space:nowrap; }
+
+.camera-visual { margin-top:105px; display:grid; place-items:center; }
+.camera-orbit { display:grid; place-items:center; border:1px solid rgba(242,202,80,.13); border-radius:50%; }
+.camera-orbit--outer { width:218px; height:218px; }
+.camera-orbit--inner { width:166px; height:166px; position:relative; }
+.camera-glow { width:138px; height:138px; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); border-radius:18px; background:rgba(242,202,80,.16); filter:blur(31px); }
+.camera-icon-box { width:138px; height:138px; position:relative; display:grid; place-items:center; border:1px solid rgba(242,202,80,.48); border-radius:12px; background:#20211d; }
+.camera-icon { width:42px; height:38px; display:block; }
+.warning-badge { width:40px; height:40px; position:absolute; top:-4px; right:-4px; display:grid; place-items:center; border-radius:11px; background:#f6aaa5; box-shadow:0 2px 4px rgba(0,0,0,.35); }
+.warning-badge img { width:19px; height:16px; display:block; }
+
+.error-message { margin-top:22px; text-align:center; }
+.error-message h2 { font-family:"Playfair Display",serif; font-size:28px; font-weight:500; line-height:34px; }
+.error-message p { margin-top:27px; color:var(--muted); font-family:"Noto Sans KR","Inter",sans-serif; font-size:15px; font-style:normal; font-weight:400; line-height:24px; word-break:keep-all; }
+
+.error-actions { width:calc(100% - 46px); position:absolute; right:23px; bottom:40px; left:23px; display:grid; gap:15px; }
+.error-actions button { width:100%; height:60px; border-radius:12px; font-size:14px; line-height:1; letter-spacing:2px; cursor:pointer; }
+.retry-button { border:1px solid var(--button-gold); background:var(--button-gold); color:#3c2f00; }
+.ask-staff-button { border:1px solid rgba(242,202,80,.5); color:var(--gold); }
+.retry-button:hover { filter:brightness(1.06); }
+.ask-staff-button:hover { background:rgba(242,202,80,.06); }
+.error-actions button:active { transform:scale(.99); }
+
+@media (max-width:414px) { .error-page { width:100%; } }
