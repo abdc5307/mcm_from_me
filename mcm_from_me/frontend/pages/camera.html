@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCM FROM ME — Camera</title>
     <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/chapter4.css" />
+    <link rel="stylesheet" href="../css/camera.css" />
 </head>
 <body>
     <div class="app-container">
@@ -23,13 +23,11 @@
 
             <!-- viewport: live video feed -->
             <main class="camera-viewport">
-                <!-- 실제 카메라 스트림이 출력되는 비디오 태그 -->
+                <!-- 실제 카메라 스트림 -->
                 <video id="webcam" autoplay playsinline muted></video>
-                
-                <!-- 캡처용 숨김 캔버스 -->
                 <canvas id="captureCanvas" style="display: none;"></canvas>
 
-                <!-- 화면 전체 모서리 꺾쇠 프레임 -->
+                <!-- 화면 외곽 큰 꺾쇠 프레임 -->
                 <div class="viewfinder-frame">
                     <div class="corner top-left"></div>
                     <div class="corner top-right"></div>
@@ -37,19 +35,29 @@
                     <div class="corner bottom-right"></div>
                 </div>
 
-                <!-- 중앙 노란 가이드 박스 -->
-                <div class="focus-frame">
-                    <div class="corner corner-tl"></div>
-                    <div class="corner corner-tr"></div>
-                    <div class="corner corner-bl"></div>
-                    <div class="corner corner-br"></div>
-                    <img src="../images/png_icon.svg" alt="png 아이콘" class="scan-badge-img" />
+                <!-- [공통] 중앙 노란 점선 프레임 (회색 꺾쇠, PNG 마크 삭제됨) -->
+                <div class="focus-frame"></div>
+
+                <!-- [기본 & E-08 안내 문구] -->
+                <!-- 안내 문구 영역 -->
+                <div class="camera-guide-text" id="cameraGuideText">
+                    <!-- 공통 영문 제목 -->
+                    <p class="guide-en">Place your piece inside the frame.</p>
+                
+                    <!-- 기본 한국어 설명 -->
+                    <p class="guide-kr default-desc">가방과 스트랩이 잘 보이도록 몸을 살짝 돌려주세요.</p>
+                
+                    <!-- E-08 전용 한국어 설명 -->
+                    <p class="guide-kr e08-desc">가방과 액세서리가 가이드 영역 안에 들어오도록<br> 위치를 조정해 주세요.</p>
                 </div>
 
-                <!-- 안내 문구 -->
-                <div class="camera-guide-text">
-                    <p class="guide-en">Place your piece inside the frame.</p>
-                    <p class="guide-kr">가방과 스트랩이 잘 보이도록 몸을 살짝 돌려주세요.</p>
+                <!-- [E-09] Too Dark 하단 경고 카드 -->
+                <div class="dark-warning-card" id="cardE09">
+                    <div class="warning-icon-box">
+                        <img src="../images/icon_sparkle.svg" alt="밝기 아이콘" />
+                    </div>
+                    <h2 class="dark-title-en">Move toward the light<br>for a clearer photo.</h2>
+                    <p class="dark-desc-kr">제품이 잘 보이도록 조금 더 밝은 위치로 이동해 주세요.</p>
                 </div>
             </main>
 
@@ -69,6 +77,21 @@
                     </button>
                 </div>
             </footer>
+
+            <!-- [E-10] Photo Blurry 바텀시트 모달 -->
+            <div class="blurry-modal-overlay" id="modalE10">
+                <div class="blurry-modal-card">
+                    <div class="alert-icon-box">
+                        <img src="../images/help_circle.svg" alt="경고" />
+                    </div>
+                    <h2 class="blurry-title-en">This photo may be<br>unclear.</h2>
+                    <p class="blurry-desc-kr">사진이 선명하지 않을 수 있습니다.<br>다시 촬영하시겠어요?</p>
+                    <div class="blurry-btn-group">
+                        <button type="button" class="btn-use-anyway">USE ANYWAY</button>
+                        <button type="button" class="btn-retake">RETAKE</button>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
