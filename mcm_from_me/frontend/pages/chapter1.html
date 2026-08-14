@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -7,14 +8,15 @@
       content="width=device-width, initial-scale=1.0"
     />
     <title>MCM FROM ME - Chapter 1</title>
-    <link rel="stylesheet" href="../css/chapter1.css" />
+    <link rel="stylesheet" href="{% static 'css/chapter1.css' %}?v=viewport-fit-1" />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
   </head>
 
-  <body>
+  <body data-menu-url="{% url 'hamburger_menu' %}">
     <main class="chapter1-page">
       <header class="chapter1-header">
         <button type="button" class="menu-button" aria-label="메뉴 열기">
-          <img src="../images/hamburger_bar.svg" alt="" aria-hidden="true" />
+          <img src="{% static 'images/hamburger_bar.svg' %}" alt="" aria-hidden="true" />
         </button>
         <h1>MCM FROM ME</h1>
       </header>
@@ -27,29 +29,29 @@
 
       <section class="moment-grid" aria-label="Choose your moment">
         <button type="button" class="moment-card" data-moment="urban-escape" aria-pressed="false">
-          <img class="check-icon" src="../images/check_full.svg" alt="선택됨" />
-          <img class="moment-icon" src="../images/urban_escape.png" alt="" />
+          <img class="check-icon" src="{% static 'images/check_full.svg' %}" alt="선택됨" />
+          <img class="moment-icon" src="{% static 'images/urban_escape.png' %}" alt="" />
           <strong>URBAN ESCAPE</strong>
           <span>익숙한 도시를 벗어나는<br />순간</span>
         </button>
 
         <button type="button" class="moment-card" data-moment="new-journey" aria-pressed="false">
-          <img class="check-icon" src="../images/check_full.svg" alt="선택됨" />
-          <img class="moment-icon" src="../images/new_journey.png" alt="" />
+          <img class="check-icon" src="{% static 'images/check_full.svg' %}" alt="선택됨" />
+          <img class="moment-icon" src="{% static 'images/new_journey.png' %}" alt="" />
           <strong>NEW JOURNEY</strong>
           <span>새로운 시작을 앞둔<br />순간</span>
         </button>
 
         <button type="button" class="moment-card" data-moment="creative-flow" aria-pressed="false">
-          <img class="check-icon" src="../images/check_full.svg" alt="선택됨" />
-          <img class="moment-icon moment-icon--compact" src="../images/creative_flow.png" alt="" />
+          <img class="check-icon" src="{% static 'images/check_full.svg' %}" alt="선택됨" />
+          <img class="moment-icon moment-icon--compact" src="{% static 'images/creative_flow.png' %}" alt="" />
           <strong>CREATIVE FLOW</strong>
           <span>자유로운 영감이 필요한<br />순간</span>
         </button>
 
         <button type="button" class="moment-card" data-moment="midnight-move" aria-pressed="false">
-          <img class="check-icon" src="../images/check_full.svg" alt="선택됨" />
-          <img class="moment-icon" src="../images/midnight_move.png" alt="" />
+          <img class="check-icon" src="{% static 'images/check_full.svg' %}" alt="선택됨" />
+          <img class="moment-icon" src="{% static 'images/midnight_move.png' %}" alt="" />
           <strong>MIDNIGHT MOVE</strong>
           <span>밤의 도시를 즐기고<br />싶은 순간</span>
         </button>
@@ -60,6 +62,7 @@
       </button>
     </main>
 
-    <script src="../js/chapter1.js" defer></script>
+    <script src="{% static 'js/chapter1.js' %}" defer></script>
+    <script src="{% static 'js/menu_toggle.js' %}" defer></script>
   </body>
 </html>

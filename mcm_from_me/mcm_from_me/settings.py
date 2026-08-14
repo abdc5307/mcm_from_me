@@ -66,7 +66,7 @@ ROOT_URLCONF = 'mcm_from_me.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'frontend' / 'pages'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,6 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'frontend']
 
 # [추가] 프론트엔드 연동용 CORS 전체 허용
 CORS_ALLOW_ALL_ORIGINS = True
