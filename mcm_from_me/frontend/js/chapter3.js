@@ -19,16 +19,22 @@ const summaryMoment = document.getElementById("summaryMoment");
 
 const selectedStyle = { carry: null, detail: null };
 const displayNames = {
+  TOP_HANDLE: "탑 핸들",
+  CROSSBODY: "크로스바디",
+  BASIC_CHARM: "베이직 참",
+  ROCKET_CHARM: "로켓 참",
+};
+const summaryDisplayNames = {
   TOP_HANDLE: "Top Handle",
   CROSSBODY: "Crossbody",
   BASIC_CHARM: "Basic Charm",
   ROCKET_CHARM: "Rocket Charm",
 };
 const fallbackNarration = {
-  "TOP_HANDLE|BASIC_CHARM": "A balanced top handle and timeless charm give your piece a refined, classic rhythm.",
-  "TOP_HANDLE|ROCKET_CHARM": "A poised top handle meets the playful energy of the rocket charm.",
-  "CROSSBODY|BASIC_CHARM": "Crossbody freedom and a classic charm keep every journey effortless.",
-  "CROSSBODY|ROCKET_CHARM": "Move freely with crossbody ease and the bright energy of the rocket charm.",
+  "TOP_HANDLE|BASIC_CHARM": "탑 핸들의 단정한 균형과 베이직 참의 절제된 디테일이 클래식한 실루엣을 완성합니다.",
+  "TOP_HANDLE|ROCKET_CHARM": "탑 핸들의 클래식한 균형에 로켓 참의 경쾌한 에너지를 더했습니다.",
+  "CROSSBODY|BASIC_CHARM": "크로스바디의 자유로운 움직임과 베이직 참의 담백한 디테일로 여정을 편안하게 이어갑니다.",
+  "CROSSBODY|ROCKET_CHARM": "크로스바디의 자유로움에 로켓 참의 에너지를 더해 당신만의 새로운 여정을 완성합니다.",
 };
 
 let product = null;
@@ -109,7 +115,7 @@ async function updateCombinationPreview() {
   if (selectedStyle.carry) setProductImage(localImageForCarry(selectedStyle.carry));
   if (!selectedStyle.carry || !selectedStyle.detail) {
     storyDescription.textContent = selectedStyle.carry
-      ? `Your ${displayNames[selectedStyle.carry].toLowerCase()} style is ready for a personal detail.`
+      ? `${displayNames[selectedStyle.carry]} 스타일에 어울리는 디테일을 선택해 주세요.`
       : currentNarration;
     return;
   }
@@ -166,8 +172,8 @@ document.querySelectorAll(".option-group").forEach((group) => {
 
 function fillSummary() {
   summaryPiece.textContent = product?.name || "MCM Piece";
-  summaryCarry.textContent = displayNames[selectedStyle.carry] || "-";
-  summaryDetail.textContent = displayNames[selectedStyle.detail] || "-";
+  summaryCarry.textContent = summaryDisplayNames[selectedStyle.carry] || "-";
+  summaryDetail.textContent = summaryDisplayNames[selectedStyle.detail] || "-";
   summaryMoment.textContent = formatMoment(selectedMoment);
   resultStoryText.textContent = currentNarration || fallbackNarration[`${selectedStyle.carry}|${selectedStyle.detail}`];
   resultPreview.src = currentImageUrl;
