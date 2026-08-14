@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -7,10 +8,10 @@
       content="width=device-width, initial-scale=1.0"
     />
     <title>MCM FROM ME - Journey Menu</title>
-    <link rel="stylesheet" href="../css/hamburger_menu.css" />
+    <link rel="stylesheet" href="{% static 'css/hamburger_menu.css' %}?v=overlay-fit-3" />
   </head>
 
-  <body>
+  <body{% if request.GET.overlay %} class="menu-overlay-document"{% endif %}>
     <main class="menu-page">
       <header class="menu-header">
         <h1>MCM FROM ME</h1>
@@ -65,7 +66,7 @@
 
         <div class="menu-actions">
           <button type="button" class="resume-button">
-            <img src="../images/diamond_light.svg" alt="" aria-hidden="true" />
+            <img src="{% static 'images/diamond_light.svg' %}" alt="" aria-hidden="true" />
             <span>RESUME JOURNEY</span>
           </button>
           <button type="button" class="advisor-link">Connect with Advisor</button>

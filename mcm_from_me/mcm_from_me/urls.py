@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import RedirectView
+from django.views.generic import TemplateView
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,7 +25,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/ai_story/', include('ai_story.urls')),
     path('api/product/', include('product.urls')),
-    path('', RedirectView.as_view(url='/api/ai_story/view/chapter3/')), #확인용 메인 url
+    path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
+    path('chapter1/', TemplateView.as_view(template_name='chapter1.html'), name='chapter1'),
+    path(
+        'hamburger-menu/',
+        xframe_options_sameorigin(TemplateView.as_view(template_name='hamburger_menu.html')),
+        name='hamburger_menu',
+    ),
     path('api/journey/', include('journey.urls')),
 ]
 
