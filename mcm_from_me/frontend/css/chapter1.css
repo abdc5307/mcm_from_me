@@ -17,10 +17,10 @@ button { border: 0; background: none; color: inherit; font: inherit; }
 
 .chapter1-page {
   width: min(100%, 415px);
-  min-height: 874px;
+  min-height: 100vh;
   margin: 0 auto;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   background:
     radial-gradient(circle at 48% 8%, rgba(242, 202, 80, 0.05), transparent 27%),
     radial-gradient(circle at 48% 75%, rgba(242, 202, 80, 0.025), transparent 34%),
@@ -32,16 +32,16 @@ button { border: 0; background: none; color: inherit; font: inherit; }
 .menu-button img { width: 20px; height: 14px; display: block; }
 .chapter1-header h1 { width: max-content; position: absolute; top: 9px; left: 50%; transform: translateX(-50%); color: #fff; font-family: "Playfair Display", serif; font-size: 27px; font-weight: 500; line-height: 38px; white-space: nowrap; }
 
-.chapter1-intro { padding-top: 71px; text-align: center; }
+.chapter1-intro { padding-top: clamp(32px, 5vh, 71px); text-align: center; }
 .chapter-label { color: var(--gold); font-size: 11px; font-weight: 700; line-height: 16px; letter-spacing: 3.3px; }
-.chapter1-intro h2 { margin-top: 21px; font-family: "Playfair Display", serif; font-size: 27px; font-weight: 500; line-height: 31px; }
-.chapter-description { margin-top: 14px; color: var(--text-secondary); font-size: 14px; line-height: 20px; }
+.chapter1-intro h2 { margin-top: clamp(14px, 2.2vh, 21px); font-family: "Playfair Display", serif; font-size: 27px; font-weight: 500; line-height: 31px; }
+.chapter-description { margin-top: clamp(8px, 1.5vh, 14px); color: var(--text-secondary); font-size: 14px; line-height: 20px; }
 
-.moment-grid { width: calc(100% - 50px); margin: 54px auto 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.moment-card { height: 211px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; overflow: hidden; border: 1px solid var(--soft-border); border-radius: 8px; background: rgba(25, 27, 27, 0.92); cursor: pointer; transition: border-color .15s ease, box-shadow .15s ease; }
+.moment-grid { width: calc(100% - 50px); margin: clamp(24px, 4vh, 54px) auto 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(10px, 1.6vh, 16px); }
+.moment-card { height: clamp(156px, 23vh, 211px); position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; overflow: hidden; border: 1px solid var(--soft-border); border-radius: 8px; background: rgba(25, 27, 27, 0.92); cursor: pointer; transition: border-color .15s ease, box-shadow .15s ease; }
 .moment-card:hover { border-color: rgba(242, 202, 80, 0.42); }
 .moment-card.selected { border-color: var(--gold); box-shadow: 0 0 7px rgba(242, 202, 80, 0.18); }
-.moment-icon { width: 78px; height: 78px; margin-top: 34px; display: block; object-fit: cover; border-radius: 50%; }
+.moment-icon { width: clamp(58px, 8.5vh, 78px); height: clamp(58px, 8.5vh, 78px); margin-top: clamp(18px, 3vh, 34px); display: block; object-fit: cover; border-radius: 50%; }
 .moment-card[data-moment="urban-escape"] .moment-icon { transform: scale(1.65); }
 .moment-card[data-moment="new-journey"] .moment-icon { transform: scale(1.9); }
 .moment-card[data-moment="midnight-move"] .moment-icon { transform: scale(1.65); }
@@ -52,7 +52,7 @@ button { border: 0; background: none; color: inherit; font: inherit; }
 .check-icon { width: 17px; height: 17px; position: absolute; z-index: 2; top: 12px; right: 12px; display: none; }
 .moment-card.selected .check-icon { display: block; }
 
-.continue-button { width: calc(100% - 50px); height: 58px; margin: 52px auto 0; display: block; border: 1px solid var(--gold); border-radius: 8px; color: var(--gold); font-size: 13px; line-height: 1; letter-spacing: 2.3px; cursor: pointer; }
+.continue-button { width: calc(100% - 50px); height: clamp(50px, 7vh, 58px); margin: clamp(16px, 3vh, 52px) auto 0; display: block; border: 1px solid var(--gold); border-radius: 8px; color: var(--gold); font-size: 13px; line-height: 1; letter-spacing: 2.3px; cursor: pointer; }
 .continue-button:hover { background: rgba(242, 202, 80, 0.07); }
 .continue-button:active { transform: scale(.99); }
 .continue-button[hidden] { display: none; }
