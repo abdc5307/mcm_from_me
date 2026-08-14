@@ -1,5 +1,17 @@
 const chapterItems = document.querySelectorAll(".chapter-item");
-const sessionId = localStorage.getItem("journeySessionId");
+
+function getActiveJourneySessionId() {
+  try {
+    if (window.parent === window || window.parent.document.body.dataset.journeyActive !== "true") {
+      return null;
+    }
+
+    return window.parent.localStorage.getItem("journeySessionId");
+  } catch (error) {
+    console.error("Journey session context could not be read", error);
+    return null;
+  }
+}
 
 function updateChapterProgress(currentChapter) {
   const currentNumber = Number.parseInt(currentChapter?.replace("C", ""), 10);
@@ -26,6 +38,7 @@ function updateChapterProgress(currentChapter) {
 }
 
 async function syncChapterProgress() {
+  const sessionId = getActiveJourneySessionId();
   if (!sessionId) return;
 
   try {

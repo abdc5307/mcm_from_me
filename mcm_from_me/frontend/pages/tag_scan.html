@@ -19,6 +19,7 @@
   </head>
 
   <body
+    data-journey-active="true"
     data-menu-url="{% url 'hamburger_menu' %}"
     data-verify-url="{% url 'verify_product_tag' %}"
     data-chapter2-url="{% url 'chapter2' %}"
@@ -144,8 +145,9 @@
       </section>
     </main>
 
+    <script src="{% static 'js/vendor/jsQR.min.js' %}?v=1.4.0" defer></script>
     <script
-      src="{% static 'js/tag_scan.js' %}?v=development-fallback-2"
+      src="{% static 'js/tag_scan.js' %}?v=qr-camera-3"
       defer
     ></script>
     <script src="{% static 'js/menu_toggle.js' %}" defer></script>

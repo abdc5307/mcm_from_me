@@ -10,12 +10,19 @@ const retakeButton = $("retakeButton");
 const flashButton = $("flashButton");
 const errorBox = $("cameraError");
 const devTestTagButton = $("devTestTagButton");
+const hamburgerButton = document.querySelector(".menu-button");
 let stream = null;
 let facingMode = "environment";
 let torchOn = false;
 let recognitionGeneration = 0;
 let nfcAbortController = null;
 let verifyingTag = false;
+
+function setHamburgerButtonVisible(visible) {
+  if (!hamburgerButton) return;
+  hamburgerButton.hidden = !visible;
+  hamburgerButton.style.display = visible ? "" : "none";
+}
 
 function stopTagRecognition() {
   recognitionGeneration += 1;
@@ -82,35 +89,71 @@ async function verifyProductTag(tagCode) {
 }
 
 async function startQrRecognition(generation) {
-  if (!("BarcodeDetector" in window)) return false;
+  if ("BarcodeDetector" in window) {
+    try {
+      const formats = await BarcodeDetector.getSupportedFormats();
+      if (formats.includes("qr_code")) {
+        const detector = new BarcodeDetector({ formats: ["qr_code"] });
 
-  try {
-    const formats = await BarcodeDetector.getSupportedFormats();
-    if (!formats.includes("qr_code")) return false;
-    const detector = new BarcodeDetector({ formats: ["qr_code"] });
-
-    const detectFrame = async () => {
-      if (generation !== recognitionGeneration || !stream || verifyingTag) return;
-      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-        try {
-          const codes = await detector.detect(video);
-          if (codes[0]?.rawValue) {
-            await verifyProductTag(codes[0].rawValue);
-            return;
+        const detectFrame = async () => {
+          if (generation !== recognitionGeneration || !stream || verifyingTag) return;
+          if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+            try {
+              const codes = await detector.detect(video);
+              if (codes[0]?.rawValue) {
+                await verifyProductTag(codes[0].rawValue);
+                return;
+              }
+            } catch (error) {
+              console.error("QR recognition failed", error);
+            }
           }
-        } catch (error) {
-          console.error("QR recognition failed", error);
-        }
-      }
-      window.setTimeout(detectFrame, 180);
-    };
+          window.setTimeout(detectFrame, 180);
+        };
 
-    detectFrame();
-    return true;
-  } catch (error) {
-    console.error("QR detector initialization failed", error);
-    return false;
+        detectFrame();
+        return true;
+      }
+    } catch (error) {
+      console.error("Native QR detector initialization failed", error);
+    }
   }
+
+  if (typeof window.jsQR !== "function") return false;
+
+  const qrCanvas = document.createElement("canvas");
+  const qrContext = qrCanvas.getContext("2d", { willReadFrequently: true });
+  if (!qrContext) return false;
+
+  const detectFrame = async () => {
+    if (generation !== recognitionGeneration || !stream || verifyingTag) return;
+
+    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && video.videoWidth) {
+      try {
+        const scanWidth = Math.min(video.videoWidth, 640);
+        const scanHeight = Math.round(scanWidth * video.videoHeight / video.videoWidth);
+        qrCanvas.width = scanWidth;
+        qrCanvas.height = scanHeight;
+        qrContext.drawImage(video, 0, 0, scanWidth, scanHeight);
+        const frame = qrContext.getImageData(0, 0, scanWidth, scanHeight);
+        const code = window.jsQR(frame.data, scanWidth, scanHeight, {
+          inversionAttempts: "attemptBoth",
+        });
+
+        if (code?.data) {
+          await verifyProductTag(code.data);
+          return;
+        }
+      } catch (error) {
+        console.error("QR fallback recognition failed", error);
+      }
+    }
+
+    window.setTimeout(detectFrame, 180);
+  };
+
+  detectFrame();
+  return true;
 }
 
 async function startNfcRecognition(generation) {
@@ -204,6 +247,7 @@ function resetPreview() {
 }
 
 scanButton.addEventListener("click", async () => {
+  setHamburgerButtonVisible(false);
   cameraScreen.classList.add("open");
   cameraScreen.setAttribute("aria-hidden", "false");
   document.body.classList.add("camera-open");
@@ -219,6 +263,7 @@ $("closeCameraButton").addEventListener("click", () => {
   cameraScreen.classList.remove("open");
   cameraScreen.setAttribute("aria-hidden", "true");
   document.body.classList.remove("camera-open");
+  setHamburgerButtonVisible(true);
 });
 
 $("retryCameraButton").addEventListener("click", async () => {
