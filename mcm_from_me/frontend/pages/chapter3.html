@@ -1,17 +1,30 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MCM FROM ME - Chapter 3</title>
-    <link rel="stylesheet" href="../css/chapter3.css" />
+    <link rel="stylesheet" href="{% static 'css/chapter3.css' %}?v=journey-flow-1" />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
   </head>
 
-  <body>
+  <body
+    data-menu-url="{% url 'hamburger_menu' %}"
+    data-journey-active="true"
+    data-session-status-url="{% url 'init_session' %}"
+    data-style-select-url="{% url 'chapter3-select' %}"
+    data-style-save-url="{% url 'save_style_options' %}"
+    data-tag-scan-url="{% url 'tag_scan' %}"
+    data-chapter4-url="{% url 'chapter4' %}"
+    data-top-handle-image="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+    data-crossbody-image="{% static 'images/Ella_Boston_bag_cross.png' %}"
+  >
+    <div hidden>{% csrf_token %}</div>
     <main class="chapter3-page">
       <header class="chapter3-header">
         <button type="button" class="menu-button" aria-label="메뉴 열기">
-          <img src="../images/hamburger_bar.svg" alt="" aria-hidden="true" />
+          <img src="{% static 'images/hamburger_bar.svg' %}" alt="" aria-hidden="true" />
         </button>
         <h1>MCM FROM ME</h1>
       </header>
@@ -25,20 +38,17 @@
         <div class="piece-preview-frame">
           <img
             id="piecePreview"
-            class="piece-preview piece-preview--crossbody"
-            src="../images/Ella_Boston_bag_cross.png"
-            alt="Crossbody 스타일의 Ella Boston Bag"
+            class="piece-preview piece-preview--top-handle"
+            src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+            data-fallback-src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+            alt="Selected MCM piece"
           />
         </div>
 
         <article class="story-panel">
-          <img src="../images/four_line.svg" alt="" aria-hidden="true" />
-          <h3 id="storyHeading">Your story begins with a classic.</h3>
-          <p id="storyDescription">
-            크로스바디의 자유로움에<br />
-            로켓 참의 에너지를 더했습니다.<br />
-            당신만의 방식으로 새로운 여정을 시작해 보세요.
-          </p>
+          <img src="{% static 'images/four_line.svg' %}" alt="" aria-hidden="true" />
+          <h3 id="storyHeading">클래식에서 시작되는 당신의 이야기.</h3>
+          <p id="storyDescription">당신만의 방식으로 피스를 완성해 보세요.</p>
         </article>
       </section>
 
@@ -47,21 +57,21 @@
 
         <div class="piece-name-row">
           <span>PIECE</span>
-          <strong>Ella Boston Bag</strong>
+          <strong id="configurationPieceName">Ella Boston Bag</strong>
         </div>
 
         <fieldset class="option-group" data-option-group="carry">
           <legend>CARRY</legend>
           <div class="option-grid">
-            <button type="button" class="style-option" data-value="top-handle" aria-pressed="false">
-              <img class="option-check" src="../images/check_empty.svg" alt="선택됨" />
-              <img class="option-icon" src="../images/Top_handle.svg" alt="" />
-              <span>TOP HANDLE</span>
+            <button type="button" class="style-option" data-value="TOP_HANDLE" data-ai-value="top_handle" aria-pressed="false">
+              <img class="option-check" src="{% static 'images/check_full.svg' %}" alt="Selected" />
+              <img class="option-icon" src="{% static 'images/Top_handle.svg' %}" alt="" />
+              <span>탑 핸들</span>
             </button>
-            <button type="button" class="style-option selected" data-value="crossbody" aria-pressed="true">
-              <img class="option-check" src="../images/check_empty.svg" alt="선택됨" />
-              <img class="option-icon" src="../images/crossbody.svg" alt="" />
-              <span>CROSSBODY</span>
+            <button type="button" class="style-option" data-value="CROSSBODY" data-ai-value="cross_body" aria-pressed="false">
+              <img class="option-check" src="{% static 'images/check_full.svg' %}" alt="Selected" />
+              <img class="option-icon" src="{% static 'images/crossbody.svg' %}" alt="" />
+              <span>크로스바디</span>
             </button>
           </div>
         </fieldset>
@@ -69,41 +79,37 @@
         <fieldset class="option-group" data-option-group="detail">
           <legend>DETAIL</legend>
           <div class="option-grid">
-            <button type="button" class="style-option" data-value="basic-charm" aria-pressed="false">
-              <img class="option-check" src="../images/check_empty.svg" alt="선택됨" />
-              <img class="option-icon" src="../images/pentagon.svg" alt="" />
-              <span>BASIC CHARM</span>
+            <button type="button" class="style-option" data-value="BASIC_CHARM" data-ai-value="basic_charm" aria-pressed="false">
+              <img class="option-check" src="{% static 'images/check_full.svg' %}" alt="Selected" />
+              <img class="option-icon" src="{% static 'images/pentagon.svg' %}" alt="" />
+              <span>베이직 참</span>
             </button>
-            <button type="button" class="style-option selected" data-value="rocket-charm" aria-pressed="true">
-              <img class="option-check" src="../images/check_empty.svg" alt="선택됨" />
-              <img class="option-icon" src="../images/Rocket_charm.svg" alt="" />
-              <span>ROCKET CHARM</span>
+            <button type="button" class="style-option" data-value="ROCKET_CHARM" data-ai-value="rocket_charm" aria-pressed="false">
+              <img class="option-check" src="{% static 'images/check_full.svg' %}" alt="Selected" />
+              <img class="option-icon" src="{% static 'images/Rocket_charm.svg' %}" alt="" />
+              <span>로켓 참</span>
             </button>
           </div>
         </fieldset>
 
-        <button type="button" class="next-button" id="nextStepButton">NEXT STEP</button>
+        <p class="style-error" id="styleError" role="alert" hidden></p>
+        <button type="button" class="next-button" id="nextStepButton" disabled>NEXT STEP</button>
       </section>
 
       <section class="style-result" id="styleResult" hidden>
         <div class="result-image-frame">
           <img
             id="resultPreview"
-            class="result-image result-image--crossbody"
-            src="../images/Ella_Boston_bag_cross.png"
-            alt="완성된 Ella Boston Bag 스타일"
+            class="result-image result-image--top-handle"
+            src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+            data-fallback-src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+            alt="Completed MCM style"
           />
         </div>
 
         <article class="result-story-card">
           <h2>Built to move.<br />Made to be yours.</h2>
-          <p id="resultStoryText">
-            당신은 클래식한 구조에 크로스바디의 자유로움과<br />
-            로켓 참의 에너지를 더했습니다.<br />
-            익숙한 형태를 자신만의 방식으로 변화시킨<br />
-            이 스타일은 새로운 여정을 향해 나아가는 당신을<br />
-            닮았습니다.
-          </p>
+          <p id="resultStoryText">당신이 선택한 스타일로 다음 챕터를 시작할 준비가 되었습니다.</p>
         </article>
 
         <article class="style-summary-card">
@@ -111,30 +117,21 @@
           <h2>YOUR STYLE</h2>
 
           <dl class="style-summary-list">
-            <div>
-              <dt>PIECE</dt>
-              <dd>Ella Boston Bag</dd>
-            </div>
-            <div>
-              <dt>CARRY</dt>
-              <dd id="summaryCarry">Crossbody</dd>
-            </div>
-            <div>
-              <dt>DETAIL</dt>
-              <dd id="summaryDetail">ROCKET CHARM</dd>
-            </div>
-            <div>
-              <dt>MOMENT</dt>
-              <dd id="summaryMoment">New Journey</dd>
-            </div>
+            <div><dt>PIECE</dt><dd id="summaryPiece">Ella Boston Bag</dd></div>
+            <div><dt>CARRY</dt><dd id="summaryCarry">-</dd></div>
+            <div><dt>DETAIL</dt><dd id="summaryDetail">-</dd></div>
+            <div><dt>MOMENT</dt><dd id="summaryMoment">-</dd></div>
           </dl>
 
-          <button type="button" class="complete-style-button">COMPLETE MY STYLE</button>
+          <p class="style-error" id="summaryError" role="alert" hidden></p>
+          <button type="button" class="complete-style-button" id="completeStyleButton">COMPLETE MY STYLE</button>
           <p class="summary-caption">A HERITAGE REIMAGINED FOR YOU</p>
         </article>
       </section>
     </main>
 
-    <script src="../js/chapter3.js" defer></script>
+    <script src="{% static 'js/csrf.js' %}?v=1" defer></script>
+    <script src="{% static 'js/chapter3.js' %}?v=journey-flow-ko-1" defer></script>
+    <script src="{% static 'js/menu_toggle.js' %}" defer></script>
   </body>
 </html>
