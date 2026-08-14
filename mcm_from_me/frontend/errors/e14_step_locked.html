@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCM FROM ME</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/e14_step_locked.css" />
+</head>
+<body>
+    <div class="app-container">
+        <header class="common-header">
+            <button type="button" class="menu-button" aria-label="메뉴 열기">
+                <img src="../images/hamburger_bar.svg" alt="메뉴" aria-hidden="true" />
+            </button>
+            <h1>MCM FROM ME</h1>
+        </header>
+
+        <main class="page-content locked-container">
+            <!-- 잠금 아이콘 & 원형 그래픽 -->
+            <div class="graphic-wrapper">
+                <img src="../images/lock_circle.svg" alt="잠금 그래픽" class="graphic-img" />
+            </div>
+
+            <!-- 안내 문구 -->
+            <div class="text-group step_locked">
+                <h2 class="title-en">Complete the previous<br>chapter first.</h2>
+                <p class="desc-kr">이전 단계를 완료한 후 다음 Journey로<br>이동해 주세요.</p>
+            </div>
+
+            <!-- 액션 버튼 -->
+            <div class="action-group">
+                <a href="javascript:history.back()" class="btn-goback">GO BACK</a>
+                <a href="../pages/current_chapter.html" class="btn-review">REVIEW CURRENT CHAPTER</a>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
