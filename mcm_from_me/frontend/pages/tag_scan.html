@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -12,11 +13,20 @@
 
     <link
       rel="stylesheet"
-      href="../css/tag_scan.css"
+      href="{% static 'css/tag_scan.css' %}?v=fallback-button-border-4"
     />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
   </head>
 
-  <body>
+  <body
+    data-journey-active="true"
+    data-menu-url="{% url 'hamburger_menu' %}"
+    data-verify-url="{% url 'verify_product_tag' %}"
+    data-chapter2-url="{% url 'chapter2' %}"
+    data-error-e02-url="{% url 'error_e02' %}"
+    data-error-e03-url="{% url 'error_e03' %}"
+    data-error-e04-url="{% url 'error_e04' %}"
+  >
     <main class="tag-scan-page">
       <!-- 헤더 -->
       <header class="header">
@@ -26,7 +36,7 @@
           aria-label="메뉴 열기"
         >
           <img
-            src="../images/hamburger_bar.svg"
+            src="{% static 'images/hamburger_bar.svg' %}"
             alt=""
             aria-hidden="true"
           />
@@ -51,7 +61,7 @@
       <!-- 제품 이미지 -->
       <section class="product-section">
         <img
-          src="../images/MCM_NFC.png"
+          src="{% static 'images/MCM_NFC.png' %}"
           alt="NFC와 QR 태그가 포함된 MCM 제품"
           class="product-image"
         />
@@ -89,9 +99,7 @@
 
         <div class="bottom-indicator"></div>
       </section>
-    </main>
-
-    <section class="camera-screen" id="cameraScreen" aria-hidden="true">
+      <section class="camera-screen" id="cameraScreen" aria-hidden="true">
       <div class="camera-view">
         <video id="cameraVideo" autoplay muted playsinline></video>
         <canvas id="cameraCanvas" hidden></canvas>
@@ -122,13 +130,26 @@
       </div>
       <div class="camera-error" id="cameraError" role="alert" hidden>
         <p id="cameraErrorMessage"></p>
+        {% if is_development %}
+          <button
+            type="button"
+            id="devTestTagButton"
+            data-tag-code="{{ development_tag_code }}"
+            hidden
+          >
+            TEST WITH {{ development_tag_code }}
+          </button>
+        {% endif %}
         <button type="button" id="retryCameraButton">다시 시도</button>
       </div>
-    </section>
+      </section>
+    </main>
 
+    <script src="{% static 'js/vendor/jsQR.min.js' %}?v=1.4.0" defer></script>
     <script
-      src="../js/tag_scan.js"
+      src="{% static 'js/tag_scan.js' %}?v=qr-camera-3"
       defer
     ></script>
+    <script src="{% static 'js/menu_toggle.js' %}" defer></script>
   </body>
 </html>

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -7,10 +8,11 @@
       content="width=device-width, initial-scale=1.0"
     />
     <title>MCM FROM ME - Chapter 2</title>
-    <link rel="stylesheet" href="../css/chapter2.css" />
+    <link rel="stylesheet" href="{% static 'css/chapter2.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
   </head>
 
-  <body>
+  <body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
     <main class="chapter-page">
       <header class="chapter-header">
         <button
@@ -19,7 +21,7 @@
           aria-label="메뉴 열기"
         >
           <img
-            src="../images/hamburger_bar.svg"
+            src="{% static 'images/hamburger_bar.svg' %}"
             alt=""
             aria-hidden="true"
           />
@@ -31,24 +33,26 @@
       <section class="chapter-intro">
         <p class="chapter-label">CHAPTER 2</p>
         <h2 class="piece-title">
-          Your piece is <em>ELLA</em><br />
-          <em>BOSTON BAG.</em>
+          Your piece is<br />
+          <em id="productName">ELLA BOSTON BAG.</em>
         </h2>
       </section>
 
       <section class="piece-content">
         <img
           class="piece-image"
-          src="../images/Small_Ella_Boston_Bag.jpg"
+          src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+          data-fallback-src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+          id="productImage"
           alt="MCM Ella Boston Bag"
         />
 
         <article class="story-card">
-          <p class="story-heading">
+          <p class="story-heading" id="productStoryTitle">
             <span class="gold-dot" aria-hidden="true"></span>
             A timeless shape for what comes next.
           </p>
-          <p class="story-description">
+          <p class="story-description" id="productStoryDescription">
             여행용 트렁크에서 이어진 구조가<br />
             새로운 시작을 위한 공간을 엽니다.
           </p>
@@ -62,5 +66,7 @@
 
       <button type="button" class="wear-button">WEAR THE PIECE</button>
     </main>
+    <script src="{% static 'js/chapter2.js' %}" defer></script>
+    <script src="{% static 'js/menu_toggle.js' %}" defer></script>
   </body>
 </html>

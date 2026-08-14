@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
   </head>
 
-  <body data-menu-url="{% url 'hamburger_menu' %}">
+  <body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
     <main class="chapter1-page">
       <header class="chapter1-header">
         <button type="button" class="menu-button" aria-label="메뉴 열기">
@@ -57,12 +57,19 @@
         </button>
       </section>
 
-      <button type="button" class="continue-button" id="continueButton" hidden>
+      <button
+        type="button"
+        class="continue-button"
+        id="continueButton"
+        data-save-url="{% url 'save_moment' %}"
+        data-next-url="{% url 'tag_scan' %}"
+        hidden
+      >
         CONTINUE
       </button>
     </main>
 
-    <script src="{% static 'js/chapter1.js' %}" defer></script>
+    <script src="{% static 'js/chapter1.js' %}?v=moment-save-1" defer></script>
     <script src="{% static 'js/menu_toggle.js' %}" defer></script>
   </body>
 </html>

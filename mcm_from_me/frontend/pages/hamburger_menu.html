@@ -8,10 +8,13 @@
       content="width=device-width, initial-scale=1.0"
     />
     <title>MCM FROM ME - Journey Menu</title>
-    <link rel="stylesheet" href="{% static 'css/hamburger_menu.css' %}?v=overlay-fit-3" />
+    <link rel="stylesheet" href="{% static 'css/hamburger_menu.css' %}?v=chapter-progress-1" />
   </head>
 
-  <body{% if request.GET.overlay %} class="menu-overlay-document"{% endif %}>
+  <body
+    data-session-status-url="{% url 'init_session' %}"
+    {% if request.GET.overlay %}class="menu-overlay-document"{% endif %}
+  >
     <main class="menu-page">
       <header class="menu-header">
         <h1>MCM FROM ME</h1>
@@ -27,14 +30,14 @@
           <p class="section-label">MEET YOUR PIECE</p>
 
           <ol class="chapter-list">
-            <li class="chapter-item chapter-item--complete">
+            <li class="chapter-item chapter-item--current" aria-current="step">
               <button type="button" class="chapter-link" data-chapter="1">
                 <strong>CHAPTER 1</strong>
                 <span>Choose Your Moment</span>
               </button>
             </li>
 
-            <li class="chapter-item chapter-item--current" aria-current="step">
+            <li class="chapter-item chapter-item--locked">
               <button type="button" class="chapter-link" data-chapter="2">
                 <strong>CHAPTER 2</strong>
                 <span>Meet Your Piece</span>
@@ -73,5 +76,6 @@
         </div>
       </aside>
     </main>
+    <script src="{% static 'js/hamburger_menu.js' %}?v=chapter-progress-2" defer></script>
   </body>
 </html>
