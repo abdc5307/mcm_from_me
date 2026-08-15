@@ -25,6 +25,7 @@ class JourneySessionSerializer(serializers.ModelSerializer):
             'photo_url', 
             'is_completed', 
             'product_id', 
-            'product_name'
+            'product_name',
+            'ai_story_text'
         ]
         read_only_fields = ['id', 'is_completed']

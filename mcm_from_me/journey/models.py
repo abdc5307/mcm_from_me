@@ -41,5 +41,7 @@ class JourneySession(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    ai_story_text = models.TextField(null=True, blank=True)
+
     def __str__(self):
         return f"Session {self.id} | {self.current_chapter} ({self.last_active_screen})"
