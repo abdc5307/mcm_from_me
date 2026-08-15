@@ -5,7 +5,6 @@ from django.db.models import Q
 
 from .models import JourneySession, Product
 from .serializers import JourneySessionSerializer, ProductSerializer
-from .decorators import validate_chapter_access
 
 from .utils import generate_product_story
 
@@ -135,21 +134,32 @@ def save_style_options(request):
     session_id = request.data.get('session_id')
     carry_option = request.data.get('carry_option')    # TOP_HANDLE, CROSSBODY
     detail_option = request.data.get('detail_option')  # BASIC_CHARM, ROCKET_CHARM
+    action = str(request.data.get('action', 'COMPLETE')).upper()
 
-    if not carry_option or not detail_option:
+    valid_carry_options = {'TOP_HANDLE', 'CROSSBODY'}
+    valid_detail_options = {'BASIC_CHARM', 'ROCKET_CHARM'}
+
+    if carry_option not in valid_carry_options or detail_option not in valid_detail_options:
+        return Response({'errorCode': 'E-05', 'message': 'Option Unavailable'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if action not in {'SUMMARY', 'COMPLETE'}:
         return Response({'errorCode': 'E-05', 'message': 'Option Unavailable'}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         session = JourneySession.objects.get(id=session_id)
         session.carry_option = carry_option
         session.detail_option = detail_option
-        session.current_chapter = "C4"
-        session.last_active_screen = "C4-01"
+        session.current_chapter = "C4" if action == 'COMPLETE' else "C3"
+        session.last_active_screen = "C4-01" if action == 'COMPLETE' else "C3-SUMMARY"
         session.save()
 
         return Response({
             'status': 'SUCCESS',
-            'nextScreen': 'C4-01'
+            'nextScreen': session.last_active_screen,
+            'style': {
+                'carry_option': session.carry_option,
+                'detail_option': session.detail_option,
+            },
         }, status=status.HTTP_200_OK)
     except JourneySession.DoesNotExist:
         return Response({'errorCode': 'E-01', 'message': 'Session not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -202,8 +212,8 @@ def complete_journey(request):
 
 # [H-07] Chapter 이동 유효성 검사 API
 @api_view(['POST'])
-@validate_chapter_access
 def navigate_chapter(request):
+    session_id = request.data.get('session_id')
     target_chapter = request.data.get('target_chapter')
     return Response({'status': 'SUCCESS', 'targetChapter': target_chapter}, status=status.HTTP_200_OK)
 
@@ -245,3 +255,36 @@ def verify_product_tag(request):
 
     except Exception:
         return Response({'errorCode': 'E-04', 'message': 'Product Details Unavailable'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    if target_chapter not in {'C1', 'C2', 'C3', 'C4', 'C5'}:
+        return Response({'errorCode': 'E-14', 'message': 'Invalid chapter'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        session = JourneySession.objects.get(id=session_id)
+    except JourneySession.DoesNotExist:
+        return Response({'errorCode': 'E-01', 'message': 'Session not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    current_number = int(session.current_chapter[1:]) if session.current_chapter.startswith('C') else 5
+    target_number = int(target_chapter[1:])
+
+    if target_number > current_number + 1:
+        return Response({
+            'errorCode': 'E-14',
+            'message': 'Complete the previous chapter first',
+            'lastActiveScreen': session.last_active_screen,
+        }, status=status.HTTP_403_FORBIDDEN)
+
+    if target_chapter == 'C3' and not session.product_id:
+        return Response({'errorCode': 'E-04', 'message': 'Product Details Unavailable'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if target_number == current_number + 1:
+        session.current_chapter = target_chapter
+        session.last_active_screen = f'{target_chapter}-01'
+        session.save(update_fields=['current_chapter', 'last_active_screen', 'updated_at'])
+
+    return Response({
+        'status': 'SUCCESS',
+        'targetChapter': target_chapter,
+        'currentChapter': session.current_chapter,
+        'lastActiveScreen': session.last_active_screen,
+    }, status=status.HTTP_200_OK)

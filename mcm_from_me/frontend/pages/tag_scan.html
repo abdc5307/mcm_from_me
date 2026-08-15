@@ -27,6 +27,7 @@
     data-error-e03-url="{% url 'error_e03' %}"
     data-error-e04-url="{% url 'error_e04' %}"
   >
+    <div hidden aria-hidden="true">{% csrf_token %}</div>
     <main class="tag-scan-page">
       <!-- 헤더 -->
       <header class="header">
@@ -147,7 +148,7 @@
 
     <script src="{% static 'js/vendor/jsQR.min.js' %}?v=1.4.0" defer></script>
     <script
-      src="{% static 'js/tag_scan.js' %}?v=qr-camera-3"
+      src="{% static 'js/tag_scan.js' %}?v=qr-camera-csrf-1"
       defer
     ></script>
     <script src="{% static 'js/menu_toggle.js' %}" defer></script>
