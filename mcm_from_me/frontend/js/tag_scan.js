@@ -77,7 +77,10 @@ async function verifyProductTag(tagCode) {
     const data = await response.json();
 
     if (response.ok && data.status === "SUCCESS" && data.nextScreen === "C2-07" && data.product) {
-      sessionStorage.setItem("journeyProduct", JSON.stringify(data.product));
+      sessionStorage.setItem("journeyProduct", JSON.stringify({
+        ...data.product,
+        story_text: data.story_text,
+      }));
       stopCamera();
       window.location.assign(document.body.dataset.chapter2Url);
       return;

@@ -41,9 +41,12 @@ urlpatterns = [
     path('chapter2/', TemplateView.as_view(template_name='chapter2.html'), name='chapter2'),
     path('chapter3/', TemplateView.as_view(template_name='chapter3.html'), name='chapter3'),
     path('chapter4/', TemplateView.as_view(template_name='chapter4_camera_ready.html'), name='chapter4'),
+    path('chapter5/', TemplateView.as_view(template_name='chapter5_discover.html'), name='chapter5'),
+    path('errors/network/', TemplateView.as_view(template_name='e01_network_error.html'), name='error_e01'),
     path('errors/tag-not-recognized/', TemplateView.as_view(template_name='e02_qr_scan_failed.html'), name='error_e02'),
     path('errors/unsupported-product/', TemplateView.as_view(template_name='e03_unsupported_product.html'), name='error_e03'),
     path('errors/product-unavailable/', TemplateView.as_view(template_name='e04_product_details_unavailable.html'), name='error_e04'),
+    path('errors/step-locked/', TemplateView.as_view(template_name='e14_step_locked.html'), name='error_e14'),
     path(
         'hamburger-menu/',
         xframe_options_sameorigin(TemplateView.as_view(template_name='hamburger_menu.html')),

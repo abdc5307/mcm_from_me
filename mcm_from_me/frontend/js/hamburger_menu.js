@@ -1,4 +1,40 @@
 const chapterItems = document.querySelectorAll(".chapter-item");
+const chapterLinks = document.querySelectorAll(".chapter-link");
+const resumeButton = document.querySelector(".resume-button");
+const advisorLink = document.querySelector(".advisor-link");
+
+function navigateParent(url) {
+  window.parent.location.assign(url);
+}
+
+function chapterUrl(chapterNumber, lastActiveScreen = "") {
+  if (chapterNumber === 2 && lastActiveScreen === "C2-01") {
+    return document.body.dataset.tagScanUrl;
+  }
+
+  return document.body.dataset[`chapter${chapterNumber}Url`];
+}
+
+function screenUrl(lastActiveScreen) {
+  if (lastActiveScreen === "C2-01") return document.body.dataset.tagScanUrl;
+  const chapterNumber = Number.parseInt(lastActiveScreen?.match(/^C(\d)/)?.[1], 10);
+  return chapterUrl(chapterNumber, lastActiveScreen);
+}
+
+async function postJourneyAction(url, body) {
+  const response = await fetch(url, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "X-CSRFToken": window.mcmCsrf.getToken(),
+    },
+    body: JSON.stringify(body),
+  });
+  const data = await response.json();
+  return { response, data };
+}
 
 function getActiveJourneySessionId() {
   try {
@@ -58,3 +94,75 @@ async function syncChapterProgress() {
 }
 
 syncChapterProgress();
+
+chapterLinks.forEach((link) => {
+  link.addEventListener("click", async () => {
+    if (link.disabled) return;
+
+    const sessionId = getActiveJourneySessionId();
+    if (!sessionId) {
+      navigateParent(document.body.dataset.errorE01Url);
+      return;
+    }
+
+    const chapterNumber = Number.parseInt(link.dataset.chapter, 10);
+    link.disabled = true;
+
+    try {
+      const { response, data } = await postJourneyAction(document.body.dataset.navigateUrl, {
+        session_id: sessionId,
+        target_chapter: `C${chapterNumber}`,
+        navigation_only: true,
+      });
+
+      if (data.errorCode === "E-14") {
+        navigateParent(document.body.dataset.errorE14Url);
+        return;
+      }
+      if (!response.ok || data.status !== "SUCCESS") {
+        navigateParent(document.body.dataset.errorE01Url);
+        return;
+      }
+
+      navigateParent(chapterUrl(chapterNumber, data.lastActiveScreen));
+    } catch (error) {
+      console.error("Chapter navigation failed", error);
+      navigateParent(document.body.dataset.errorE01Url);
+    } finally {
+      link.disabled = false;
+    }
+  });
+});
+
+resumeButton?.addEventListener("click", async () => {
+  if (resumeButton.disabled) return;
+
+  const sessionId = getActiveJourneySessionId();
+  if (!sessionId) {
+    navigateParent(document.body.dataset.errorE01Url);
+    return;
+  }
+
+  resumeButton.disabled = true;
+  try {
+    const { response, data } = await postJourneyAction(document.body.dataset.resumeUrl, {
+      session_id: sessionId,
+    });
+    const destination = screenUrl(data.lastActiveScreen);
+
+    if (!response.ok || data.status !== "SUCCESS" || !destination) {
+      navigateParent(document.body.dataset.errorE01Url);
+      return;
+    }
+    navigateParent(destination);
+  } catch (error) {
+    console.error("Journey resume failed", error);
+    navigateParent(document.body.dataset.errorE01Url);
+  } finally {
+    resumeButton.disabled = false;
+  }
+});
+
+advisorLink?.addEventListener("click", () => {
+  navigateParent(document.body.dataset.errorE01Url);
+});

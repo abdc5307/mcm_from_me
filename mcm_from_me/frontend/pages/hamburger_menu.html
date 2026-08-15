@@ -13,8 +13,19 @@
 
   <body
     data-session-status-url="{% url 'init_session' %}"
+    data-navigate-url="{% url 'navigate_chapter' %}"
+    data-resume-url="{% url 'resume_session' %}"
+    data-chapter1-url="{% url 'chapter1' %}"
+    data-tag-scan-url="{% url 'tag_scan' %}"
+    data-chapter2-url="{% url 'chapter2' %}"
+    data-chapter3-url="{% url 'chapter3' %}"
+    data-chapter4-url="{% url 'chapter4' %}"
+    data-chapter5-url="{% url 'chapter5' %}"
+    data-error-e01-url="{% url 'error_e01' %}"
+    data-error-e14-url="{% url 'error_e14' %}"
     {% if request.GET.overlay %}class="menu-overlay-document"{% endif %}
   >
+    <div hidden aria-hidden="true">{% csrf_token %}</div>
     <main class="menu-page">
       <header class="menu-header">
         <h1>MCM FROM ME</h1>
@@ -76,6 +87,7 @@
         </div>
       </aside>
     </main>
-    <script src="{% static 'js/hamburger_menu.js' %}?v=chapter-progress-2" defer></script>
+    <script src="{% static 'js/csrf.js' %}?v=1" defer></script>
+    <script src="{% static 'js/hamburger_menu.js' %}?v=chapter-navigation-1" defer></script>
   </body>
 </html>

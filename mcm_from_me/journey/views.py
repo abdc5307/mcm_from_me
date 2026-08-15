@@ -126,8 +126,6 @@ def verify_product_tag(request):
 
     except Exception:
         return Response({'errorCode': 'E-04', 'message': 'Product Details Unavailable'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 # [C3-11 / C3-17] Chapter 3 스타일 옵션 저장
 @api_view(['POST'])
 def save_style_options(request):
@@ -215,7 +213,41 @@ def complete_journey(request):
 def navigate_chapter(request):
     session_id = request.data.get('session_id')
     target_chapter = request.data.get('target_chapter')
-    return Response({'status': 'SUCCESS', 'targetChapter': target_chapter}, status=status.HTTP_200_OK)
+    navigation_only = request.data.get('navigation_only') is True
+
+    if target_chapter not in {'C1', 'C2', 'C3', 'C4', 'C5'}:
+        return Response({'errorCode': 'E-14', 'message': 'Invalid chapter'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        session = JourneySession.objects.get(id=session_id)
+    except JourneySession.DoesNotExist:
+        return Response({'errorCode': 'E-01', 'message': 'Session not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    current_number = int(session.current_chapter[1:]) if session.current_chapter.startswith('C') else 5
+    target_number = int(target_chapter[1:])
+    chapter_is_locked = target_number > current_number if navigation_only else target_number > current_number + 1
+
+    if chapter_is_locked:
+        return Response({
+            'errorCode': 'E-14',
+            'message': 'Complete the previous chapter first',
+            'lastActiveScreen': session.last_active_screen,
+        }, status=status.HTTP_403_FORBIDDEN)
+
+    if target_chapter == 'C3' and not session.product_id:
+        return Response({'errorCode': 'E-04', 'message': 'Product Details Unavailable'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if not navigation_only and target_number == current_number + 1:
+        session.current_chapter = target_chapter
+        session.last_active_screen = f'{target_chapter}-01'
+        session.save(update_fields=['current_chapter', 'last_active_screen', 'updated_at'])
+
+    return Response({
+        'status': 'SUCCESS',
+        'targetChapter': target_chapter,
+        'currentChapter': session.current_chapter,
+        'lastActiveScreen': session.last_active_screen,
+    }, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -256,35 +288,3 @@ def verify_product_tag(request):
     except Exception:
         return Response({'errorCode': 'E-04', 'message': 'Product Details Unavailable'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    if target_chapter not in {'C1', 'C2', 'C3', 'C4', 'C5'}:
-        return Response({'errorCode': 'E-14', 'message': 'Invalid chapter'}, status=status.HTTP_400_BAD_REQUEST)
-
-    try:
-        session = JourneySession.objects.get(id=session_id)
-    except JourneySession.DoesNotExist:
-        return Response({'errorCode': 'E-01', 'message': 'Session not found'}, status=status.HTTP_404_NOT_FOUND)
-
-    current_number = int(session.current_chapter[1:]) if session.current_chapter.startswith('C') else 5
-    target_number = int(target_chapter[1:])
-
-    if target_number > current_number + 1:
-        return Response({
-            'errorCode': 'E-14',
-            'message': 'Complete the previous chapter first',
-            'lastActiveScreen': session.last_active_screen,
-        }, status=status.HTTP_403_FORBIDDEN)
-
-    if target_chapter == 'C3' and not session.product_id:
-        return Response({'errorCode': 'E-04', 'message': 'Product Details Unavailable'}, status=status.HTTP_400_BAD_REQUEST)
-
-    if target_number == current_number + 1:
-        session.current_chapter = target_chapter
-        session.last_active_screen = f'{target_chapter}-01'
-        session.save(update_fields=['current_chapter', 'last_active_screen', 'updated_at'])
-
-    return Response({
-        'status': 'SUCCESS',
-        'targetChapter': target_chapter,
-        'currentChapter': session.current_chapter,
-        'lastActiveScreen': session.last_active_screen,
-    }, status=status.HTTP_200_OK)
