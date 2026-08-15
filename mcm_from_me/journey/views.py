@@ -6,6 +6,8 @@ from django.db.models import Q
 from .models import JourneySession, Product
 from .serializers import JourneySessionSerializer, ProductSerializer
 
+from .utils import generate_product_story
+
 
 # [H-01 / H-02] 세션 초기화 및 Resume 확인 (E-12)
 @api_view(['GET'])
@@ -213,6 +215,46 @@ def complete_journey(request):
 def navigate_chapter(request):
     session_id = request.data.get('session_id')
     target_chapter = request.data.get('target_chapter')
+    return Response({'status': 'SUCCESS', 'targetChapter': target_chapter}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def verify_product_tag(request):
+    session_id = request.data.get('session_id')
+    tag_code = request.data.get('tag_code')
+
+    try:
+        product = Product.objects.filter(Q(nfc_tag_id=tag_code) | Q(qr_code_id=tag_code)).first()
+
+        if not product:
+            return Response({'errorCode': 'E-02', 'message': 'Tag Recognition Failed'}, status=status.HTTP_404_NOT_FOUND)
+
+        if not product.is_supported:
+            return Response({'errorCode': 'E-03', 'message': 'Unsupported Product'}, status=status.HTTP_400_BAD_REQUEST)
+
+        session = JourneySession.objects.get(id=session_id)
+        session.product = product
+        session.current_chapter = "C2"
+        session.last_active_screen = "C2-07"
+
+        try:
+            story_text = generate_product_story(product, session.selected_moment)
+            if story_text:
+                session.ai_story_text = story_text
+        except Exception as e:
+            print(f"스토리 생성 실패: {e}")
+
+        session.save()
+
+        return Response({
+            'status': 'SUCCESS',
+            'nextScreen': 'C2-07',
+            'product': ProductSerializer(product).data,
+            'story_text': session.ai_story_text or f"{product.story_title}\n\n{product.story_desc}"
+        }, status=status.HTTP_200_OK)
+
+    except Exception:
+        return Response({'errorCode': 'E-04', 'message': 'Product Details Unavailable'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     if target_chapter not in {'C1', 'C2', 'C3', 'C4', 'C5'}:
         return Response({'errorCode': 'E-14', 'message': 'Invalid chapter'}, status=status.HTTP_400_BAD_REQUEST)
