@@ -1,18 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCM FROM ME - Still Deciding</title>
-    <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/chapter5.css" />
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/chapter5.css' %}" />
 </head>
-<body>
+<body data-selection-id="{{ selection_id|default:'1' }}">
     <div class="app-container still-container">
         <!-- 상단 헤더 -->
         <header class="common-header">
-            <button type="button" class="menu-button" aria-label="메뉴 열기">
-                <img src="../images/hamburger_bar.svg" alt="메뉴" aria-hidden="true" />
+            <button type="button" class="menu-button" aria-label="메뉴 열기" onclick="location.href='/hamburger-menu/'">
+                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
             </button>
             <h1>MCM FROM ME</h1>
         </header>
@@ -28,32 +29,32 @@
             <!-- 선택 리스트 (이미지 사용) -->
             <div class="still-option-list">
                 <button type="button" class="still-option-btn" data-option="SIZE">
-                    <img src="../images/icon_size.svg" alt="size" class="option-img" />
+                    <img src="{% static 'images/icon_size.svg' %}" alt="size" class="option-img" />
                     <span>SIZE</span>
                 </button>
 
                 <button type="button" class="still-option-btn" data-option="WEIGHT">
-                    <img src="../images/icon_weight.svg" alt="weight" class="option-img" />
+                    <img src="{% static 'images/icon_weight.svg' %}" alt="weight" class="option-img" />
                     <span>WEIGHT</span>
                 </button>
 
                 <button type="button" class="still-option-btn" data-option="STORAGE">
-                    <img src="../images/icon_storage.svg" alt="storage" class="option-img" />
+                    <img src="{% static 'images/icon_storage.svg' %}" alt="storage" class="option-img" />
                     <span>STORAGE</span>
                 </button>
 
                 <button type="button" class="still-option-btn" data-option="COMFORT">
-                    <img src="../images/icon_comfort.svg" alt="comfort" class="option-img" />
+                    <img src="{% static 'images/icon_comfort.svg' %}" alt="comfort" class="option-img" />
                     <span>COMFORT</span>
                 </button>
 
                 <button type="button" class="still-option-btn" data-option="PRICE">
-                    <img src="../images/icon_price.svg" alt="price" class="option-img" />
+                    <img src="{% static 'images/icon_price.svg' %}" alt="price" class="option-img" />
                     <span>PRICE</span>
                 </button>
 
                 <button type="button" class="still-option-btn" data-option="DESIGN">
-                    <img src="../images/icon_design.svg" alt="design" class="option-img" />
+                    <img src="{% static 'images/icon_design.svg' %}" alt="design" class="option-img" />
                     <span>DESIGN</span>
                 </button>
             </div>
@@ -68,6 +69,6 @@
         </main>
     </div>
 
-    <script src="../js/chapter5.js"></script>
+    <script src="{% static 'js/chapter5.js' %}"></script>
 </body>
 </html>

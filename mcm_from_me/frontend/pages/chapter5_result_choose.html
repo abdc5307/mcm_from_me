@@ -1,16 +1,28 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCM FROM ME - Chapter 5 Result choose</title>
-    <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/chapter5.css" />
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/chapter5.css' %}" />
 </head>
-<body>
+<!--
+    data-selection-id: /chapter5/complete/<selection_id>/ 호출에 사용
+    data-card-id: /chapter5/share/<card_id>/ 호출에 사용
+    data-product-id: /chapter5/product/<product_id>/ (VIEW DETAILS) 호출에 사용
+    실제 뷰(chapter5_result_view)에서 context로 selection_id / card / card.product 등을 내려줘야 합니다.
+    필드명이 다르면 아래 body 속성값만 맞춰주세요.
+-->
+<body
+    data-selection-id="{{ selection_id|default:'' }}"
+    data-card-id="{{ card.id|default:'' }}"
+    data-product-id="{{ card.product.id|default:'' }}"
+>
     <div class="app-container result-choose-container">
         <div class="result-choose-bg">
-            <img src="../images/story_card_img.png" alt="NEW HORIZON" class="result-choose-img" />
+            <img src="{% static 'images/story_card_img.png' %}" alt="NEW HORIZON" class="result-choose-img" />
             <div class="result-choose-overlay"></div>
         </div>
 
@@ -50,29 +62,31 @@
 
             <!-- 하단 주요 버튼 -->
             <div class="result-choose-actions">
-                <button type="button" class="result-btn-outline">
+                <button type="button" class="result-btn-outline" id="btnCompleteJourney">
                     COMPLETE MY JOURNEY
                 </button>
             </div>
 
             <!-- 맨 하단 3개 아이콘 탭바 -->
             <footer class="result-bottom-bar">
-                <button type="button" class="bottom-tab-btn">
-                    <img src="../images/connect_adviser.svg" alt="" class="tab-icon" />
+                <button type="button" class="bottom-tab-btn" id="btnConnectAdviser">
+                    <img src="{% static 'images/connect_adviser.svg' %}" alt="" class="tab-icon" />
                     <span>CONNECT<br>ADVISER</span>
                 </button>
 
-                <button type="button" class="bottom-tab-btn">
-                    <img src="../images/share.svg" alt="" class="tab-icon" />
+                <button type="button" class="bottom-tab-btn" id="btnShare">
+                    <img src="{% static 'images/share.svg' %}" alt="" class="tab-icon" />
                     <span>SHARE</span>
                 </button>
 
-                <button type="button" class="bottom-tab-btn">
-                    <img src="../images/view_details.svg" alt="" class="tab-icon" />
+                <button type="button" class="bottom-tab-btn" id="btnViewDetails">
+                    <img src="{% static 'images/view_details.svg' %}" alt="" class="tab-icon" />
                     <span>VIEW DETAILS</span>
                 </button>
             </footer>
         </main>
     </div>
+
+    <script src="{% static 'js/chapter5.js' %}"></script>
 </body>
 </html>

@@ -1,20 +1,21 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MCM FROM ME — E-11</title>
-  <link rel="stylesheet" href="../css/common.css" />
-  <link rel="stylesheet" href="../css/e11_e13_journey_modal.css" />
+  <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/e11_e13_journey_modal.css' %}" />
 </head>
 <body>
   <div class="app-container">
     <div class="error-page e11-page">
-      
+
       <!-- Top Bar -->
       <header class="common-header">
-            <button type="button" class="menu-button" aria-label="메뉴 열기">
-                <img src="../images/hamburger_bar.svg" alt="메뉴" aria-hidden="true" />
+            <button type="button" class="menu-button" aria-label="메뉴 열기" onclick="location.href='/hamburger-menu/'">
+                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
             </button>
             <h1>MCM FROM ME</h1>
         </header>
@@ -23,7 +24,7 @@
       <main class="error-content-center">
         <!-- 단일 통합 이미지 박스 -->
         <div class="failed-graphic-box">
-          <img src="../images/icon_save_failed.svg" alt="저장 실패 아이콘" class="failed-graphic-img" />
+          <img src="{% static 'images/icon_save_failed.svg' %}" alt="저장 실패 아이콘" class="failed-graphic-img" />
         </div>
 
         <h2 class="failed-title-en">Your journey could not<br>be saved.</h2>

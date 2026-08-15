@@ -223,6 +223,22 @@ class Chapter4CameraRetryView(APIView):
 from django.shortcuts import render, redirect, get_object_or_404
 
 
+# /chapter4/ 진입점 - chapter4.html(카메라 SPA)을 selection과 함께 렌더링
+# selection_id는 1) 세션(정식 플로우: chapter3에서 저장) 2) 쿼리파라미터(?selection_id=1, 로컬 테스트용) 순으로 찾는다.
+def chapter4_page_view(request):
+    selection_id = request.session.get('selection_id') or request.GET.get('selection_id')
+
+    selection = None
+    if selection_id:
+        selection = UserStyleSelection.objects.filter(id=selection_id).first()
+
+    if selection:
+        # 이후 페이지 새로고침/재진입에도 유지되도록 세션에 저장
+        request.session['selection_id'] = selection.id
+
+    return render(request, 'chapter4.html', {'selection': selection})
+
+
 def chapter4_ready_view(request, selection_id):
     selection = get_object_or_404(UserStyleSelection, id=selection_id)
     return render(request, 'product/ready.html', {'selection': selection})
