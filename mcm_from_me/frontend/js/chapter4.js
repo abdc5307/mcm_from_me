@@ -248,7 +248,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (res.ok && data.status === "success") {
                 capturedPhotoId = data.data?.id ?? data.data?.photo_id ?? null;
-                // 시리얼라이저 이미지 필드명이 다르면 아래 한 줄만 맞춰주세요.
                 const imageUrl = data.data?.image_url || data.data?.image;
                 if (reviewImage && imageUrl) reviewImage.src = imageUrl;
 
