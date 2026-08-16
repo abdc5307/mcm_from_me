@@ -1,17 +1,22 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCM FROM ME - Camera Ready</title>
-    <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/chapter4.css" />
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/chapter4.css' %}" />
 </head>
 <body>
     <div class="app-container">
         <header class="common-header">
-            <button type="button" class="menu-button" aria-label="메뉴 열기">
-                <img src="../images/hamburger_bar.svg" alt="메뉴" aria-hidden="true" />
+            <button 
+                type="button" 
+                class="menu-button" 
+                aria-label="메뉴 열기" 
+                onclick="location.href='/hamburger-menu/'">
+                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
             </button>
             <h1>MCM FROM ME</h1>
         </header>
@@ -35,15 +40,18 @@
             <div class="divider"></div>
 
             <div class="image-card">
-                <img src="../images/camera_ready_img.jpg" alt="MCM Bag and Outfit" />
+                <img src="{% static 'images/camera_ready_img.jpg' %}" alt="MCM Bag and Outfit" />
             </div>
 
             <div class="action-group">
-                <a href="./camera.html" class="btn-primary btn-gold">
-                    <img src="../images/icon_camera_black.svg" alt="카메라 아이콘" />
+                <button type="button" class="btn-primary btn-gold" id="btnOpenCamera">
+                    <img src="{% static 'images/icon_camera_black.svg' %}" alt="카메라 아이콘" />
                     OPEN CAMERA
+                </button>
+            
+                <a href="/chapter3/" class="btn-outline">
+                    BACK TO STYLE
                 </a>
-                <a href="#" class="btn-outline">BACK TO STYLE</a>
             </div>
 
             <div class="divider"></div>

@@ -20,6 +20,7 @@ from django.views.generic import TemplateView
 from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.conf import settings
 from django.conf.urls.static import static
+from product.views import chapter4_page_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,7 +41,7 @@ urlpatterns = [
     ),
     path('chapter2/', TemplateView.as_view(template_name='chapter2.html'), name='chapter2'),
     path('chapter3/', TemplateView.as_view(template_name='chapter3.html'), name='chapter3'),
-    path('chapter4/', TemplateView.as_view(template_name='chapter4_camera_ready.html'), name='chapter4'),
+    path('chapter4/', chapter4_page_view, name='chapter4'),  # <- 변경된 부분
     path('chapter5/', TemplateView.as_view(template_name='chapter5_discover.html'), name='chapter5'),
     path('errors/network/', TemplateView.as_view(template_name='e01_network_error.html'), name='error_e01'),
     path('errors/tag-not-recognized/', TemplateView.as_view(template_name='e02_qr_scan_failed.html'), name='error_e02'),

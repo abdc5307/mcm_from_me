@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,14 +7,18 @@
     <title>MCM FROM ME - Chapter 5 Discover</title>
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/chapter5.css" />
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/chapter5.css' %}" />
 </head>
-<body>
+<body data-selection-id="{{ selection_id|default:'1' }}">
+
+    <!-- Processing 로딩 화면 -->
+    {% include 'chapter5_processing.html' %}
+
     <div class="app-container discover-container">
         <header class="common-header">
-            <button type="button" class="menu-button" aria-label="메뉴 열기">
-                <img src="../images/hamburger_bar.svg" alt="메뉴" aria-hidden="true" />
+            <button type="button" class="menu-button" aria-label="메뉴 열기" onclick="location.href='/hamburger-menu/'">
+                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
             </button>
             <h1>MCM FROM ME</h1>
         </header>
@@ -26,57 +31,10 @@
             </div>
 
             <!-- Swiper 캐러셀 영역 -->
+            <!-- swiper-wrapper 내용은 chapter5.js가 /chapter5/cards/<selection_id>/ 응답으로 채웁니다 -->
             <div class="discover-carousel-wrapper">
                 <div class="swiper discover-swiper">
-                    <div class="swiper-wrapper">
-                        
-                        <!-- [카드 1] -->
-                        <div class="swiper-slide discover-card">
-                            <div class="discover-card-media">
-                                <img src="../images/story_card_img.png" alt="NEW HORIZON" class="discover-card-img" />
-                                <div class="discover-card-overlay"></div>
-                            </div>
-                            <div class="discover-card-body">
-                                <span class="discover-card-caption">LATEST CHAPTER</span>
-                                <h3 class="discover-card-title">NEW HORIZON</h3>
-                                <p class="discover-card-desc">
-                                    Where timeless heritage meets the energy of tomorrow.<br>
-                                    Step forward and shape a journey that is entirely your own.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- [카드 2] -->
-                        <div class="swiper-slide discover-card">
-                            <div class="discover-card-media">
-                                <img src="../images/story_card_img2.png" alt="MIDNIGHT JOURNEY" class="discover-card-img" />
-                                <div class="discover-card-overlay"></div>
-                            </div>
-                            <div class="discover-card-body">
-                                <span class="discover-card-caption">LATEST CHAPTER</span>
-                                <h3 class="discover-card-title">MIDNIGHT ECHOES</h3>
-                                <p class="discover-card-desc">
-                                    Where quiet confidence<br>meets unwritten <br>possibilities.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- [카드 3] -->
-                        <div class="swiper-slide discover-card">
-                            <div class="discover-card-media">
-                                <img src="../images/story_card_img3.png" alt="GOLDEN MOMENT" class="discover-card-img" />
-                                <div class="discover-card-overlay"></div>
-                            </div>
-                            <div class="discover-card-body">
-                                <span class="discover-card-caption"></span>
-                                <h3 class="discover-card-title">IN POEM</h3>
-                                <p class="discover-card-desc">
-                                    Women woven through.
-                                </p>
-                            </div>
-                        </div>
-
-                    </div>
+                    <div class="swiper-wrapper" id="discoverSwiperWrapper"></div>
                 </div>
             </div>
 
@@ -85,10 +43,10 @@
 
             <!-- 하단 버튼 그룹 -->
             <div class="discover-actions">
-                <button type="button" class="discover-btn-filled">
+                <button type="button" class="discover-btn-filled" id="btnChooseJourney">
                     CHOOSE THIS JOURNEY
                 </button>
-                <button type="button" class="discover-btn-outline">
+                <button type="button" class="discover-btn-outline" id="btnStillDeciding">
                     STILL DECIDING
                 </button>
             </div>
@@ -97,6 +55,6 @@
 
     <!-- 외부 라이브러리 및 분리된 chapter5.js 파일 연결 -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="../js/chapter5.js"></script>
+    <script src="{% static 'js/chapter5.js' %}"></script>
 </body>
 </html>

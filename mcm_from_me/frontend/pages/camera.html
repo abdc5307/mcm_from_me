@@ -1,11 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCM FROM ME — Camera</title>
-    <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/camera.css" />
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/camera.css' %}" />
 </head>
 <body>
     <div class="app-container">
@@ -14,10 +15,10 @@
             <!-- top bar -->
             <header class="camera-topbar">
                 <button type="button" class="cam-icon-btn" id="btnClose" aria-label="닫기">
-                    <img src="../images/icon_close.svg" alt="닫기" />
+                    <img src="{% static 'images/icon_close.svg' %}" alt="닫기" />
                 </button>
                 <button type="button" class="cam-icon-btn" id="btnFlash" aria-label="플래시">
-                    <img src="../images/icon_flash_off.svg" alt="플래시" />
+                    <img src="{% static 'images/icon_flash_off.svg' %}" alt="플래시" />
                 </button>
             </header>
 
@@ -43,18 +44,18 @@
                 <div class="camera-guide-text" id="cameraGuideText">
                     <!-- 공통 영문 제목 -->
                     <p class="guide-en">Place your piece inside the frame.</p>
-                
+
                     <!-- 기본 한국어 설명 -->
                     <p class="guide-kr default-desc">가방과 스트랩이 잘 보이도록 몸을 살짝 돌려주세요.</p>
-                
-                    <!-- E-08 전용 한국어 설명 -->
-                    <p class="guide-kr e08-desc">가방과 액세서리가 가이드 영역 안에 들어오도록<br> 위치를 조정해 주세요.</p>
+
+                    <!-- E-08 전용 한국어 설명 (기본값: 숨김, JS가 상태 전환) -->
+                    <p class="guide-kr e08-desc" style="display: none;">가방과 액세서리가 가이드 영역 안에 들어오도록<br> 위치를 조정해 주세요.</p>
                 </div>
 
-                <!-- [E-09] Too Dark 하단 경고 카드 -->
-                <div class="dark-warning-card" id="cardE09">
+                <!-- [E-09] Too Dark 하단 경고 카드 (기본값: 숨김, JS가 상태 전환) -->
+                <div class="dark-warning-card" id="cardE09" style="display: none;">
                     <div class="warning-icon-box">
-                        <img src="../images/icon_sparkle.svg" alt="밝기 아이콘" />
+                        <img src="{% static 'images/icon_sparkle.svg' %}" alt="밝기 아이콘" />
                     </div>
                     <h2 class="dark-title-en">Move toward the light<br>for a clearer photo.</h2>
                     <p class="dark-desc-kr">제품이 잘 보이도록 조금 더 밝은 위치로 이동해 주세요.</p>
@@ -63,26 +64,41 @@
 
             <!-- Footer -->
             <footer class="camera-footer">
-                <div class="camera-tabs" role="tablist" aria-label="촬영 각도">
-                    <button type="button" class="tab active" role="tab">FRONT 45°<span class="dot"></span></button>
-                    <button type="button" class="tab" role="tab">SIDE<span class="dot"></span></button>
-                    <button type="button" class="tab" role="tab">DETAIL<span class="dot"></span></button>
+                <!-- angle tabs (라디오 버튼 기반 단일 선택) -->
+                <div class="camera-tabs" role="radiogroup" aria-label="촬영 각도">
+                    <label class="tab-item">
+                        <input type="radio" name="cameraAngle" value="front" checked />
+                        <span class="tab-text">FRONT 45°</span>
+                        <span class="dot"></span>
+                    </label>
+
+                    <label class="tab-item">
+                        <input type="radio" name="cameraAngle" value="side" />
+                        <span class="tab-text">SIDE</span>
+                        <span class="dot"></span>
+                    </label>
+
+                    <label class="tab-item">
+                        <input type="radio" name="cameraAngle" value="detail" />
+                        <span class="tab-text">DETAIL</span>
+                        <span class="dot"></span>
+                    </label>
                 </div>
 
                 <div class="camera-bottom-controls">
                     <div class="thumb-preview" aria-label="최근 촬영본"></div>
                     <button type="button" class="shutter-btn" id="btnShutter" aria-label="촬영"></button>
                     <button type="button" class="flip-btn" id="btnFlip" aria-label="카메라 전환">
-                        <img src="../images/icon_flip.svg" alt="카메라 전환" />
+                        <img src="{% static 'images/icon_flip.svg' %}" alt="카메라 전환" />
                     </button>
                 </div>
             </footer>
 
-            <!-- [E-10] Photo Blurry 바텀시트 모달 -->
-            <div class="blurry-modal-overlay" id="modalE10">
+            <!-- [E-10] Photo Blurry 바텀시트 모달 (기본값: 숨김, JS가 상태 전환) -->
+            <div class="blurry-modal-overlay" id="modalE10" style="display: none;">
                 <div class="blurry-modal-card">
                     <div class="alert-icon-box">
-                        <img src="../images/help_circle.svg" alt="경고" />
+                        <img src="{% static 'images/help_circle.svg' %}" alt="경고" />
                     </div>
                     <h2 class="blurry-title-en">This photo may be<br>unclear.</h2>
                     <p class="blurry-desc-kr">사진이 선명하지 않을 수 있습니다.<br>다시 촬영하시겠어요?</p>
@@ -96,6 +112,6 @@
         </div>
     </div>
 
-    <script src="../js/camera.js"></script>
+    <script src="{% static 'js/chapter4.js' %}"></script>
 </body>
 </html>
