@@ -1,17 +1,22 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCM FROM ME - Review</title>
-    <link rel="stylesheet" href="../css/common.css" />
-    <link rel="stylesheet" href="../css/chapter4.css" />
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/chapter4.css' %}" />
 </head>
 <body>
     <div class="app-container">
         <header class="common-header">
-            <button type="button" class="menu-button" aria-label="메뉴 열기">
-                <img src="../images/hamburger_bar.svg" alt="메뉴" aria-hidden="true" />
+            <button 
+                type="button" 
+                class="menu-button" 
+                aria-label="메뉴 열기" 
+                onclick="location.href='/hamburger-menu/'">
+                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
             </button>
             <h1>MCM FROM ME</h1>
         </header>
@@ -23,22 +28,22 @@
             </div>
 
             <div class="review-card">
-                <img src="../images/review_sample.png" alt="Captured Photo" />
+                <img src="{% static 'images/review_sample.png' %}" alt="Captured Photo" />
 
                 <!-- 체크박스 배지 박스 -->
                 <div class="check-badge-box">
-                    <img src="../images/icon_check_circle.svg" alt="체크" class="check-icon" />
+                    <img src="{% static 'images/icon_check_circle.svg' %}" alt="체크" class="check-icon" />
                 </div>
             </div>
 
             <!-- 하단 액션 영역 -->
             <div class="action-group">
-                <a href="#" class="btn-primary btn-gold">
-                    USE THIS PHOTO <img src="../images/arrow_icon.svg" alt="화살표" />
+                <a href="/api/ai_story/view/chapter5/discover/1/" class="btn-primary btn-gold" id="btnUsePhoto">
+                    USE THIS PHOTO <img src="{% static 'images/arrow_icon.svg' %}" alt="화살표" />
                 </a>
-                <a href="#" class="btn-outline">
+                <button type="button" class="btn-outline" id="btnRetake">
                     RETAKE
-                </a>
+                </button>
             </div>
         </main>
     </div>

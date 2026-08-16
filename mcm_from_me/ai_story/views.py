@@ -746,7 +746,7 @@ def chapter5_discover_view(request, selection_id):
         elif 'deciding' in request.POST:
             return redirect('chapter5-hesitation-view', selection_id=selection_id)
 
-    return render(request, 'ai_story/discover.html', {
+    return render(request, 'chapter5_discover.html', {
         'templates': templates,
         'selection': selection,
     })
@@ -761,7 +761,7 @@ def chapter5_result_view(request, selection_id):
         selection.save()
         return redirect('chapter5-result-view', selection_id=selection_id)
 
-    return render(request, 'ai_story/result.html', {
+    return render(request, 'chapter5_result_choose.html', {
         'selection': selection,
         'card': card,
     })
@@ -780,7 +780,7 @@ def chapter5_hesitation_view(request, selection_id):
 
     hesitation = HesitationReason.objects.filter(style_selection=selection).first()
 
-    return render(request, 'ai_story/hesitation.html', {
+    return render(request, 'chapter5_still_deciding.html', {
         'selection': selection,
         'reasons': reasons,
         'hesitation': hesitation,
@@ -818,7 +818,7 @@ def chapter5_analysis_view(request, hesitation_id):
         selection.save()
         return redirect('chapter5-analysis-view', hesitation_id=hesitation_id)
 
-    return render(request, 'ai_story/analysis.html', {
+    return render(request, 'chapter5_still_result.html', {
         'selection': selection,
         'recommendation': recommendation,
     })

@@ -307,3 +307,7 @@
 .btn-outline:active {
   background: rgba(242, 202, 80, 0.08);
 }
+
+/* 페이지 이동 전용 스타일 */
+.page-section { display: none; }
+.page-section.active { display: block; }
