@@ -541,3 +541,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("AI 추천 결과 데이터 로드 실패:", err);
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btnMenu = document.querySelector(".menu-button, .btn-menu, #btnMenuOpen");
+  const menuLayer = document.querySelector(".hamburger-menu, .menu-overlay, .drawer-menu, #hamburgerMenu");
+  const btnClose = document.querySelector(".menu-close-button, .btn-close-menu, #btnCloseMenu, .close-button");
+
+  if (btnMenu && menuLayer) {
+    btnMenu.addEventListener("click", (e) => {
+      e.preventDefault();
+      menuLayer.classList.add("is-active");
+    });
+  }
+
+  if (btnClose && menuLayer) {
+    btnClose.addEventListener("click", (e) => {
+      e.preventDefault();
+      menuLayer.classList.remove("is-active");
+    });
+  }
+});

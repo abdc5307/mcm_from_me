@@ -1,13 +1,14 @@
-const menuButton = document.querySelector(".menu-button");
+const menuButtons = document.querySelectorAll(".menu-button");
 let menuFrame = null;
 
 function closeMenu() {
   menuFrame?.remove();
   menuFrame = null;
   document.body.classList.remove("menu-open");
-  menuButton?.setAttribute("aria-expanded", "false");
-  menuButton?.setAttribute("aria-label", "메뉴 열기");
-  menuButton?.focus();
+  menuButtons.forEach((btn) => {
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-label", "메뉴 열기");
+  });
 }
 
 function openMenu() {
@@ -19,17 +20,21 @@ function openMenu() {
   menuFrame.title = "Journey menu";
   document.body.append(menuFrame);
   document.body.classList.add("menu-open");
-  menuButton.setAttribute("aria-expanded", "true");
-  menuButton.setAttribute("aria-label", "메뉴 닫기");
+  menuButtons.forEach((btn) => {
+    btn.setAttribute("aria-expanded", "true");
+    btn.setAttribute("aria-label", "메뉴 닫기");
+  });
 }
 
-menuButton?.setAttribute("aria-expanded", "false");
-menuButton?.addEventListener("click", () => {
-  if (menuFrame) {
-    closeMenu();
-  } else {
-    openMenu();
-  }
+menuButtons.forEach((menuButton) => {
+  menuButton.setAttribute("aria-expanded", "false");
+  menuButton.addEventListener("click", () => {
+    if (menuFrame) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
 });
 
 document.addEventListener("keydown", (event) => {

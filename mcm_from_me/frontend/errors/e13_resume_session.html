@@ -7,8 +7,9 @@
   <title>MCM FROM ME — E-13</title>
   <link rel="stylesheet" href="{% static 'css/common.css' %}" />
   <link rel="stylesheet" href="{% static 'css/e11_e13_journey_modal.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
 </head>
-<body>
+<body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
   <div class="app-container">
     <div class="error-page modal-bg-page">
       
@@ -41,5 +42,6 @@
 
     </div>
   </div>
+  <script src="{% static 'js/menu_toggle.js' %}"></script>
 </body>
 </html>

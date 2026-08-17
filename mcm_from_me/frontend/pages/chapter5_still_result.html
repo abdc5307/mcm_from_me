@@ -4,112 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCM FROM ME - AI Recommendation Result</title>
+    <title>MCM FROM ME</title>
     <link rel="stylesheet" href="{% static 'css/common.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/chapter5.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/e14_step_locked.css' %}" />
 </head>
-<!--
-    data-hesitation-id / data-selection-id / data-recommendation-id / data-product-id:
-    chapter5_analysis_view(request, hesitation_id)에서 context로 내려줘야 합니다.
-    필드명이 다르면 아래 값만 맞춰주세요.
--->
-<body
-    data-hesitation-id="{{ hesitation_id|default:'' }}"
-    data-selection-id="{{ selection_id|default:'' }}"
-    data-recommendation-id="{{ recommendation.id|default:'' }}"
-    data-product-id="{{ recommendation.product.id|default:'' }}"
-    data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true"
->
-    <div class="app-container still-result-container">
-        <!-- 상단 헤더 -->
+<body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
+    <div class="app-container">
         <header class="common-header">
-            <button
-                type="button"
-                class="menu-button"
-                aria-label="메뉴 열기"
-            >
-            <img
-                src="{% static 'images/hamburger_bar.svg' %}"
-                alt="메뉴"
-                aria-hidden="true"
-            />
+            <button type="button" class="menu-button" aria-label="메뉴 열기">
+                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
             </button>
             <h1>MCM FROM ME</h1>
         </header>
 
-        <main class="still-result-content">
-            <!-- 메인 헤더 타이틀 -->
-            <div class="still-result-title-group">
-                <h2 class="still-result-title">Continue Your Journey</h2>
-                <p class="still-result-subtext">Your next step, curated by AI.</p>
+        <main class="page-content locked-container">
+            <!-- 잠금 아이콘 & 원형 그래픽 -->
+            <div class="graphic-wrapper">
+                <img src="{% static 'images/lock_circle.svg' %}" alt="잠금 그래픽" class="graphic-img" />
             </div>
 
-            <!-- AI Analysis 분석 카드 -->
-            <div class="ai-analysis-card">
-                <div class="ai-analysis-header">
-                    <img src="{% static 'images/icon_sparkle.svg' %}" alt="스파클" class="ai-sparkle-img" />
-                    <h3 class="ai-analysis-title">AI Analysis</h3>
-                </div>
-                <p class="ai-analysis-desc" id="aiAnalysisDesc">
-                    <!-- JS에서 동적 주입 -->
-                </p>
+            <!-- 안내 문구 -->
+            <div class="text-group step_locked">
+                <h2 class="title-en">Complete the previous<br>chapter first.</h2>
+                <p class="desc-kr">이전 단계를 완료한 후 다음 Journey로<br>이동해 주세요.</p>
             </div>
 
-            <!-- 2. AI RECOMMENDATION 구분선 -->
-            <div class="ai-divider-group">
-                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="2" viewBox="0 0 72 2" fill="none">
-                    <line x1="0" y1="1" x2="72" y2="1" stroke="currentColor" stroke-opacity="0.3" />
-                </svg>
-                <span>AI RECOMMENDATION</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="2" viewBox="0 0 72 2" fill="none">
-                    <line x1="0" y1="1" x2="72" y2="1" stroke="currentColor" stroke-opacity="0.3" />
-                </svg>
+            <!-- 액션 버튼 -->
+            <div class="action-group">
+                <a href="javascript:history.back()" class="btn-goback">GO BACK</a>
+                <a href="{% url 'chapter1' %}" class="btn-review">REVIEW CURRENT CHAPTER</a>
             </div>
-
-            <!-- 추천 제품 카드 -->
-            <div class="product-card">
-                <div class="product-card-media">
-                    <img src="{% static 'images/backpack_img.png' %}" alt="Recommended Product" class="product-card-img" id="recommendProductImg" />
-                </div>
-                <div class="product-card-info">
-                    <h4 class="product-title" id="recommendProductTitle">추천 제품 준비 중</h4>
-                    <p class="product-sub" id="recommendProductSub1">Visetos Original</p>
-                    <p class="product-sub" id="recommendProductSub2">Warm Sand</p>
-
-                    <div class="product-tags" id="recommendProductTags">
-                        <!-- JS에서 동적 주입 -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- 하단 버튼 -->
-            <div class="still-result-actions">
-                <button type="button" class="result-btn-outline" id="btnCompleteJourney">
-                    COMPLETE MY JOURNEY
-                </button>
-            </div>
-
-            <!-- 맨 하단 3개 아이콘 탭바 -->
-            <footer class="result-bottom-bar still-result-bar">
-                <button type="button" class="bottom-tab-btn" id="btnConnectAdviser">
-                    <img src="{% static 'images/connect_adviser.svg' %}" alt="" class="tab-icon" />
-                    <span>CONNECT<br>ADVISER</span>
-                </button>
-
-                <button type="button" class="bottom-tab-btn" id="btnShare">
-                    <img src="{% static 'images/share.svg' %}" alt="" class="tab-icon" />
-                    <span>SHARE</span>
-                </button>
-
-                <button type="button" class="bottom-tab-btn" id="btnViewDetails">
-                    <img src="{% static 'images/view_details.svg' %}" alt="" class="tab-icon" />
-                    <span>VIEW DETAILS</span>
-                </button>
-            </footer>
         </main>
     </div>
-
-    <script src="{% static 'js/chapter5.js' %}"></script>
     <script src="{% static 'js/menu_toggle.js' %}"></script>
 </body>
 </html>
