@@ -148,12 +148,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     swiperWrapper.innerHTML = cards
       .map((card, index) => {
-        const imageUrl =
-          card.image_url ||
-          card.image ||
-          card.card_image ||
-          localCapturedPhoto ||
-          STATIC_FALLBACK_IMG;
+        // 1. 서버에 저장된 카드 이미지가 있으면 최우선 사용
+        let imageUrl = card.image_url || card.image || card.card_image;
+        
+        // 2. 서버 이미지가 없는 경우 분기 처리
+        if (!imageUrl) {
+            // 새로 추가된(최신) 카드를 보통 첫 번째(index 0)로 간주하여 카메라 사진 주입
+            if (index === 0) {
+                imageUrl = localCapturedPhoto || STATIC_FALLBACK_IMG;
+            } else {
+                // 기존 히스토리 카드들은 카메라 사진이 아닌 기본 스토리 카드 이미지 유지
+                imageUrl = STATIC_FALLBACK_IMG; 
+            }
+        }
 
         const titleText = card.title || `My MCM Story Card #${index + 1}`;
         const descText = card.card_text || card.description || "";
@@ -203,10 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
         watchOverflow: true,
         observer: true,
         observeParents: true,
-        pagination: {
-          el: ".discover-dots",
-          clickable: true,
-        },
+        pagination: { el: ".discover-dots", clickable: true },
         on: {
           slideChangeTransitionEnd(sw) {
             const activeSlide = sw.slides[sw.activeIndex];
@@ -401,80 +405,79 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function applyResultPhoto(photoUrl) {
     if (!photoUrl) return;
-
-    const imgEl =
-      document.getElementById("resultCardImg") ||
-      document.querySelector(".result-card-img");
-    if (imgEl) {
-      imgEl.src = photoUrl;
-    }
-
+    const imgEl = document.getElementById("resultCardImg") || document.querySelector(".result-card-img");
+    if (imgEl) imgEl.src = photoUrl;
+    
     resultContainer.style.backgroundImage = `url('${photoUrl}')`;
     resultContainer.style.backgroundSize = "cover";
     resultContainer.style.backgroundPosition = "center";
     resultContainer.style.backgroundRepeat = "no-repeat";
   }
 
-  if (localPhoto) {
-    applyResultPhoto(localPhoto);
+  // 일단 로컬 카메라 사진을 배경에 즉시 깔아둡니다.
+  if (localPhoto) applyResultPhoto(localPhoto);
+
+  function setKeywordHtml(element, text) {
+    if (!element || !text) return;
+    const words = String(text).trim().split(" ");
+    if (words.length >= 2) {
+      const lastWord = words.pop();
+      const firstPart = words.join(" ");
+      element.innerHTML = `<span>${firstPart}</span><span>${lastWord}</span>`;
+    } else {
+      element.innerHTML = `<span>${text}</span>`;
+    }
   }
 
+  const keywordItems = document.querySelectorAll(".result-choose-keywords .keyword-item");
+  const summaryDisplayNames = {
+    TOP_HANDLE: "Top Handle",
+    CROSSBODY: "Crossbody",
+    BASIC_CHARM: "Basic Charm",
+    ROCKET_CHARM: "Rocket Charm",
+  };
+
+  // 1. Chapter 3의 스토리지 데이터 강제 추출 및 렌더링
+  try {
+    const storedProduct = JSON.parse(sessionStorage.getItem("journeyProduct") || "{}");
+    const storedStyle = JSON.parse(sessionStorage.getItem("journeyStyle") || "{}");
+    
+    // 값이 없으면 더미가 아닌 빈칸 또는 최소한의 기본값 처리
+    const prodName = storedProduct.name || "ELLA BOSTON BAG";
+    const carryMode = summaryDisplayNames[storedStyle.carry] || storedStyle.carry || "CROSSBODY";
+    const detailMode = summaryDisplayNames[storedStyle.detail] || storedStyle.detail || "ROCKET CHARM";
+    
+    // 모먼트는 session에 저장 안되어 있을 수 있으므로 localStorage까지 이중 체크
+    const momentName = sessionStorage.getItem("selectedMoment") || localStorage.getItem("selectedMoment") || "MIDNIGHT MOVE";
+
+    if (keywordItems.length >= 4) {
+      setKeywordHtml(keywordItems[0], prodName.toUpperCase());
+      setKeywordHtml(keywordItems[1], momentName.toUpperCase());
+      setKeywordHtml(keywordItems[2], carryMode.toUpperCase());
+      setKeywordHtml(keywordItems[3], detailMode.toUpperCase());
+    }
+  } catch (err) {
+    console.warn("로컬 세션 데이터 파싱 실패:", err);
+  }
+
+  // 2. 서버 API 이미지 연동 (단, API의 키워드 더미데이터가 로컬을 덮어쓰지 않도록 차단)
   if (!selectionId) return;
 
   try {
     const res = await fetch(`/api/ai_story/chapter5/final/${selectionId}/`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
     });
-
     const json = await res.json();
 
     if (json.status === "success" && json.data) {
-      const data = json.data;
-
-      const serverPhotoUrl = data.image_url || localPhoto || STATIC_FALLBACK_IMG;
+      const serverPhotoUrl = json.data.image_url || localPhoto || STATIC_FALLBACK_IMG;
       applyResultPhoto(serverPhotoUrl);
-
-      function setKeywordHtml(element, text) {
-        if (!element || !text) return;
-        const words = String(text).trim().split(" ");
-        if (words.length >= 2) {
-          const lastWord = words.pop();
-          const firstPart = words.join(" ");
-          element.innerHTML = `<span>${firstPart}</span><span>${lastWord}</span>`;
-        } else {
-          element.innerHTML = `<span>${text}</span>`;
-        }
-      }
-
-      const info = data.selection_info || data.keywords || data;
-      const keywordItems = document.querySelectorAll(
-        ".result-choose-keywords .keyword-item"
-      );
-
-      if (keywordItems.length >= 4) {
-        const prodName = info.product_name || info.product || "ELLA BOSTON BAG";
-        setKeywordHtml(keywordItems[0], prodName);
-
-        const momentName =
-          info.moment_name || info.journey_mood || info.moment || "NEW JOURNEY";
-        setKeywordHtml(keywordItems[1], momentName);
-
-        const styleName =
-          info.styling_type || info.carry_mode || info.style || "CROSSBODY";
-        setKeywordHtml(keywordItems[2], styleName);
-
-        const charmName =
-          info.charm_name || info.accessory || info.charm || "ROCKET CHARM";
-        setKeywordHtml(keywordItems[3], charmName);
-      }
-
-      console.log("최종 키워드 및 배경 렌더링 완료:", info);
+      
+      // 의도적으로 json.data의 키워드를 덮어쓰는 로직은 삭제했습니다. (Chapter 3 실제 데이터 보호)
     }
   } catch (err) {
-    console.error("최종 결과 데이터를 불러오는데 실패했습니다:", err);
+    console.error("최종 결과 API 호출 실패:", err);
   }
 });
 

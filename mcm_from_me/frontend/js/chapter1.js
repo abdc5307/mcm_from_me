@@ -8,11 +8,6 @@ const momentValues = {
 };
 let selectedMoment = null;
 
-function getCookie(name) {
-  const match = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
-  return match ? match.pop() : "";
-}
-
 momentCards.forEach((card) => {
   card.addEventListener("click", () => {
     momentCards.forEach((item) => {
@@ -42,11 +37,9 @@ continueButton.addEventListener("click", async () => {
   try {
     const response = await fetch(continueButton.dataset.saveUrl, {
       method: "POST",
-      credentials: "same-origin",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "X-CSRFToken": getCookie("csrftoken"),
       },
       body: JSON.stringify({
         session_id: sessionId,
