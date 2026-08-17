@@ -381,3 +381,27 @@ button { border: 0; background: none; color: inherit; font: inherit; }
   font-weight: 300;
   line-height: 26px;
 }
+
+/* 햄버거 메뉴 기본 숨김 처리 */
+.hamburger-menu,
+.menu-overlay,
+.drawer-menu,
+#hamburgerMenu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  background-color: #000;
+}
+
+/* 활성화되었을 때만 노출 */
+.hamburger-menu.is-active,
+.menu-overlay.is-active,
+.drawer-menu.is-active,
+#hamburgerMenu.is-active {
+  display: flex !important;
+  flex-direction: column;
+}
