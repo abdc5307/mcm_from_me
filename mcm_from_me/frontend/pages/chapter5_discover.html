@@ -9,16 +9,26 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="{% static 'css/common.css' %}" />
     <link rel="stylesheet" href="{% static 'css/chapter5.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/e11_e13_journey_modal.css' %}" />
 </head>
-<body data-selection-id="{{ selection_id|default:'1' }}">
+<body data-selection-id="{{ selection_id|default:'1' }}"
+    data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
 
     <!-- Processing 로딩 화면 -->
     {% include 'chapter5_processing.html' %}
 
     <div class="app-container discover-container">
         <header class="common-header">
-            <button type="button" class="menu-button" aria-label="메뉴 열기" onclick="location.href='/hamburger-menu/'">
-                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
+            <button
+                type="button"
+                class="menu-button"
+                aria-label="메뉴 열기"
+            >
+                <img
+                    src="{% static 'images/hamburger_bar.svg' %}"
+                    alt="메뉴"
+                    aria-hidden="true"
+                />
             </button>
             <h1>MCM FROM ME</h1>
         </header>
@@ -50,11 +60,17 @@
                     STILL DECIDING
                 </button>
             </div>
+
+            <!-- 6. E-11: 여정(사진) 저장 실패 -->
+            <div id="sectionSaveError" class="page-section error-wrapper" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; z-index: 9999;">
+                {% include 'e11_journey_save_Failed.html' %}
+            </div>
         </main>
     </div>
 
     <!-- 외부 라이브러리 및 분리된 chapter5.js 파일 연결 -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="{% static 'js/chapter5.js' %}"></script>
+    <script src="{% static 'js/menu_toggle.js' %}"></script>
 </body>
 </html>

@@ -1,19 +1,17 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCM FROM ME</title>
-    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/e14_step_locked.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/e14_step_locked.css" />
 </head>
-<body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
+<body>
     <div class="app-container">
         <header class="common-header">
             <button type="button" class="menu-button" aria-label="메뉴 열기">
-                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
+                <img src="../images/hamburger_bar.svg" alt="메뉴" aria-hidden="true" />
             </button>
             <h1>MCM FROM ME</h1>
         </header>
@@ -21,7 +19,7 @@
         <main class="page-content locked-container">
             <!-- 잠금 아이콘 & 원형 그래픽 -->
             <div class="graphic-wrapper">
-                <img src="{% static 'images/lock_circle.svg' %}" alt="잠금 그래픽" class="graphic-img" />
+                <img src="../images/lock_circle.svg" alt="잠금 그래픽" class="graphic-img" />
             </div>
 
             <!-- 안내 문구 -->
@@ -37,6 +35,5 @@
             </div>
         </main>
     </div>
-    <script src="{% static 'js/menu_toggle.js' %}" defer></script>
 </body>
 </html>

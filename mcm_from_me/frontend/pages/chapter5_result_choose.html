@@ -19,10 +19,17 @@
     data-selection-id="{{ selection_id|default:'' }}"
     data-card-id="{{ card.id|default:'' }}"
     data-product-id="{{ card.product.id|default:'' }}"
+    data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true"
 >
     <div class="app-container result-choose-container">
         <div class="result-choose-bg">
-            <img src="{% static 'images/story_card_img.png' %}" alt="NEW HORIZON" class="result-choose-img" />
+            <img 
+                src="{% static 'images/story_card_img.png' %}" 
+                alt="My MCM Story" 
+                class="result-choose-img" 
+                id="resultCardImg"
+                onerror="this.onerror=null; this.src=`{% static 'images/story_card_img.png' %}`;"
+            />
             <div class="result-choose-overlay"></div>
         </div>
 

@@ -8,12 +8,21 @@
     <link rel="stylesheet" href="{% static 'css/common.css' %}" />
     <link rel="stylesheet" href="{% static 'css/chapter5.css' %}" />
 </head>
-<body data-selection-id="{{ selection_id|default:'1' }}">
+<body data-selection-id="{{ selection_id|default:'1' }}"
+    data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
     <div class="app-container still-container">
         <!-- 상단 헤더 -->
         <header class="common-header">
-            <button type="button" class="menu-button" aria-label="메뉴 열기" onclick="location.href='/hamburger-menu/'">
-                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
+            <button
+                type="button"
+                class="menu-button"
+                aria-label="메뉴 열기"
+            >
+            <img
+                src="{% static 'images/hamburger_bar.svg' %}"
+                alt="메뉴"
+                aria-hidden="true"
+            />
             </button>
             <h1>MCM FROM ME</h1>
         </header>
@@ -70,5 +79,6 @@
     </div>
 
     <script src="{% static 'js/chapter5.js' %}"></script>
+    <script src="{% static 'js/menu_toggle.js' %}"></script>
 </body>
 </html>

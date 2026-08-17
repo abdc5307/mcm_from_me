@@ -18,7 +18,8 @@
     호출 시 selection_id로 사용됩니다. 이 뷰를 렌더링하는 Django view에서
     context로 selection(또는 selection_id)을 반드시 내려주세요.
 -->
-<body data-selection-id="{{ selection_id }}">
+<body data-selection-id="{{ selection.id }}"
+    data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
 
     <!-- 1. 준비 화면 영역 (처음에만 .active가 붙어있어서 이것만 보임) -->
     <div id="sectionReady" class="page-section active">
@@ -51,5 +52,6 @@
     </div>
 
     <script src="{% static 'js/chapter4.js' %}"></script>
+    <script src="{% static 'js/menu_toggle.js' %}"></script>
 </body>
 </html>

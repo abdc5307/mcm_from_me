@@ -819,26 +819,33 @@
   text-transform: uppercase;
 }
 
-/* 3. 추천 제품 카드 */
-.ai-product-card {
+/* 3. 추천 제품 카드 (좌우 2열 배치) */
+.product-card {
   display: flex;
   width: 100%;
-  gap: 19px;
+  gap: 16px;
   text-align: left;
-  margin-bottom: 45px;
+  margin-bottom: 36px;
   box-sizing: border-box;
-  border-radius: 8px;
-  border: 1px solid rgba(242, 202, 80, 0.30);
+  border-radius: 12px;
+  border: 1px solid rgba(242, 202, 80, 0.35);
   background: rgba(30, 32, 32, 0.40);
-  backdrop-filter: blur(32px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  align-items: center;
 }
 
-.product-card-img-wrapper {
-  width: 170px;
-  height: 100%;
-  border-radius: 7px;
+/* 좌측 썸네일 박스 */
+.product-card-media {
+  width: 160px;
+  height: 200px;
+  border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
+  background: #fdfbf7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product-card-img {
@@ -848,6 +855,7 @@
   display: block;
 }
 
+/* 우측 정보 텍스트 영역 */
 .product-card-info {
   flex: 1;
   display: flex;
@@ -857,53 +865,45 @@
 
 .product-title {
   color: #E2E2E2;
-  font-family: "Playfair Display";
+  font-family: "Playfair Display", serif;
   font-size: 20px;
   font-style: normal;
-  font-weight: 300;
-  line-height: 25px;
-  margin-bottom: 10px;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0 0 6px 0;
 }
 
 .product-sub {
   color: #D0C5AF;
-  font-family: "Hanken Grotesk";
+  font-family: "Hanken Grotesk", sans-serif;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
-  line-height: 19.5px;
-  margin-bottom: 3px;
+  line-height: 18px;
+  margin: 2px 0;
 }
 
+/* 하단 태그 뱃지 */
 .product-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
+  gap: 6px;
+  margin-top: 12px;
 }
 
 .product-tag {
   display: inline-flex;
-  height: 23.5px;
-  padding: 3px 8px 4.5px 8px;
-  flex-direction: column;
-  align-items: flex-start;
+  padding: 4px 8px;
   border-radius: 12px;
-  border: 1px solid rgba(242, 202, 80, 0.40);
-  backdrop-filter: blur(2px);
+  border: 1px solid rgba(242, 202, 80, 0.50);
   color: #F2CA50;
-  font-family: "Hanken Grotesk";
+  font-family: "Hanken Grotesk", sans-serif;
   font-size: 9px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 13.5px;
-  letter-spacing: 0.45px;
+  font-weight: 500;
+  line-height: 12px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
-}
-
-/* COMPACT STORAGE 태그 개별 줄바꿈 대응 */
-.product-tag.tag-full {
-  display: inline-flex;
+  background: transparent;
 }
 
 /* 하단 버튼 */
@@ -912,7 +912,8 @@
   margin-bottom: 26px;
   display: flex;
   justify-content: center;
-  padding: 6px 24px 26px 24px;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .still-result-actions .result-btn-outline {

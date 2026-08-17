@@ -3,7 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // 공통 설정
     // =====================================================
     const API_BASE = "/api/product/chapter4";
-    const selectionId = document.body.dataset.selectionId || "1"; // chapter4.html의 data-selection-id 참고
+    const selectionId = localStorage.getItem("selectionId") || 
+                        localStorage.getItem("journeySelectionId") || 
+                        document.body.dataset.selectionId || "1";
 
     // TODO: redirect_to 코드 -> 실제 URL 매핑. 프로젝트 라우팅에 맞게 값 교체해주세요.
     const EXTERNAL_ROUTES = {
@@ -47,6 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 showSection(secReview);
                 break;
             case null:
+            case "C5-01":
+                const finalId = localStorage.getItem("selectionId") || localStorage.getItem("journeySelectionId");
+                window.location.href = `/api/ai_story/view/chapter5/discover/${finalId}/`;
+                break;
             case undefined:
                 break; // 응답이 null이면 현재 화면 유지 (예: ask_staff)
             default:
@@ -231,8 +237,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function uploadCapture(blob) {
+        const currentSelectionId = localStorage.getItem("selectionId") || 
+                                localStorage.getItem("journeySelectionId") || 
+                                selectionId;
+
         const formData = new FormData();
-        formData.append("selection_id", selectionId || "1"); // 빈 값 방지
+        formData.append("selection_id", currentSelectionId);
         formData.append("shot_mode", getShotMode());
         formData.append("image", blob, "capture.jpg");
 
@@ -249,6 +259,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (res.ok && data.status === "success") {
                 capturedPhotoId = data.data?.id ?? data.data?.photo_id ?? null;
                 const imageUrl = data.data?.image_url || data.data?.image;
+                
+                // 챕터 5에서 쓸 수 있도록 로컬 스토리지에 저장
+                if (imageUrl) {
+                    localStorage.setItem("capturedPhotoUrl", imageUrl);
+                }
+
                 if (reviewImage && imageUrl) reviewImage.src = imageUrl;
 
                 resetCameraOverlays();
