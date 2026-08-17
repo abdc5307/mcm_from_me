@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q
@@ -11,6 +11,8 @@ from .utils import generate_product_story
 
 # [H-01 / H-02] 세션 초기화 및 Resume 확인 (E-12)
 @api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
 def init_or_check_session(request):
     session_id = request.GET.get('session_id')
 
@@ -44,6 +46,8 @@ def init_or_check_session(request):
 # [H-08] Resume Journey - 이탈 복원
 @csrf_exempt
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
 def resume_journey(request):
     session_id = request.data.get('session_id')
     try:
@@ -60,6 +64,8 @@ def resume_journey(request):
 # [E-13] 새로 시작 (Start New Journey)
 @csrf_exempt
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
 def start_new_journey(request):
     session_id = request.data.get('session_id')
     if session_id:
@@ -76,6 +82,8 @@ def start_new_journey(request):
 # [C1-06 / C1-07] Moment 선택 저장
 @csrf_exempt
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
 def save_moment(request):
     session_id = request.data.get('session_id')
     moment = request.data.get('moment')
@@ -98,9 +106,11 @@ def save_moment(request):
         return Response({'errorCode': 'E-01', 'message': 'Session save failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-# [C2-02 / C2-05] NFC/QR 스캔 태그 검증 및 제품 저장 (AI 연동)
+# [C2-02 / C2-05] NFC/QR 스캔 태그 검증 및 제품 저장 (AI 연동 + Fallback 방어)
 @csrf_exempt
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
 def verify_product_tag(request):
     session_id = request.data.get('session_id')
     tag_code = request.data.get('tag_code')
@@ -121,29 +131,41 @@ def verify_product_tag(request):
         session.current_chapter = "C2"
         session.last_active_screen = "C2-07"
 
+        # AI 맞춤 스토리 생성 시도
+        generated_story = None
         try:
-            story_text = generate_product_story(product, session.selected_moment)
-            if story_text:
-                session.ai_story_text = story_text
+            generated_story = generate_product_story(product, session.selected_moment)
+            if hasattr(session, 'ai_story_text') and generated_story:
+                session.ai_story_text = generated_story
         except Exception as e:
             print(f"스토리 생성 실패: {e}")
 
         session.save()
 
+        # 안전한 기본 텍스트 추출 (Fallback)
+        fallback_story = (
+            getattr(product, 'description', None) 
+            or getattr(product, 'story_desc', None) 
+            or getattr(product, 'name', 'MCM Product')
+        )
+
         return Response({
             'status': 'SUCCESS',
             'nextScreen': 'C2-07',
             'product': ProductSerializer(product).data,
-            'story_text': session.ai_story_text or f"{product.story_title}\n\n{product.story_desc}"
+            'story_text': generated_story or getattr(session, 'ai_story_text', None) or fallback_story
         }, status=status.HTTP_200_OK)
 
-    except Exception:
+    except Exception as e:
+        print(f"verify_product_tag 내부 에러: {e}")
         return Response({'errorCode': 'E-04', 'message': 'Product Details Unavailable'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # [C3-11 / C3-17] Chapter 3 스타일 옵션 저장
 @csrf_exempt
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
 def save_style_options(request):
     session_id = request.data.get('session_id')
     carry_option = request.data.get('carry_option')
@@ -182,6 +204,8 @@ def save_style_options(request):
 # [C4-10] Chapter 4 촬영 사진 저장
 @csrf_exempt
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
 def save_photo_url(request):
     session_id = request.data.get('session_id')
     photo_url = request.data.get('photo_url')
@@ -207,6 +231,8 @@ def save_photo_url(request):
 # [C5-14 / F-01] 여정 최종 완료
 @csrf_exempt
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
 def complete_journey(request):
     session_id = request.data.get('session_id')
 
@@ -229,6 +255,8 @@ def complete_journey(request):
 # [H-07] Chapter 이동 유효성 검사 API
 @csrf_exempt
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
 def navigate_chapter(request):
     session_id = request.data.get('session_id')
     target_chapter = request.data.get('target_chapter')

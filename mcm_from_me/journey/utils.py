@@ -24,7 +24,7 @@ def generate_product_story(product, selected_moment):
 """
     try:
         response = client.models.generate_content(
-            model="gemini-flash-latest", contents=prompt
+            model = "gemini-3.6-flash", contents=prompt
         )
         return response.text.strip()
     except Exception as e:
