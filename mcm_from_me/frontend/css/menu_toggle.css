@@ -6,8 +6,7 @@ body.menu-open .common-header,
 body.menu-open .chapter1-header,
 body.menu-open .header,
 body.menu-open .chapter-header,
-body.menu-open .chapter3-header,
-body.menu-open .error-header {
+body.menu-open .chapter3-header {
   z-index: 1001;
 }
 

@@ -47,6 +47,7 @@ urlpatterns = [
     path('errors/tag-not-recognized/', TemplateView.as_view(template_name='e02_qr_scan_failed.html'), name='error_e02'),
     path('errors/unsupported-product/', TemplateView.as_view(template_name='e03_unsupported_product.html'), name='error_e03'),
     path('errors/product-unavailable/', TemplateView.as_view(template_name='e04_product_details_unavailable.html'), name='error_e04'),
+    path('errors/resume-session/', TemplateView.as_view(template_name='e13_resume_session.html'), name='error_e13'),
     path('errors/step-locked/', TemplateView.as_view(template_name='e14_step_locked.html'), name='error_e14'),
     path(
         'hamburger-menu/',
@@ -54,6 +55,8 @@ urlpatterns = [
         name='hamburger_menu',
     ),
     path('api/journey/', include('journey.urls')),
+    path('final/', TemplateView.as_view(template_name='final.html'), name='final'),
+    path('preparing/', TemplateView.as_view(template_name='preparing.html'), name='preparing'),
 ]
 
 if settings.DEBUG:

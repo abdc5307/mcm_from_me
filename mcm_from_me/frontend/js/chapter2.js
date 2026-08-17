@@ -6,18 +6,13 @@ const wearPieceButton = document.getElementById("wearPieceButton");
 
 try {
   const product = JSON.parse(sessionStorage.getItem("journeyProduct"));
-  const storyText = typeof product?.story_text === "string" ? product.story_text.trim() : "";
-  const [aiStoryTitle = "", ...aiStoryDescriptionParts] = storyText.split(/\r?\n\s*\r?\n/);
-  const aiStoryDescription = aiStoryDescriptionParts.join("\n\n").trim();
-  const storyTitle = aiStoryTitle.trim() || product?.story_title;
-  const storyDescription = aiStoryDescription || product?.story_desc;
 
   if (product?.name) productName.textContent = `${product.name}.`;
-  if (storyTitle) {
+  if (product?.story_title) {
     const dot = productStoryTitle.querySelector(".gold-dot");
-    productStoryTitle.replaceChildren(dot, document.createTextNode(storyTitle));
+    productStoryTitle.replaceChildren(dot, document.createTextNode(product.story_title));
   }
-  if (storyDescription) productStoryDescription.textContent = storyDescription;
+  if (product?.story_desc) productStoryDescription.textContent = product.story_desc;
   if (product?.image_url) productImage.src = product.image_url;
 } catch (error) {
   console.error("Stored product data is invalid", error);

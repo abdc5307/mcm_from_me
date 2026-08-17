@@ -18,12 +18,21 @@
     data-selection-id="{{ selection_id|default:'' }}"
     data-recommendation-id="{{ recommendation.id|default:'' }}"
     data-product-id="{{ recommendation.product.id|default:'' }}"
+    data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true"
 >
     <div class="app-container still-result-container">
         <!-- 상단 헤더 -->
         <header class="common-header">
-            <button type="button" class="menu-button" aria-label="메뉴 열기" onclick="location.href='/hamburger-menu/'">
-                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
+            <button
+                type="button"
+                class="menu-button"
+                aria-label="메뉴 열기"
+            >
+            <img
+                src="{% static 'images/hamburger_bar.svg' %}"
+                alt="메뉴"
+                aria-hidden="true"
+            />
             </button>
             <h1>MCM FROM ME</h1>
         </header>
@@ -41,8 +50,8 @@
                     <img src="{% static 'images/icon_sparkle.svg' %}" alt="스파클" class="ai-sparkle-img" />
                     <h3 class="ai-analysis-title">AI Analysis</h3>
                 </div>
-                <p class="ai-analysis-desc">
-                    NEW JOURNEY는 새로운 이동과 자연스러운 전환의 흐름이 엘라 보스턴백과 잘 어울리지만 실제 착용 과정에서 수납을 더 중요하게 생각한다는 점이 확인되었습니다. 같은 여정의 무드를 유지하면서 더 넉넉한 수납을 제공하는 제품은 어떠세요?
+                <p class="ai-analysis-desc" id="aiAnalysisDesc">
+                    <!-- JS에서 동적 주입 -->
                 </p>
             </div>
 
@@ -60,17 +69,15 @@
             <!-- 추천 제품 카드 -->
             <div class="product-card">
                 <div class="product-card-media">
-                    <img src="{% static 'images/backpack_img.png' %}" alt="Himmel Backpack" class="product-card-img" />
+                    <img src="{% static 'images/backpack_img.png' %}" alt="Recommended Product" class="product-card-img" id="recommendProductImg" />
                 </div>
                 <div class="product-card-info">
-                    <h4 class="product-title">Himmel<br>Backpack</h4>
-                    <p class="product-sub">Visetos Original</p>
-                    <p class="product-sub">Warm Sand</p>
+                    <h4 class="product-title" id="recommendProductTitle">추천 제품 준비 중</h4>
+                    <p class="product-sub" id="recommendProductSub1">Visetos Original</p>
+                    <p class="product-sub" id="recommendProductSub2">Warm Sand</p>
 
-                    <div class="product-tags">
-                        <span class="product-tag">LIGHTER</span>
-                        <span class="product-tag">TRAVEL-READY</span>
-                        <span class="product-tag tag-full">COMPACT STORAGE</span>
+                    <div class="product-tags" id="recommendProductTags">
+                        <!-- JS에서 동적 주입 -->
                     </div>
                 </div>
             </div>
@@ -103,5 +110,6 @@
     </div>
 
     <script src="{% static 'js/chapter5.js' %}"></script>
+    <script src="{% static 'js/menu_toggle.js' %}"></script>
 </body>
 </html>
