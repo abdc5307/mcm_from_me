@@ -17,13 +17,21 @@ function jsonHeaders() {
 }
 
 // =====================================================
-// [Processing] 로딩 화면 (0% 멈춤 방지 및 안전 타이머)
+// [Processing] 로딩 화면 (15초 대기 후 안전하게 1회 새로고침)
 // =====================================================
 document.addEventListener("DOMContentLoaded", () => {
   const overlay =
     document.getElementById("processingOverlay") ||
     document.querySelector(".processing-overlay, .loading-screen");
   if (!overlay) return;
+
+  // ★ 무한 루프 방지 핵심 안전장치 ★
+  // 이미 카드를 생성하고 새로고침되어 돌아온 상태라면, API를 또 부르지 않고 로딩창만 즉시 없앱니다.
+  if (sessionStorage.getItem("cardGenerated") === "true") {
+    overlay.style.display = "none";
+    sessionStorage.removeItem("cardGenerated"); // 다음번 테스트를 위해 메모 초기화
+    return; // 여기서 실행을 완전히 멈춤!
+  }
 
   const progressEl =
     document.getElementById("progressNumber") ||
@@ -36,40 +44,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let percent = 0;
 
+  // 15초 동안 99%까지 올라가도록 조절
   const interval = setInterval(() => {
-    if (percent < 100) {
-      percent += Math.floor(Math.random() * 8) + 5;
-      if (percent > 100) percent = 100;
+    if (percent < 99) {
+      percent += 1;
       if (progressEl) {
         progressEl.textContent = percent;
       }
-    } else {
-      clearInterval(interval);
-      overlay.style.transition = "opacity 0.4s ease";
-      overlay.style.opacity = "0";
-      setTimeout(() => {
-        overlay.style.display = "none";
-      }, 400);
     }
-  }, 80);
+  }, 150);
 
+  // API 호출
   fetch(`${API_BASE_CH5}/chapter5/generate/`, {
     method: "POST",
     headers: jsonHeaders(),
-    body: JSON.stringify({ selection_id: selectionId }),
+    body: JSON.stringify({ 
+        selection_id: selectionId,
+        card_count: 1 
+    }),
   })
     .catch((err) => {
-      console.warn("AI 생성 API 호출 실패 (무시하고 화면 표시):", err);
+      console.warn("AI 생성 API 호출 실패:", err);
     })
     .finally(() => {
+      // 무조건 15초 대기 후 딱 1번만 새로고침
       setTimeout(() => {
         clearInterval(interval);
         if (progressEl) progressEl.textContent = "100%";
-        overlay.style.opacity = "0";
-        setTimeout(() => {
-          overlay.style.display = "none";
-        }, 300);
-      }, 1500);
+        
+        // 브라우저에게 "나 방금 카드 만들었어!" 라고 메모 남기기
+        sessionStorage.setItem("cardGenerated", "true");
+        
+        // 새로고침 실행 (새로고침 되면서 저장된 카드가 예쁘게 화면에 뜹니다)
+        window.location.reload();
+      }, 15000); 
     });
 });
 
@@ -146,24 +154,21 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // ★ 로컬 웹캠 사진 가져오는 변수(localCapturedPhoto) 삭제됨 ★
-
     swiperWrapper.innerHTML = cards
       .map((card, index) => {
-        // 백엔드가 준 이미지(AI 이미지)를 최우선 적용
-        let imageUrl = card.image_url || card.image || card.ai_image_url || card.card_image;
-        
-        // 백엔드 AI 이미지가 없을 경우 웹캠이 아닌 '기본 AI 샘플 이미지'로 덮어쓰기
-        if (!imageUrl) {
-            imageUrl = STATIC_FALLBACK_IMG; 
-        }
+        // AI 템플릿 이미지를 최우선 적용, 없을 경우 정적 기본 이미지
+        const imageUrl =
+          card.card_image_url ||
+          card.card_image ||
+          card.image_url ||
+          STATIC_FALLBACK_IMG;
 
-        // 카드 ID -> 이미지 URL 매핑 저장 (CHOOSE 클릭 시 result 화면으로 넘겨주기 위함)
+        // 카드 ID -> AI 이미지 URL 매핑 저장 (CHOOSE 시 activeCardImageUrl로 사용)
         cardImageMap[card.id] = imageUrl;
 
-        const titleText = card.title || `My MCM Story Card #${index + 1}`;
+        const titleText = card.title || `NEW HORIZON`;
         const descText = card.card_text || card.description || "";
-        const captionText = card.caption || "LATEST CHAPTER";
+        const captionText = "LATEST CHAPTER";
 
         return `
             <div class="swiper-slide discover-card" data-card-id="${card.id}">
@@ -186,10 +191,12 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
 
     activeCardId = cards[0]?.id ?? null;
-    activeCardImageUrl = activeCardId != null ? cardImageMap[activeCardId] : null;
+    activeCardImageUrl =
+      activeCardId != null ? cardImageMap[activeCardId] : null;
     const dotsElement = document.querySelector(".discover-dots");
 
-    if (cards.length <= 1) {
+    // 카드가 1개일 경우 Swiper 제거 및 단일 카드 레이아웃 고정
+    if (cards.length === 1) {
       discoverContainer.classList.add("is-single");
       if (dotsElement) dotsElement.style.display = "none";
 
@@ -207,16 +214,14 @@ document.addEventListener("DOMContentLoaded", () => {
         centeredSlides: true,
         spaceBetween: 16,
         loop: false,
-        watchOverflow: true,
-        observer: true,
-        observeParents: true,
         pagination: { el: ".discover-dots", clickable: true },
         on: {
           slideChangeTransitionEnd(sw) {
             const activeSlide = sw.slides[sw.activeIndex];
             if (activeSlide?.dataset.cardId) {
               activeCardId = activeSlide.dataset.cardId;
-              activeCardImageUrl = cardImageMap[activeCardId] || null;
+              activeCardImageUrl =
+                cardImageMap[activeCardId] ?? activeCardImageUrl;
             }
           },
         },
@@ -247,9 +252,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json().catch(() => ({}));
 
         if (res.ok && data.status !== "error") {
-          // 서버가 확정한 이미지가 있으면 그걸 최우선으로, 없으면 화면에 보이던 AI 이미지를 사용
           const chosenImageUrl =
-            data.image_url || data.data?.image_url || activeCardImageUrl;
+            data.data?.card_image_url ||
+            data.card_image_url ||
+            data.image_url ||
+            data.data?.image_url ||
+            activeCardImageUrl;
 
           if (chosenImageUrl) {
             localStorage.setItem("aiCardImageUrl", chosenImageUrl);
