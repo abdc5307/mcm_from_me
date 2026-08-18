@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MCM FROM ME - Chapter 3</title>
-    <link rel="stylesheet" href="{% static 'css/chapter3.css' %}?v=journey-flow-1" />
+    <link rel="stylesheet" href="{% static 'css/chapter3.css' %}?v=journey-flow-combinations-1" />
     <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
   </head>
 
@@ -19,6 +19,8 @@
     data-chapter4-url="{% url 'chapter4' %}"
     data-top-handle-image="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
     data-crossbody-image="{% static 'images/Ella_Boston_bag_cross.png' %}"
+    data-top-handle-rocket-image="{% static 'images/ella_tophandle_rocket.png' %}"
+    data-crossbody-basic-image="{% static 'images/ella_crossbody_basic.png' %}"
   >
     <div hidden>{% csrf_token %}</div>
     <main class="chapter3-page">
@@ -131,7 +133,7 @@
     </main>
 
     <script src="{% static 'js/csrf.js' %}?v=1" defer></script>
-    <script src="{% static 'js/chapter3.js' %}?v=journey-flow-ko-1" defer></script>
+    <script src="{% static 'js/chapter3.js' %}?v=journey-flow-combinations-1" defer></script>
     <script src="{% static 'js/menu_toggle.js' %}" defer></script>
   </body>
 </html>

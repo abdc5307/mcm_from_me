@@ -76,17 +76,32 @@ function setPreviewMode(carry) {
   resultPreview.classList.toggle("result-image--top-handle", !isCrossbody);
 }
 
+function restartPreviewAnimation() {
+  previewImage.classList.remove("piece-preview--changing");
+  void previewImage.offsetWidth;
+  previewImage.classList.add("piece-preview--changing");
+}
+
 function setProductImage(url, carry = selectedStyle.carry) {
   if (!url) return;
+  const imageChanged = previewImage.src !== new URL(url, window.location.origin).href;
+
   currentImageUrl = url;
   setPreviewMode(carry);
   previewImage.src = url;
+  if (imageChanged) restartPreviewAnimation();
 }
 
-function localImageForCarry(carry) {
-  return carry === "CROSSBODY"
-    ? document.body.dataset.crossbodyImage
-    : document.body.dataset.topHandleImage;
+function localImageForCombination(carry, detail) {
+  const imageMap = {
+    "TOP_HANDLE|BASIC_CHARM": document.body.dataset.topHandleImage,
+    "TOP_HANDLE|ROCKET_CHARM": document.body.dataset.topHandleRocketImage,
+    "CROSSBODY|BASIC_CHARM": document.body.dataset.crossbodyBasicImage,
+    "CROSSBODY|ROCKET_CHARM": document.body.dataset.crossbodyImage,
+  };
+  const previewDetail = detail || "BASIC_CHARM";
+
+  return imageMap[`${carry}|${previewDetail}`] || null;
 }
 
 function handleImageError(event) {
@@ -112,7 +127,8 @@ function updateOptionDom(groupName, value) {
 }
 
 async function updateCombinationPreview() {
-  if (selectedStyle.carry) setProductImage(localImageForCarry(selectedStyle.carry));
+  const combinationImage = localImageForCombination(selectedStyle.carry, selectedStyle.detail);
+  if (combinationImage) setProductImage(combinationImage);
   if (!selectedStyle.carry || !selectedStyle.detail) {
     storyDescription.textContent = selectedStyle.carry
       ? `${displayNames[selectedStyle.carry]} 스타일에 어울리는 디테일을 선택해 주세요.`
@@ -147,7 +163,7 @@ async function updateCombinationPreview() {
     if (generation !== optionRequestGeneration) return;
 
     if (!response.ok || data.status !== "success" || !data.data) return;
-    if (data.data.image_url) setProductImage(data.data.image_url);
+    if (!combinationImage && data.data.image_url) setProductImage(data.data.image_url);
     if (data.data.ai_narration) {
       currentNarration = data.data.ai_narration;
       storyDescription.textContent = currentNarration;
