@@ -1,17 +1,16 @@
 from django.db import models
 
-#선택된 제품 클래스
+# 1. 선택된 제품 클래스
 class Product(models.Model):
-
     name = models.CharField(max_length=100, verbose_name="제품명")
     description = models.TextField(verbose_name="제품 설명")
 
     def __str__(self):
         return self.name
 
-#제품 옵션 구분
-class Option(models.Model):
 
+# 2. 제품 옵션 구분
+class Option(models.Model):
     GROUP_CHOICES = [
         ('carry', 'Carry Option'),
         ('detail', 'Detail Option'),
@@ -24,9 +23,9 @@ class Option(models.Model):
     def __str__(self):
         return f"[{self.get_group_display()}] {self.name}"
 
-#옵션 조합에 따른 이미지, 설명 
-class StyleCombination(models.Model):
 
+# 3. 옵션 조합에 따른 이미지, 설명 
+class StyleCombination(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="제품")
     carry_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="carry_combinations", limit_choices_to={'group': 'carry'}, verbose_name="캐리 옵션")
     detail_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="detail_combinations", limit_choices_to={'group': 'detail'}, verbose_name="디테일 옵션")
@@ -37,9 +36,9 @@ class StyleCombination(models.Model):
     def __str__(self):
         return f"{self.product.name} - {self.carry_option.name} + {self.detail_option.name}"
 
-#최종 스타일 정하는 곳
-class UserStyleSelection(models.Model):
 
+# 4. 최종 스타일 정하는 곳
+class UserStyleSelection(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     carry_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="user_selected_carry", limit_choices_to={'group': 'carry'})
     detail_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="user_selected_detail", limit_choices_to={'group': 'detail'})
@@ -51,9 +50,21 @@ class UserStyleSelection(models.Model):
     def __str__(self):
         return f"선택됨: {self.carry_option.name} / {self.detail_option.name}"
 
-#생성된 카드 관련 기능
-class JourneyCard(models.Model):
 
+# 5. 카드 템플릿 (JourneyCard보다 위에 정의하여 참조 에러 방지)
+class JourneyCardTemplate(models.Model):
+    theme_name = models.CharField(max_length=50)
+    subtitle = models.CharField(max_length=100, blank=True)
+    card_text = models.TextField()
+    background_image = models.ImageField(upload_to='journey_templates/', null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.theme_name
+
+
+# 6. 생성된 카드 관련 기능
+class JourneyCard(models.Model):
     STATUS_CHOICES = [
         ('processing', 'Processing'),
         ('completed', 'Completed'),
@@ -61,7 +72,7 @@ class JourneyCard(models.Model):
     ]
 
     style_selection = models.ForeignKey(
-        'UserStyleSelection',
+        UserStyleSelection,
         on_delete=models.CASCADE,
         related_name='journey_cards'
     )
@@ -71,6 +82,9 @@ class JourneyCard(models.Model):
         null=True, blank=True,
         related_name='journey_cards'
     )
+
+    # [추가된 필드] 최종 AI 카드 이미지
+    card_image = models.ImageField(upload_to='journey_cards/', null=True, blank=True, verbose_name="AI 합성/생성 카드 이미지")
 
     title = models.CharField(max_length=100, default='My MCM Story Card')
     card_text = models.TextField(null=True, blank=True) 
@@ -83,7 +97,7 @@ class JourneyCard(models.Model):
     share_token = models.CharField(max_length=64, null=True, blank=True, unique=True)
 
     template = models.ForeignKey(
-        'JourneyCardTemplate',
+        JourneyCardTemplate,
         on_delete=models.SET_NULL,
         null=True, blank=True,
         related_name='journey_cards'
@@ -95,21 +109,9 @@ class JourneyCard(models.Model):
     def __str__(self):
         return f"Card #{self.id} ({self.status}) - selection {self.style_selection_id}"
 
-#카드 선택 - 미리 만들어두기
-class JourneyCardTemplate(models.Model):
 
-    theme_name = models.CharField(max_length=50)
-    subtitle = models.CharField(max_length=100, blank=True)
-    card_text = models.TextField()
-    background_image = models.ImageField(upload_to='journey_templates/', null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.theme_name
-
-#고민 이유 선택
+# 7. 고민 이유 선택
 class HesitationReason(models.Model):
-
     REASON_CHOICES = [
         ('SIZE', 'Size'),
         ('WEIGHT', 'Weight'),
@@ -120,13 +122,13 @@ class HesitationReason(models.Model):
     ]
 
     style_selection = models.ForeignKey(
-        'UserStyleSelection',
+        UserStyleSelection,
         on_delete=models.CASCADE,
         related_name='hesitation_reasons'
     )
     reason = models.CharField(max_length=20, choices=REASON_CHOICES)
     ai_reconsidered_card = models.ForeignKey(
-        'JourneyCard',
+        JourneyCard,
         on_delete=models.SET_NULL,
         null=True, blank=True,
         related_name='reconsideration_source'
@@ -137,16 +139,15 @@ class HesitationReason(models.Model):
         return f"Hesitation({self.reason}) - selection {self.style_selection_id}"
 
 
-#분석, 추천
+# 8. 분석 및 추천
 class ProductRecommendation(models.Model):
-
     hesitation = models.ForeignKey(
-        'HesitationReason',
+        HesitationReason,
         on_delete=models.CASCADE,
         related_name='recommendations'
     )
     recommended_product = models.ForeignKey(
-        'Product',
+        Product,
         on_delete=models.SET_NULL,
         null=True, blank=True,
         related_name='recommended_from'
