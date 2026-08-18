@@ -16,4 +16,6 @@ urlpatterns = [
     # 여정 완료 및 Chapter 이동 가드
     path('journey/complete/', views.complete_journey, name='complete_journey'),
     path('chapter/navigate/', views.navigate_chapter, name='navigate_chapter'),
+
+    path('generate-card/', views.generate_journey_card, name='generate_journey_card'),
 ]
