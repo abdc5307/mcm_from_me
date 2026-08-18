@@ -8,6 +8,14 @@ from .models import JourneySession, Product
 from .serializers import JourneySessionSerializer, ProductSerializer
 from .utils import generate_product_story
 
+import base64
+import requests
+from google import genai
+from google.genai import types
+from django.core.files.base import ContentFile
+from django.conf import settings
+from ai_story.views import generate_journey_card_text
+
 
 # [H-01 / H-02] 세션 초기화 및 Resume 확인 (E-12)
 @api_view(['GET'])
@@ -295,3 +303,130 @@ def navigate_chapter(request):
         'currentChapter': session.current_chapter,
         'lastActiveScreen': session.last_active_screen,
     }, status=status.HTTP_200_OK)
+
+
+
+# moment/style 값을 프롬프트 문장으로 변환하는 매핑
+MOMENT_PROMPT_MAP = {
+    'MORNING': '아침 햇살이 비치는 도심 거리',
+    'EVENING': '노을이 지는 도시 야경',
+    # 실제 moment 값에 맞게 채워주세요
+}
+
+CARRY_PROMPT_MAP = {
+    'TOP_HANDLE': '탑핸들로 가방을 손에 들고 있는',
+    'CROSSBODY': '크로스바디로 가방을 어깨에 메고 있는',
+}
+
+DETAIL_PROMPT_MAP = {
+    'BASIC_CHARM': '베이직 참 장식이 달린',
+    'ROCKET_CHARM': '로켓 참 장식이 달린',
+}
+
+
+def build_prompt(session):
+    moment_desc = MOMENT_PROMPT_MAP.get(session.selected_moment, '세련된 배경')
+    carry_desc = CARRY_PROMPT_MAP.get(session.carry_option, '')
+    detail_desc = DETAIL_PROMPT_MAP.get(session.detail_option, '')
+
+    return (
+        f"이 사람의 얼굴과 신체 특징은 그대로 유지하면서, "
+        f"{moment_desc}을 배경으로 MCM 가방을 {carry_desc} 자연스러운 모습으로 합성해줘. "
+        f"가방에는 {detail_desc} 디테일이 잘 보이게 해줘. "
+        f"고급스럽고 화보 같은 분위기로, 조명과 색감을 자연스럽게 맞춰줘."
+    )
+
+
+
+@api_view(['POST'])
+def generate_journey_card(request):
+    session_id = request.data.get('session_id')
+
+    try:
+        session = JourneySession.objects.get(id=session_id)
+    except JourneySession.DoesNotExist:
+        return Response({'errorCode': 'E-01', 'message': 'Session not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if not session.photo_url:
+        return Response({'errorCode': 'E-12', 'message': 'Photo not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # 저장된 photo_url에서 이미지 바이트 가져오기
+    from django.contrib.staticfiles import finders
+
+    try:
+        if session.photo_url.startswith('http'):
+            photo_bytes = requests.get(session.photo_url, timeout=10).content
+        else:
+            # /static/images/xxx.jpg → images/xxx.jpg 로 변환 후 실제 파일 경로 찾기
+            relative_path = session.photo_url.removeprefix('/static/')
+            file_path = finders.find(relative_path)
+
+            if not file_path:
+                return Response({'errorCode': 'E-13', 'message': f'File not found: {relative_path}'}, status=status.HTTP_404_NOT_FOUND)
+
+            with open(file_path, 'rb') as f:
+                photo_bytes = f.read()
+    except Exception as e:
+        return Response({'errorCode': 'E-13', 'message': f'Photo load failed: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    prompt = build_prompt(session)
+
+    try:
+        client = genai.Client(api_key=settings.GEMINI_API_KEY)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash-image",
+            contents=[
+                types.Part.from_bytes(data=photo_bytes, mime_type="image/jpeg"),
+                prompt,
+            ],
+            config=types.GenerateContentConfig(
+                response_modalities=["TEXT", "IMAGE"]
+            ),
+        )
+
+        result_image = None
+        caption = ""
+        for part in response.candidates[0].content.parts:
+            if part.text:
+                caption += part.text
+            elif part.inline_data:
+                result_image = part.inline_data.data
+
+        if not result_image:
+            # 안전 필터에 걸리거나 생성 실패한 경우 fallback
+            return Response({
+                'errorCode': 'E-14',
+                'message': 'Image generation failed, please retry'
+            }, status=status.HTTP_502_BAD_GATEWAY)
+
+        session.generated_image.save('journey_card.jpg', ContentFile(result_image), save=False)
+
+        class _SimpleOption:
+            """generate_journey_card_text가 기대하는 .code_name 속성을 흉내내는 헬퍼"""
+            def __init__(self, code_name):
+                self.code_name = code_name
+
+        caption = generate_journey_card_text(
+            product=session.product,
+            carry_option=_SimpleOption(session.carry_option),
+            detail_option=_SimpleOption(session.detail_option),
+            narration=None,
+        ) or ""
+
+        session.generated_caption = caption
+        session.current_chapter = "C5"
+        session.last_active_screen = "C5-RESULT"
+        session.save()
+
+        return Response({
+            'status': 'SUCCESS',
+            'nextScreen': 'C5-RESULT',
+            'image_url': session.generated_image.url,
+            'caption': caption,
+        }, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({
+            'errorCode': 'E-15',
+            'message': f'AI generation error: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

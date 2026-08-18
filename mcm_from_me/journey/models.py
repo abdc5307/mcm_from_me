@@ -41,5 +41,8 @@ class JourneySession(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    generated_image = models.ImageField(upload_to='generated/', null=True, blank=True)
+    generated_caption = models.TextField(blank=True)
+
     def __str__(self):
         return f"Session {self.id} | {self.current_chapter} ({self.last_active_screen})"

@@ -1,6 +1,7 @@
 from google import genai
 from django.conf import settings
 import json
+import time
 
 client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
@@ -25,7 +26,7 @@ Detail 옵션: {detail_option.code_name}
 """
     try:
         response = client.models.generate_content(
-            model="gemini-flash-latest", contents=prompt
+            model="gemini-3.6-flash", contents=prompt
         )
         return response.text.strip()
     except Exception as e:
@@ -46,14 +47,17 @@ Detail 옵션: {detail_option.code_name}
 
 결과는 카드 문구만 출력하고, 다른 설명은 붙이지 마세요.
 """
-    try:
-        response = client.models.generate_content(
-            model="gemini-flash-latest", contents=prompt
-        )
-        return response.text.strip()
-    except Exception as e:
-        print(f"카드 생성 중 Gemini 오류: {e}")
-        return None
+    for attempt in range(3):
+        try:
+            response = client.models.generate_content(
+                model="gemini-3.6-flash", contents=prompt
+            )
+            return response.text.strip()
+        except Exception as e:
+            print(f"카드 생성 중 Gemini 오류 (시도 {attempt+1}/3): {e}")
+            if attempt < 2:
+                time.sleep(2)  # 2초 대기 후 재시도
+    return None
 
 
 def generate_ai_analysis_and_recommendation(selection, reason, all_products):
@@ -83,7 +87,7 @@ def generate_ai_analysis_and_recommendation(selection, reason, all_products):
 """
     try:
         response = client.models.generate_content(
-            model="gemini-flash-latest", contents=prompt
+            model="gemini-3.6-flash", contents=prompt
         )
         raw = response.text.strip()
         raw = raw.replace('```json', '').replace('```', '').strip()
