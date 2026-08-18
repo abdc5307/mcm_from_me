@@ -4,12 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCM FROM ME</title>
+    <title>MCM FROM ME - AI Recommendation Result</title>
     <link rel="stylesheet" href="{% static 'css/common.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/e14_step_locked.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/chapter5.css' %}" />
 </head>
-<body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
-    <div class="app-container">
+<body
+    data-hesitation-id="{{ recommendation.hesitation.id }}"
+    data-selection-id="{{ selection.id }}"
+    data-recommendation-id="{{ recommendation.id }}"
+    data-product-id="{{ recommendation.recommended_product.id|default:'' }}"
+    data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true"
+>
+    <div class="app-container still-result-container">
+        <!-- 상단 헤더 -->
         <header class="common-header">
             <button type="button" class="menu-button" aria-label="메뉴 열기">
                 <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
@@ -17,25 +24,76 @@
             <h1>MCM FROM ME</h1>
         </header>
 
-        <main class="page-content locked-container">
-            <!-- 잠금 아이콘 & 원형 그래픽 -->
-            <div class="graphic-wrapper">
-                <img src="{% static 'images/lock_circle.svg' %}" alt="잠금 그래픽" class="graphic-img" />
+        <main class="still-result-content">
+            <div class="still-result-title-group">
+                <h2 class="still-result-title">Continue Your Journey</h2>
+                <p class="still-result-subtext">Your next step, curated by AI.</p>
             </div>
 
-            <!-- 안내 문구 -->
-            <div class="text-group step_locked">
-                <h2 class="title-en">Complete the previous<br>chapter first.</h2>
-                <p class="desc-kr">이전 단계를 완료한 후 다음 Journey로<br>이동해 주세요.</p>
+            <!-- AI Analysis 분석 카드 -->
+            <div class="ai-analysis-card">
+                <div class="ai-analysis-header">
+                    <img src="{% static 'images/icon_sparkle.svg' %}" alt="스파클" class="ai-sparkle-img" />
+                    <h3 class="ai-analysis-title">AI Analysis</h3>
+                </div>
+                <p class="ai-analysis-desc" id="aiAnalysisDesc">
+                    {{ recommendation.analysis_text|default:"고객님의 선택을 바탕으로 새로운 여정을 계속 찾아드릴게요." }}
+                </p>
             </div>
 
-            <!-- 액션 버튼 -->
-            <div class="action-group">
-                <a href="javascript:history.back()" class="btn-goback">GO BACK</a>
-                <a href="{% url 'chapter1' %}" class="btn-review">REVIEW CURRENT CHAPTER</a>
+            <div class="ai-divider-group">
+                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="2" viewBox="0 0 72 2" fill="none">
+                    <line x1="0" y1="1" x2="72" y2="1" stroke="currentColor" stroke-opacity="0.3" />
+                </svg>
+                <span>AI RECOMMENDATION</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="2" viewBox="0 0 72 2" fill="none">
+                    <line x1="0" y1="1" x2="72" y2="1" stroke="currentColor" stroke-opacity="0.3" />
+                </svg>
             </div>
+
+            <!-- 추천 제품 카드 -->
+            <div class="product-card">
+                <div class="product-card-media">
+                    <img src="{% if recommendation.recommended_product.image %}{{ recommendation.recommended_product.image.url }}{% elif recommendation.recommended_product.image_url %}{{ recommendation.recommended_product.image_url }}{% else %}{% static 'images/backpack_img.png' %}{% endif %}" alt="Recommended Product" class="product-card-img" id="recommendProductImg" />
+                </div>
+                <div class="product-card-info">
+                    <h4 class="product-title" id="recommendProductTitle">
+                        {{ recommendation.recommended_product.name|default:"추천 제품 준비 중" }}
+                    </h4>
+                    <div class="product-tags" id="recommendProductTags">
+                        {% if recommendation %}
+                            {% for tag in recommendation.get_reason_tags_list %}
+                                <span class="product-tag">{{ tag }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="still-result-actions">
+                <button type="button" class="result-btn-outline" id="btnCompleteJourney">
+                    COMPLETE MY JOURNEY
+                </button>
+            </div>
+
+            <footer class="result-bottom-bar still-result-bar">
+                <button type="button" class="bottom-tab-btn" id="btnConnectAdviser">
+                    <img src="{% static 'images/connect_adviser.svg' %}" alt="" class="tab-icon" />
+                    <span>CONNECT<br>ADVISER</span>
+                </button>
+                <button type="button" class="bottom-tab-btn" id="btnShare">
+                    <img src="{% static 'images/share.svg' %}" alt="" class="tab-icon" />
+                    <span>SHARE</span>
+                </button>
+                <button type="button" class="bottom-tab-btn" id="btnViewDetails">
+                    <img src="{% static 'images/view_details.svg' %}" alt="" class="tab-icon" />
+                    <span>VIEW DETAILS</span>
+                </button>
+            </footer>
         </main>
     </div>
+
+    <script src="{% static 'js/chapter5.js' %}"></script>
     <script src="{% static 'js/menu_toggle.js' %}"></script>
 </body>
 </html>

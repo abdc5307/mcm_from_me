@@ -94,7 +94,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnStill = document.getElementById("btnStillDeciding");
 
   let activeCardId = null;
+  let activeCardImageUrl = null; // 현재 활성 카드의 AI 생성 이미지 URL
   let swiperInstance = null;
+  const cardImageMap = {}; // 카드 ID -> AI 이미지 URL 매핑
 
   // E-11 에러 화면 표시 함수
   function showSaveError() {
@@ -144,23 +146,20 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const localCapturedPhoto = localStorage.getItem("capturedPhotoUrl");
+    // ★ 로컬 웹캠 사진 가져오는 변수(localCapturedPhoto) 삭제됨 ★
 
     swiperWrapper.innerHTML = cards
       .map((card, index) => {
-        // 1. 서버에 저장된 카드 이미지가 있으면 최우선 사용
-        let imageUrl = card.image_url || card.image || card.card_image;
+        // 백엔드가 준 이미지(AI 이미지)를 최우선 적용
+        let imageUrl = card.image_url || card.image || card.ai_image_url || card.card_image;
         
-        // 2. 서버 이미지가 없는 경우 분기 처리
+        // 백엔드 AI 이미지가 없을 경우 웹캠이 아닌 '기본 AI 샘플 이미지'로 덮어쓰기
         if (!imageUrl) {
-            // 새로 추가된(최신) 카드를 보통 첫 번째(index 0)로 간주하여 카메라 사진 주입
-            if (index === 0) {
-                imageUrl = localCapturedPhoto || STATIC_FALLBACK_IMG;
-            } else {
-                // 기존 히스토리 카드들은 카메라 사진이 아닌 기본 스토리 카드 이미지 유지
-                imageUrl = STATIC_FALLBACK_IMG; 
-            }
+            imageUrl = STATIC_FALLBACK_IMG; 
         }
+
+        // 카드 ID -> 이미지 URL 매핑 저장 (CHOOSE 클릭 시 result 화면으로 넘겨주기 위함)
+        cardImageMap[card.id] = imageUrl;
 
         const titleText = card.title || `My MCM Story Card #${index + 1}`;
         const descText = card.card_text || card.description || "";
@@ -187,6 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
 
     activeCardId = cards[0]?.id ?? null;
+    activeCardImageUrl = activeCardId != null ? cardImageMap[activeCardId] : null;
     const dotsElement = document.querySelector(".discover-dots");
 
     if (cards.length <= 1) {
@@ -216,6 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const activeSlide = sw.slides[sw.activeIndex];
             if (activeSlide?.dataset.cardId) {
               activeCardId = activeSlide.dataset.cardId;
+              activeCardImageUrl = cardImageMap[activeCardId] || null;
             }
           },
         },
@@ -246,6 +247,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json().catch(() => ({}));
 
         if (res.ok && data.status !== "error") {
+          // 서버가 확정한 이미지가 있으면 그걸 최우선으로, 없으면 화면에 보이던 AI 이미지를 사용
+          const chosenImageUrl =
+            data.image_url || data.data?.image_url || activeCardImageUrl;
+
+          if (chosenImageUrl) {
+            localStorage.setItem("aiCardImageUrl", chosenImageUrl);
+          }
+
           window.location.href = `${API_BASE_CH5}/view/chapter5/result/${selectionId}/`;
         } else {
           console.warn("카드 선택 실패 응답:", data);
@@ -401,7 +410,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!resultContainer) return;
 
   const selectionId = document.body.dataset.selectionId;
-  const localPhoto = localStorage.getItem("capturedPhotoUrl");
+  const aiCardImageUrl = localStorage.getItem("aiCardImageUrl"); // Discover에서 CHOOSE한 AI 생성 이미지
+  const localPhoto = localStorage.getItem("capturedPhotoUrl"); // 웹캠 사진 (AI 이미지가 없을 때만 쓰는 fallback)
 
   function applyResultPhoto(photoUrl) {
     if (!photoUrl) return;
@@ -414,8 +424,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     resultContainer.style.backgroundRepeat = "no-repeat";
   }
 
-  // 일단 로컬 카메라 사진을 배경에 즉시 깔아둡니다.
-  if (localPhoto) applyResultPhoto(localPhoto);
+  // AI가 생성한 이미지를 최우선으로 즉시 적용합니다. (내가 찍은 사진이 아님)
+  // AI 이미지가 아직 없을 때만 임시로 웹캠 사진을 보여줍니다.
+  if (aiCardImageUrl) {
+    applyResultPhoto(aiCardImageUrl);
+  } else if (localPhoto) {
+    applyResultPhoto(localPhoto);
+  }
 
   function setKeywordHtml(element, text) {
     if (!element || !text) return;
@@ -442,14 +457,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     const storedProduct = JSON.parse(sessionStorage.getItem("journeyProduct") || "{}");
     const storedStyle = JSON.parse(sessionStorage.getItem("journeyStyle") || "{}");
     
-    // 값이 없으면 더미가 아닌 빈칸 또는 최소한의 기본값 처리
     const prodName = storedProduct.name || "ELLA BOSTON BAG";
     const carryMode = summaryDisplayNames[storedStyle.carry] || storedStyle.carry || "CROSSBODY";
     const detailMode = summaryDisplayNames[storedStyle.detail] || storedStyle.detail || "ROCKET CHARM";
     
-    // 모먼트는 session에 저장 안되어 있을 수 있으므로 localStorage까지 이중 체크
-    const momentName = sessionStorage.getItem("selectedMoment") || localStorage.getItem("selectedMoment") || "MIDNIGHT MOVE";
-
+    // 모먼트 이름을 다양한 세션/로컬 스토리지 키 및 journeyProduct 내부 속성에서 탐색
+    const momentName =
+      storedProduct.moment ||
+      storedProduct.moment_name ||
+      storedProduct.theme ||
+      sessionStorage.getItem("journeyMoment") ||
+      localStorage.getItem("journeyMoment") ||
+      sessionStorage.getItem("selectedMoment") ||
+      localStorage.getItem("selectedMoment") ||
+      sessionStorage.getItem("moment") ||
+      localStorage.getItem("moment") ||
+      "URBAN OASIS"; // 기본값도 URBAN으로 변경
+  
     if (keywordItems.length >= 4) {
       setKeywordHtml(keywordItems[0], prodName.toUpperCase());
       setKeywordHtml(keywordItems[1], momentName.toUpperCase());
@@ -471,7 +495,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const json = await res.json();
 
     if (json.status === "success" && json.data) {
-      const serverPhotoUrl = json.data.image_url || localPhoto || STATIC_FALLBACK_IMG;
+      // 서버가 내려주는 AI 이미지가 최우선, 그 다음 로컬에 저장된 AI 이미지, 마지막이 웹캠 사진
+      const serverPhotoUrl =
+        json.data.image_url || aiCardImageUrl || localPhoto || STATIC_FALLBACK_IMG;
       applyResultPhoto(serverPhotoUrl);
       
       // 의도적으로 json.data의 키워드를 덮어쓰는 로직은 삭제했습니다. (Chapter 3 실제 데이터 보호)
