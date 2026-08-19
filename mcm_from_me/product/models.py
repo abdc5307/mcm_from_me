@@ -14,7 +14,9 @@ class CapturedPhoto(models.Model):
     style_selection = models.ForeignKey(
         UserStyleSelection,
         on_delete=models.CASCADE,
-        related_name='captured_photos'
+        related_name='captured_photos',
+        null=True,     # 추가: 값이 비어 있어도 DB 에러 안 남
+        blank=True     # 추가: 폼 유효성 검사 통과 허용
     )
     image = models.ImageField(
         upload_to='chapter4/captures/%Y/%m/%d/',
