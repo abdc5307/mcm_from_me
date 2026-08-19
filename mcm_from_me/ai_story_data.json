@@ -1,216 +1,510 @@
 [
-{
-  "model": "ai_story.product",
-  "pk": 1,
-  "fields": {
-    "name": "Ella Boston Bag",
-    "description": "MCM ½Ã±×´ÏÃ³ ºñ¼¼Åä½º ÆĞÅÏÀÇ Å¬·¡½Ä º¸½ºÅÏ¹é. °í±Ş½º·´°í Æ÷¸ÖÇÑ ÂøÀå ¹× Å¬·¡½ÄÇÑ ¹«µå ¿¬Ãâ¿¡ ÃÖÀûÈ­",
-    "image_url": null
+  {
+    "model": "ai_story.product",
+    "pk": 1,
+    "fields": {
+      "name": "Ella Boston Bag",
+      "description": "MCM ì‹œê·¸ë‹ˆì²˜ ë¹„ì„¸í† ìŠ¤ íŒ¨í„´ì˜ í´ë˜ì‹ ë³´ìŠ¤í„´ë°±. ê³ ê¸‰ìŠ¤ëŸ½ê³  í¬ë©€í•œ ì°©ì¥ ë° í´ë˜ì‹í•œ ë¬´ë“œ ì—°ì¶œì— ìµœì í™”",
+      "image_url": null
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 2,
+    "fields": {
+      "name": "Himmel Backpack",
+      "description": "Visetos Original Warm Sand, ë°ì¼ë¦¬í•˜ê²Œ ë„‰ë„‰í•œ ìˆ˜ë‚©ê³µê°„ê³¼ ê°€ë²¼ìš´ ë‚˜ì¼ë¡  ì´ˆê²½ëŸ‰ ë°±íŒ© (ì‹¤ìš©/ìˆ˜ë‚© ê³ ë¯¼ ì¶”ì²œ)",
+      "image_url": null
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 3,
+    "fields": {
+      "name": "Aren Shopper",
+      "description": "ìŠ¬ë¦¼í•˜ê³  ì•„ë‹´í•œ ë¯¸ë‹ˆ ì´ˆê²½ëŸ‰ í† íŠ¸/ì‡¼í¼ë°±, ë°ì¼ë¦¬í•˜ê²Œ ê°€ë³ê²Œ ë“¤ê¸° ì¢‹ìŒ (ì‚¬ì´ì¦ˆ/ì°©ìš©ê° ê³ ë¯¼ ì¶”ì²œ)",
+      "image_url": null
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 4,
+    "fields": {
+      "name": "Klassik Crossbody",
+      "description": "ì„¸ë ¨ë˜ê³  íŠ¸ë Œë””í•œ ì»´íŒ©íŠ¸ ì‹¤ë£¨ì—£, ê°€ë³ê³  í¸ì•ˆí•˜ê²Œ ì°©ìš© ê°€ëŠ¥í•œ í¬ë¡œìŠ¤ë°”ë””ë°± (ë””ìì¸/ìŠ¤íƒ€ì¼ ê³ ë¯¼ ì¶”ì²œ)",
+      "image_url": null
+    }
+  },
+  {
+    "model": "ai_story.option",
+    "pk": 1,
+    "fields": {
+      "group": "carry",
+      "name": "Top Handle",
+      "code_name": "top_handle"
+    }
+  },
+  {
+    "model": "ai_story.option",
+    "pk": 2,
+    "fields": {
+      "group": "carry",
+      "name": "Cross Body",
+      "code_name": "cross_body"
+    }
+  },
+  {
+    "model": "ai_story.option",
+    "pk": 3,
+    "fields": {
+      "group": "detail",
+      "name": "Basic Charm",
+      "code_name": "basic_charm"
+    }
+  },
+  {
+    "model": "ai_story.option",
+    "pk": 4,
+    "fields": {
+      "group": "detail",
+      "name": "Rochet charm",
+      "code_name": "rocket_charm"
+    }
+  },
+  {
+    "model": "ai_story.journeycardtemplate",
+    "pk": 1,
+    "fields": {
+      "theme_name": "NEW HORIZON",
+      "subtitle": "LATEST CHAPTER",
+      "card_text": "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own.",
+      "background_image": "",
+      "is_active": true
+    }
+  },
+  {
+    "model": "ai_story.journeycardtemplate",
+    "pk": 2,
+    "fields": {
+      "theme_name": "MIDNIGHT",
+      "subtitle": "LATEST CHAPTER",
+      "card_text": "When the city quiets down, your story finds its own rhythm. Embrace the night and let your journey unfold in the dark.",
+      "background_image": "",
+      "is_active": true
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 1,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-10T15:31:34.778Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 2,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 4,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T01:48:25.267Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 3,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T02:33:35.988Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 4,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 4,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T02:40:10.097Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 5,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T03:32:29.988Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 6,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T03:37:16.854Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 7,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:34:02.426Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 8,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 4,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:42:23.943Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 9,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:44:00.523Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 10,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:47:32.480Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 11,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:48:32.399Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 12,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:51:22.214Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 13,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 4,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:53:33.359Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 14,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 4,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:54:17.019Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 15,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Effortless in motion. Timeless by design.",
+      "created_at": "2026-08-11T05:04:06.108Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 16,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Crafted for freedom. Charmed with grace.",
+      "created_at": "2026-08-11T05:04:07.817Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 17,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Crafted to move. Styled to charm.",
+      "created_at": "2026-08-11T05:04:10.530Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 18,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Classic structure. Effortless motion. Timelessly yours.\n\nêµ¬ì¡°ì ì¸ ìš°ì•„í•¨ê³¼ ì‹¤ìš©ì„±ì„ ê²¸ë¹„í•œ í´ë˜ì‹ ë³´ìŠ¤í„´ë°±ì€ ì‹œëŒ€ë¥¼ ì´ˆì›”í•˜ëŠ” ì™„ë²½í•œ ì„ íƒì…ë‹ˆë‹¤. í¬ë¡œìŠ¤ë°”ë”” ìŠ¤íŠ¸ë©ì´ ì„ ì‚¬í•˜ëŠ” ììœ ë¡œìš´ ì›€ì§ì„ì€ ì¼ìƒ ì†ì—ì„œ í¸ì•ˆí•œ ë§¤ë ¥ì„ ë”í•´ì¤ë‹ˆë‹¤. ë² ì´ì§ ì°¸ì˜ ì„¬ì„¸í•œ ë””í…Œì¼ì´ ì¡°í™”ë¡­ê²Œ ì–´ìš°ëŸ¬ì ¸ ë‹¹ì‹ ë§Œì˜ ì‹œê·¸ë‹ˆì²˜ ìŠ¤íƒ€ì¼ì„ ì™„ì„±í•©ë‹ˆë‹¤.",
+      "created_at": "2026-08-11T05:06:19.666Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 19,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Classic by form. Timeless in your hand.\n\në‹¨ë‹¨í•˜ë©´ì„œë„ ë¶€ë“œëŸ¬ìš´ íƒ‘ í•¸ë“¤ì„ ì†ì— ì¥ëŠ” ìˆœê°„, ì¼ìƒì˜ ëª¨ë“  ìˆœê°„ì´ ë‹¹ì‹ ë§Œì˜ ë¬´ëŒ€ë¡œ ë³€í™”í•©ë‹ˆë‹¤. ë² ì´ì§ ì°¸ í¬ì¸íŠ¸ë¡œ ì„¬ì„¸í•œ ê°ê°ì„ ë”í•´ë³´ì„¸ìš”.",
+      "created_at": "2026-08-11T07:22:27.933Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 20,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Timeless in form. Elegant in hand.\n\në³´ìŠ¤í„´ë°± íŠ¹ìœ ì˜ ì…ì²´ì ì¸ ë³¼ë¥¨ê°ê³¼ í´ë˜ì‹í•œ ì•„ìš°ë¼ê°€ ì™„ì„±ë©ë‹ˆë‹¤. ì†ëì— ë¶€ë“œëŸ½ê²Œ ê°ê¸°ëŠ” íƒ‘ í•¸ë“¤ê³¼ ì¡°í™”ë¡­ê²Œ ë¹›ë‚˜ëŠ” ë””í…Œì¼ì´ ì„¸ë ¨ëœ ìš°ì•„í•¨ì„ ì „ë‹¬í•©ë‹ˆë‹¤.",
+      "created_at": "2026-08-11T07:22:30.551Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 21,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-14T14:04:19.837Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 1,
+    "fields": {
+      "style_selection": 1,
+      "reason": "WEIGHT",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-10T16:17:32.697Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 2,
+    "fields": {
+      "style_selection": 6,
+      "reason": "COMFORT",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-11T04:11:38.843Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 3,
+    "fields": {
+      "style_selection": 7,
+      "reason": "COMFORT",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-11T04:35:05.354Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 4,
+    "fields": {
+      "style_selection": 8,
+      "reason": "DESIGN",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-11T04:43:43.494Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 5,
+    "fields": {
+      "style_selection": 18,
+      "reason": "DESIGN",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-11T05:08:24.309Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 6,
+    "fields": {
+      "style_selection": 20,
+      "reason": "PRICE",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-11T07:25:26.578Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 7,
+    "fields": {
+      "style_selection": 1,
+      "reason": "WEIGHT",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:25:20.047Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 8,
+    "fields": {
+      "style_selection": 1,
+      "reason": "SIZE",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:25:30.648Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 9,
+    "fields": {
+      "style_selection": 1,
+      "reason": "PRICE",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:27:02.733Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 10,
+    "fields": {
+      "style_selection": 1,
+      "reason": "COMFORT",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:27:26.919Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 11,
+    "fields": {
+      "style_selection": 1,
+      "reason": "SIZE",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:28:19.517Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 12,
+    "fields": {
+      "style_selection": 1,
+      "reason": "SIZE",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:28:21.732Z"
+    }
   }
-},
-{
-  "model": "ai_story.product",
-  "pk": 2,
-  "fields": {
-    "name": "Himmel Backpack",
-    "description": "Visetos Original Warm Sand, ½Ç¿ëÀûÀÎ ³Ë³ËÇÑ ¼ö³³°ø°£°ú ¾ç¼ÕÀÌ ÀÚÀ¯·Î¿î ÃÊ°æ·® ¹éÆÑ (¼ö³³/¹«°Ô °í¹Î ÃßÃµ)",
-    "image_url": null
-  }
-},
-{
-  "model": "ai_story.product",
-  "pk": 3,
-  "fields": {
-    "name": "Aren Shopper",
-    "description": "½½¸²ÇÏ°í ¾Æ´ãÇÑ ¹Ì´Ï ÃÊ°æ·® ÅäÆ®/¼îÆÛ¹é, µ¥ÀÏ¸®ÇÏ°Ô °¡º±°Ô µé±â ÁÁÀ½ (»çÀÌÁî/Âø¿ë°¨ °í¹Î ÃßÃµ)",
-    "image_url": null
-  }
-},
-{
-  "model": "ai_story.product",
-  "pk": 4,
-  "fields": {
-    "name": "Klassik Crossbody",
-    "description": "¼¼·ÃµÇ°í Æ®·»µğÇÑ Æ÷ÀÎÆ® µğÀÚÀÎ, ÄÄÆÑÆ®ÇÏ¸é¼­ ºÎ´ã ¾ø´Â °¡°İ´ëÀÇ Å©·Î½º¹Ùµğ¹é (µğÀÚÀÎ/°¡°İ °í¹Î ÃßÃµ)",
-    "image_url": null
-  }
-},
-{
-  "model": "ai_story.option",
-  "pk": 1,
-  "fields": {
-    "group": "carry",
-    "name": "Top Handle",
-    "code_name": "top_handle"
-  }
-},
-{
-  "model": "ai_story.option",
-  "pk": 2,
-  "fields": {
-    "group": "carry",
-    "name": "Cross Body",
-    "code_name": "cross_body"
-  }
-},
-{
-  "model": "ai_story.option",
-  "pk": 3,
-  "fields": {
-    "group": "detail",
-    "name": "Basic Charm",
-    "code_name": "basic_charm"
-  }
-},
-{
-  "model": "ai_story.option",
-  "pk": 4,
-  "fields": {
-    "group": "detail",
-    "name": "Rochet charm",
-    "code_name": "rocket_charm"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 1,
-  "fields": {
-    "style_selection": 1,
-    "reason": "WEIGHT",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-10T16:17:32.697Z"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 2,
-  "fields": {
-    "style_selection": 6,
-    "reason": "COMFORT",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-11T04:11:38.843Z"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 3,
-  "fields": {
-    "style_selection": 7,
-    "reason": "COMFORT",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-11T04:35:05.354Z"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 4,
-  "fields": {
-    "style_selection": 8,
-    "reason": "DESIGN",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-11T04:43:43.494Z"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 5,
-  "fields": {
-    "style_selection": 18,
-    "reason": "DESIGN",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-11T05:08:24.309Z"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 6,
-  "fields": {
-    "style_selection": 20,
-    "reason": "PRICE",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-11T07:25:26.578Z"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 7,
-  "fields": {
-    "style_selection": 1,
-    "reason": "WEIGHT",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-19T07:25:20.047Z"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 8,
-  "fields": {
-    "style_selection": 1,
-    "reason": "SIZE",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-19T07:25:30.648Z"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 9,
-  "fields": {
-    "style_selection": 1,
-    "reason": "PRICE",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-19T07:27:02.733Z"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 10,
-  "fields": {
-    "style_selection": 1,
-    "reason": "COMFORT",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-19T07:27:26.919Z"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 11,
-  "fields": {
-    "style_selection": 1,
-    "reason": "SIZE",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-19T07:28:19.517Z"
-  }
-},
-{
-  "model": "ai_story.hesitationreason",
-  "pk": 12,
-  "fields": {
-    "style_selection": 1,
-    "reason": "SIZE",
-    "ai_reconsidered_card": null,
-    "created_at": "2026-08-19T07:28:21.732Z"
-  }
-},
-{
-  "model": "ai_story.journeycardtemplate",
-  "pk": 1,
-  "fields": {
-    "theme_name": "NEW HORIZON",
-    "subtitle": "LATEST CHAPTER",
-    "card_text": "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own.",
-    "background_image": "",
-    "is_active": true
-  }
-},
-{
-  "model": "ai_story.journeycardtemplate",
-  "pk": 2,
-  "fields": {
-    "theme_name": "MIDNIGHT",
-    "subtitle": "LATEST CHAPTER",
-    "card_text": "When the city quiets down, your story finds its own rhythm. Embrace the night and let your journey unfold in the dark.",
-    "background_image": "",
-    "is_active": true
-  }
-}
 ]
