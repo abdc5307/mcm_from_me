@@ -136,7 +136,8 @@ button {
   color: #f0f0f0;
   font-size: 14px;
   line-height: 20px;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .gold-dot {
@@ -212,9 +213,5 @@ button {
 
   .piece-content {
     width: calc(100% - 42px);
-  }
-
-  .story-heading {
-    white-space: normal;
   }
 }
