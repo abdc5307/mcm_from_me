@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Inter:wght@400;500&family=Playfair+Display:wght@500;600&display=swap");
+
+:root { --background:#121414; --gold:#f2ca50; --text:#e3e3e1; --muted:#aaa397; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { min-height:100%; }
+html { background:#080a0a; }
+body { overflow-x:hidden; color:var(--text); font-family:"Hanken Grotesk",sans-serif; }
+button { border:0; background:none; color:inherit; font:inherit; }
+
+.error-page { width:min(100%,415px); min-height:874px; margin:0 auto; position:relative; isolation:isolate; overflow:hidden; background:var(--background); }
+.error-page::after { width:500px; height:500px; position:absolute; z-index:0; right:-55px; bottom:-60px; border-radius:12px; background:rgba(242,202,80,.1); filter:blur(75px); pointer-events:none; content:""; }
+.error-header,.unsupported-visual,.error-message,.scan-another-button { position:relative; z-index:1; }
+
+.error-header { height:61px; }
+.menu-button { width:40px; height:40px; position:absolute; top:9px; left:17px; display:grid; place-items:center; cursor:pointer; }
+.menu-button img { width:20px; height:14px; display:block; }
+.error-header h1 { width:max-content; position:absolute; top:8px; left:50%; transform:translateX(-50%); color:#fff; font-family:"Playfair Display",serif; font-size:27px; font-weight:500; line-height:38px; white-space:nowrap; }
+
+.unsupported-visual { margin-top:114px; display:grid; place-items:center; }
+.orbit { display:grid; place-items:center; border:1px solid rgba(242,202,80,.24); border-radius:50%; }
+.orbit--outer { width:186px; height:186px; }
+.orbit--inner { width:154px; height:154px; }
+.product-icon { width:76px; height:67px; position:relative; display:grid; place-items:center; }
+.product-icon > img { width:45px; height:58px; display:block; }
+.unavailable-mark { width:31px; height:31px; position:absolute; right:0; bottom:0; display:grid; place-items:center; border:1px solid rgba(242,202,80,.66); border-radius:50%; background:#25251d; }
+.unavailable-mark img { width:12px; height:12px; display:block; }
+
+.error-message { margin-top:40px; text-align:center; }
+.error-message h2 { font-family:"Playfair Display",serif; font-size:28px; font-weight:500; line-height:34px; }
+.error-message p { margin-top:32px; color:var(--muted); font-size:15px; line-height:24px; word-break:keep-all; }
+
+.scan-another-button { width:calc(100% - 44px); height:64px; position:absolute; right:22px; bottom:88px; left:22px; border:1px solid rgba(242,202,80,.52); border-radius:12px; color:var(--gold); font-size:14px; line-height:1; letter-spacing:3px; cursor:pointer; }
+.scan-another-button:hover { background:rgba(242,202,80,.06); }
+.scan-another-button:active { transform:scale(.99); }
+
+@media (max-width:414px) { .error-page { width:100%; } }

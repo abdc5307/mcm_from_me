@@ -1,0 +1,104 @@
+/* ==========================================================================
+    e14_step_locked.html
+   ========================================================================== */
+/* 컨테이너 및 중앙 정렬 */
+.locked-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: calc(100vh - 63px);
+    text-align: center;
+    padding: 40px 24px 120px; 
+}
+/* 잠금 아이콘 & 원형 그래픽 영역 */
+.graphic-wrapper {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    margin-top: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 안내 텍스트 영역 */
+.text-group.step_locked{
+    margin-top: 20px;
+    padding-top: 0;
+}
+
+.title-en {
+    margin-bottom: 16px;
+    color: #E2E2E2;
+    text-align: center;
+    font-family: "Playfair Display";
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 36px;
+}
+
+.desc-kr {
+    color: #D0C5AF;
+    text-align: center;
+    font-family: "WenQuanYi Zen Hei";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26px;
+}
+
+/* 하단 버튼 영역 */
+.action-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.btn-goback {
+    width: 100%;
+    padding: 16px 0;
+    cursor: pointer;
+    background: transparent;
+    transition: background-color 0.2s ease;
+    border: 1px solid #F2CA50;
+    color: #F2CA50;
+    text-align: center;
+    font-family: "Hanken Grotesk";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.btn-goback:active {
+    background-color: rgba(242, 202, 80, 0.1);
+}
+
+.btn-review {
+    width: 100%;
+    cursor: pointer;
+    background: transparent;
+    color: rgba(208, 197, 175, 0.60);
+    text-align: center;
+    font-family: "Hanken Grotesk";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

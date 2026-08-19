@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCM FROM ME - Chapter 5 Discover</title>
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/chapter5.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/e11_e13_journey_modal.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
+</head>
+<body data-selection-id="{{ selection_id|default:'1' }}"
+    data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
+
+    <!-- Processing 로딩 화면 -->
+    {% include 'chapter5_processing.html' %}
+
+    <div class="app-container discover-container">
+        <header class="common-header">
+            <button
+                type="button"
+                class="menu-button"
+                aria-label="메뉴 열기"
+            >
+                <img
+                    src="{% static 'images/hamburger_bar.svg' %}"
+                    alt="메뉴"
+                    aria-hidden="true"
+                />
+            </button>
+            <h1>MCM FROM ME</h1>
+        </header>
+
+        <main class="page-content discover-content">
+            <!-- 상단 챕터 헤더 -->
+            <div class="discover-header-group">
+                <span class="discover-label">CHAPTER 5</span>
+                <h2 class="discover-title">My MCM Story Card</h2>
+            </div>
+
+            <!-- Swiper 캐러셀 영역 -->
+            <!-- swiper-wrapper 내용은 chapter5.js가 /chapter5/cards/<selection_id>/ 응답으로 채웁니다 -->
+            <div class="discover-carousel-wrapper">
+                <div class="swiper discover-swiper">
+                    <div class="swiper-wrapper" id="discoverSwiperWrapper"></div>
+                </div>
+            </div>
+
+            <!-- Swiper 페이지네이션 도트 -->
+            <div class="swiper-pagination discover-dots"></div>
+
+            <!-- 하단 버튼 그룹 -->
+            <div class="discover-actions">
+                <button type="button" class="discover-btn-filled" id="btnChooseJourney">
+                    CHOOSE THIS JOURNEY
+                </button>
+                <button type="button" class="discover-btn-outline" id="btnStillDeciding">
+                    STILL DECIDING
+                </button>
+            </div>
+
+            <!-- 6. E-11: 여정(사진) 저장 실패 -->
+            <div id="sectionSaveError" class="page-section error-wrapper" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; z-index: 9999;">
+                {% include 'e11_journey_save_Failed.html' %}
+            </div>
+        </main>
+    </div>
+
+    <!-- 외부 라이브러리 및 분리된 chapter5.js 파일 연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="{% static 'js/chapter5.js' %}"></script>
+    <script src="{% static 'js/menu_toggle.js' %}"></script>
+</body>
+</html>

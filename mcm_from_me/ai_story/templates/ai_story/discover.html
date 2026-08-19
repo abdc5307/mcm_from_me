@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Chapter 5 - My MCM Story Card</h2>
+    <p>여행 테마를 선택해주세요.</p>
+
+    {% for template in templates %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            {% if template.background_image %}
+                <img src="{{ template.background_image.url }}" width="200"><br>
+            {% endif %}
+            <h3>{{ template.subtitle }}</h3>
+            <h2>{{ template.theme_name }}</h2>
+            <p>{{ template.card_text }}</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="template_id" value="{{ template.id }}">
+                <button type="submit" name="choose">CHOOSE THIS JOURNEY</button>
+                <button type="submit" name="deciding">STILL DECIDING</button>
+            </form>
+        </div>
+    {% empty %}
+        <p>등록된 테마 카드가 없습니다.</p>
+    {% endfor %}
+</body>
+</html>

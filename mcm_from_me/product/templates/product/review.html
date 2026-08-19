@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Review your photo</h2>
+    <p>Keep the styling and product clearly visible.</p>
+
+    {% if photo.image %}
+        <img src="{{ photo.image.url }}" width="400">
+    {% else %}
+        <p>이미지를 불러올 수 없습니다.</p>
+    {% endif %}
+
+    <p>밝기: {{ photo.brightness_score }} / 블러: {{ photo.blur_score }}</p>
+
+    {% if photo.is_used %}
+        <p><strong>이 사진이 최종 확정되었습니다.</strong></p>
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="use">USE THIS PHOTO →</button>
+            <button type="submit" name="retake">RETAKE</button>
+        </form>
+    {% endif %}
+</body>
+</html>

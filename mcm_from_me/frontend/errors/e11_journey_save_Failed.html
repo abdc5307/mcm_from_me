@@ -1,0 +1,29 @@
+{% load static %}
+<div class="error-page e11-page">
+
+  <!-- Header -->
+  <header class="common-header">
+    <button type="button" class="menu-button" aria-label="메뉴 열기">
+      <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
+    </button>
+    <h1>MCM FROM ME</h1>
+  </header>
+
+  <!-- Center Icon & Message -->
+  <main class="error-content-center">
+    <div class="failed-graphic-box">
+      <img src="{% static 'images/icon_save_failed.svg' %}" alt="저장 실패 아이콘" class="failed-graphic-img" />
+    </div>
+    <h2 class="failed-title-en">
+      Your journey could not<br>be saved.
+    </h2>
+  </main>
+
+  <!-- Bottom Action Button -->
+  <footer class="error-bottom-bar">
+    <button type="button" class="btn-primary-gold" id="btnRetry">
+      RETRY
+    </button>
+  </footer>
+
+</div>

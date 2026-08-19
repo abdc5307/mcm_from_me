@@ -1,0 +1,220 @@
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,500;1,500;1,600&display=swap");
+
+:root {
+  --background: #121414;
+  --text-primary: #e4e4e4;
+  --text-secondary: #d5d0c5;
+  --gold: #f2ca50;
+  --border-gold: rgba(242, 202, 80, 0.38);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+html {
+  background: #080a0a;
+}
+
+body {
+  overflow-x: hidden;
+  color: var(--text-primary);
+  font-family: "Hanken Grotesk", sans-serif;
+}
+
+button {
+  border: 0;
+  font: inherit;
+}
+
+.chapter-page {
+  width: min(100%, 415px);
+  min-height: 1122px;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+  background: var(--background);
+}
+
+.chapter-header {
+  width: 100%;
+  height: 62px;
+  position: relative;
+}
+
+.menu-button {
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  position: absolute;
+  top: 9px;
+  left: 18px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  cursor: pointer;
+}
+
+.menu-button img {
+  width: 20px;
+  height: 14px;
+  display: block;
+}
+
+.brand-title {
+  width: max-content;
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-family: "Playfair Display", serif;
+  font-size: 27px;
+  font-weight: 500;
+  line-height: 38px;
+  white-space: nowrap;
+}
+
+.chapter-intro {
+  padding-top: 43px;
+  text-align: center;
+}
+
+.chapter-label {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 3.5px;
+}
+
+.piece-title {
+  margin-top: 27px;
+  color: var(--text-primary);
+  font-family: "Playfair Display", serif;
+  font-size: 27px;
+  font-weight: 500;
+  line-height: 31px;
+}
+
+.piece-title em {
+  font-weight: 500;
+}
+
+.piece-content {
+  width: calc(100% - 42px);
+  margin: 55px auto 0;
+}
+
+.piece-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: block;
+  object-fit: cover;
+}
+
+.story-card {
+  min-height: 171px;
+  margin-top: 0;
+  padding: 28px 22px 24px;
+  border: 1px solid var(--border-gold);
+  border-radius: 8px;
+  background: var(--background);
+}
+
+.story-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #f0f0f0;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.gold-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  display: inline-block;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 9px rgba(242, 202, 80, 0.9);
+}
+
+.story-description {
+  margin-top: 22px;
+  color: var(--text-secondary);
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 25px;
+  text-align: center;
+}
+
+.journey-badge {
+  width: max-content;
+  height: 35px;
+  margin: 53px auto 0;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  color: #9c9584;
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.8px;
+}
+
+.journey-badge .gold-dot {
+  width: 6px;
+  height: 6px;
+  flex-basis: 6px;
+}
+
+.wear-button {
+  width: 261px;
+  height: 64px;
+  margin: 52px auto 0;
+  display: block;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gold);
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 1.8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.wear-button:hover {
+  background: var(--gold);
+  color: #282000;
+}
+
+.wear-button:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 414px) {
+  .chapter-page {
+    width: 100%;
+  }
+
+  .piece-content {
+    width: calc(100% - 42px);
+  }
+
+  .story-heading {
+    white-space: normal;
+  }
+}

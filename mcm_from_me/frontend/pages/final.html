@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCM FROM ME</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+</head>
+<body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
+    <div class="app-container final-container">
+        <div class="final-bg" aria-hidden="true"></div>
+
+        <header class="common-header">
+            <!-- 햄버거 메뉴 화면으로 이동 -->
+            <button type="button" class="menu-button" aria-label="메뉴 열기">
+                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
+            </button>
+            <h1>MCM FROM ME</h1>
+        </header>
+
+        <main class="page-content final-content">
+            <div class="text-group">
+                <span class="final-subcaption">MY MCM JOURNEY</span>
+                
+                <h2 class="final-title">
+                    Your journey is<br>complete.
+                </h2>
+                
+                <div class="final-diamond-divider" aria-hidden="true">
+                    <span class="line1"></span>
+                    <span class="diamond"></span>
+                    <span class="line2"></span>
+                </div>
+                
+                <p class="final-desc">YOU'VE HONORED YOUR PAST.</p>
+                <p class="final-desc highlight">NOW, STEP BOLDLY INTO WHAT'S NEXT.</p>
+            </div>
+
+            <div class="action-group">
+                <!-- Chapter 1 화면으로 이동 -->
+                <button type="button" class="btn-enter" onclick="location.href='/errors/resume-session/'">
+                    START NEW JOURNEY
+                </button>
+            </div>
+        </main>
+    </div>
+    <script src="{% static 'js/menu_toggle.js' %}"></script>
+</body>
+</html>

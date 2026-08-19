@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCM FROM ME - Chapter 4</title>
+    <!-- 3개 화면에서 쓰는 CSS 전부 불러오기 -->
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/chapter4.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/camera.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/e06_camera_permission_required.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/e07_camera_unavailable.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/e11_e13_journey_modal.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
+</head>
+<!--
+    data-selection-id: /capture/, /camera/open/, /camera/continue-without-photo/
+    호출 시 selection_id로 사용됩니다. 이 뷰를 렌더링하는 Django view에서
+    context로 selection(또는 selection_id)을 반드시 내려주세요.
+-->
+<body data-selection-id="{{ selection.id }}"
+    data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
+
+    <!-- 1. 준비 화면 영역 (처음에만 .active가 붙어있어서 이것만 보임) -->
+    <div id="sectionReady" class="page-section active">
+        {% include 'chapter4_camera_ready.html' %}
+    </div>
+
+    <!-- 2. 카메라 촬영 화면 영역 -->
+    <div id="sectionCamera" class="page-section">
+        {% include 'camera.html' %}
+    </div>
+
+    <!-- 3. 리뷰 화면 영역-->
+    <div id="sectionReview" class="page-section">
+        {% include 'chapter4_photo_review.html' %}
+    </div>
+
+    <!-- 4. E-06: 카메라 권한 거부 -->
+    <div id="sectionCamError" class="page-section">
+        {% include 'e06_camera_permission_required.html' %}
+    </div>
+
+    <!-- 5. E-07: 카메라 일시적 사용 불가 -->
+    <div id="sectionCamUnavailable" class="page-section">
+        {% include 'e07_camera_unavailable.html' %}
+    </div>
+
+    <!-- 6. E-11: 여정(사진) 저장 실패 -->
+    <div id="sectionSaveError" class="page-section">
+        {% include 'e11_journey_save_Failed.html' %}
+    </div>
+
+    <script src="{% static 'js/chapter4.js' %}"></script>
+    <script src="{% static 'js/menu_toggle.js' %}"></script>
+</body>
+</html>

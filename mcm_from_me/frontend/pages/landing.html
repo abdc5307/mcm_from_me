@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCM FROM ME</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
+</head>
+<body data-menu-url="{% url 'hamburger_menu' %}">
+    <div class="app-container welcome-container">
+        <div class="welcome-bg" aria-hidden="true"></div>
+
+        <header class="common-header">
+            <button type="button" class="menu-button" aria-label="메뉴 열기">
+                <img src="{% static 'images/hamburger_bar.svg' %}" alt="" aria-hidden="true" />
+            </button>
+            <h1>MCM FROM ME</h1>
+        </header>
+
+        <main class="page-content welcome-content">
+            <div class="text-group">
+                <h2 class="welcome-title">Welcome.</h2>
+                <div class="divider"></div>
+                <p class="welcome-subtitle">Let's begin your journey.</p>
+                <p class="welcome-desc">A PIECE FROM WHAT COMES NEXT.</p>
+            </div>
+
+            <div class="action-group">
+                <button type="button" class="btn-enter" data-session-init-url="{% url 'init_session' %}" data-chapter1-url="{% url 'chapter1' %}">
+                    ENTER THE JOURNEY
+                </button>
+            </div>
+        </main>
+    </div>
+    <script src="{% static 'js/landing.js' %}" defer></script>
+    <script src="{% static 'js/menu_toggle.js' %}" defer></script>
+</body>
+</html>

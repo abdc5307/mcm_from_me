@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Camera</h2>
+    <p id="guide-text">Place your piece inside the frame.</p>
+    <p id="error-text" style="color:red;"></p>
+
+    <video id="video" width="400" autoplay playsinline></video>
+    <canvas id="canvas" width="400" height="300" style="display:none;"></canvas>
+
+    <br>
+    <label><input type="radio" name="shot_mode" value="FRONT_45" checked> FRONT 45°</label>
+    <label><input type="radio" name="shot_mode" value="SIDE"> SIDE</label>
+    <label><input type="radio" name="shot_mode" value="DETAIL"> DETAIL</label>
+    <br><br>
+
+    <button id="shutter-btn">촬영하기</button>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const errorText = document.getElementById('error-text');
+        const selectionId = {{ selection.id }};
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                if (err.name === 'NotAllowedError') {
+                    errorText.innerText = 'Camera access is required to capture your chapter. (E-06)';
+                } else {
+                    errorText.innerText = 'The camera is temporarily unavailable. (E-07)';
+                }
+            });
+
+        function getCookie(name) {
+            const match = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+            return match ? match.pop() : '';
+        }
+
+        document.getElementById('shutter-btn').addEventListener('click', () => {
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob(blob => {
+                const shotMode = document.querySelector('input[name="shot_mode"]:checked').value;
+                const formData = new FormData();
+                formData.append('selection_id', selectionId);
+                formData.append('shot_mode', shotMode);
+                formData.append('image', blob, 'capture.jpg');
+
+                fetch('/api/product/chapter4/capture/', {
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                    body: formData,
+                })
+                .then(res => res.json().then(data => ({ status: res.status, body: data })))
+                .then(({ status, body }) => {
+                    if (status === 201) {
+                        window.location.href = '/api/product/view/chapter4/review/' + body.data.id + '/';
+                    } else {
+                        errorText.innerText = body.error.message + ' (' + body.error.code + ')';
+                        if (body.photo_id) {
+                            errorText.innerText += ' - USE ANYWAY 하려면 review/' + body.photo_id + '/ 로 이동하세요.';
+                        }
+                    }
+                });
+            }, 'image/jpeg');
+        });
+    </script>
+</body>
+</html>

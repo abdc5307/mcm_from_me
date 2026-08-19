@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>MCM FROM ME - Chapter 2</title>
+    <link rel="stylesheet" href="{% static 'css/chapter2.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
+  </head>
+
+  <body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
+    <div hidden>{% csrf_token %}</div>
+    <main class="chapter-page">
+      <header class="chapter-header">
+        <button
+          type="button"
+          class="menu-button"
+          aria-label="메뉴 열기"
+        >
+          <img
+            src="{% static 'images/hamburger_bar.svg' %}"
+            alt=""
+            aria-hidden="true"
+          />
+        </button>
+
+        <h1 class="brand-title">MCM FROM ME</h1>
+      </header>
+
+      <section class="chapter-intro">
+        <p class="chapter-label">CHAPTER 2</p>
+        <h2 class="piece-title">
+          Your piece is<br />
+          <em id="productName">ELLA BOSTON BAG.</em>
+        </h2>
+      </section>
+
+      <section class="piece-content">
+        <img
+          class="piece-image"
+          src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+          data-fallback-src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+          id="productImage"
+          alt="MCM Ella Boston Bag"
+        />
+
+        <article class="story-card">
+          <p class="story-heading" id="productStoryTitle">
+            <span class="gold-dot" aria-hidden="true"></span>
+            A timeless shape for what comes next.
+          </p>
+          <p class="story-description" id="productStoryDescription">
+            여행용 트렁크에서 이어진 구조가<br />
+            새로운 시작을 위한 공간을 엽니다.
+          </p>
+        </article>
+      </section>
+
+      <div class="journey-badge">
+        <span class="gold-dot" aria-hidden="true"></span>
+        NEW JOURNEY × ELLA
+      </div>
+
+      <button
+        type="button"
+        class="wear-button"
+        id="wearPieceButton"
+        data-navigate-url="{% url 'navigate_chapter' %}"
+        data-chapter3-url="{% url 'chapter3' %}"
+        data-tag-scan-url="{% url 'tag_scan' %}"
+      >WEAR THE PIECE</button>
+    </main>
+    <script src="{% static 'js/csrf.js' %}?v=1" defer></script>
+    <script src="{% static 'js/chapter2.js' %}?v=chapter3-entry-csrf-1" defer></script>
+    <script src="{% static 'js/menu_toggle.js' %}" defer></script>
+  </body>
+</html>

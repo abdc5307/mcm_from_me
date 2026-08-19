@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCM FROM ME - Camera Permission Required</title>
+    <link rel="stylesheet" href="{% static 'css/e06_camera_permission_required.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
+  </head>
+
+  <body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
+    <main class="error-page">
+      <div class="large-orbit" aria-hidden="true"></div>
+
+      <header class="error-header">
+        <button type="button" class="menu-button" aria-label="메뉴 열기">
+          <img src="{% static 'images/hamburger_bar.svg' %}" alt="" aria-hidden="true" />
+        </button>
+        <h1>MCM FROM ME</h1>
+      </header>
+
+      <section class="permission-visual" aria-label="카메라 접근 권한 필요">
+        <div class="permission-glow" aria-hidden="true"></div>
+        <div class="camera-icon-box">
+          <img class="camera-off-icon" src="{% static 'images/no_camera.svg' %}" alt="카메라 사용 불가" />
+          <span class="lock-badge">
+            <img src="{% static 'images/Lock.svg' %}" alt="잠김" />
+          </span>
+        </div>
+      </section>
+
+      <section class="error-message">
+        <h2>
+          Camera access is<br />
+          required to capture your<br />
+          chapter.
+        </h2>
+        <p>
+          촬영을 진행하려면 카메라 접근 권한이<br />
+          필요합니다.
+        </p>
+      </section>
+
+      <div class="error-actions">
+        <button type="button" class="open-settings-button">OPEN SETTINGS</button>
+        <button type="button" class="continue-button">CONTINUE WITHOUT PHOTO</button>
+      </div>
+    </main>
+    <script src="{% static 'js/menu_toggle.js' %}"></script>
+  </body>
+</html>

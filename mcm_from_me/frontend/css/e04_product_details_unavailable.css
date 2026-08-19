@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Inter:wght@400;500&family=Playfair+Display:wght@500;600&display=swap");
+
+:root { --background:#121414; --gold:#f2ca50; --button-gold:#dfb934; --text:#e3e3e1; --muted:#aaa397; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { min-height:100%; }
+html { background:#080a0a; }
+body { overflow-x:hidden; color:var(--text); font-family:"Hanken Grotesk",sans-serif; }
+button { border:0; background:none; color:inherit; font:inherit; }
+
+.error-page { width:min(100%,415px); min-height:874px; margin:0 auto; position:relative; overflow:hidden; background:radial-gradient(circle at 50% 90%,rgba(242,202,80,.035),transparent 28%),var(--background); }
+.error-header { height:61px; position:relative; }
+.menu-button { width:40px; height:40px; position:absolute; top:9px; left:17px; display:grid; place-items:center; cursor:pointer; }
+.menu-button img { width:20px; height:14px; display:block; }
+.error-header h1 { width:max-content; position:absolute; top:8px; left:50%; transform:translateX(-50%); color:#fff; font-family:"Playfair Display",serif; font-size:27px; font-weight:500; line-height:38px; white-space:nowrap; }
+
+.unavailable-visual { margin-top:111px; display:grid; place-items:center; }
+.orbit { display:grid; place-items:center; border:1px solid rgba(242,202,80,.24); border-radius:50%; }
+.orbit--outer { width:186px; height:186px; }
+.orbit--inner { width:154px; height:154px; }
+.product-icon { width:77px; height:68px; position:relative; display:grid; place-items:center; }
+.product-icon > img { width:45px; height:58px; display:block; }
+.retry-mark { width:40px; height:40px; position:absolute; right:-1px; bottom:-2px; display:grid; place-items:center; border:1px solid rgba(242,202,80,.5); border-radius:50%; background:#26251c; }
+.retry-symbol { width:19px; height:19px; display:block; background:var(--gold); -webkit-mask:url("../images/refresh.svg") center/contain no-repeat; mask:url("../images/refresh.svg") center/contain no-repeat; }
+
+.error-message { margin-top:83px; text-align:center; }
+.error-message h2 { font-family:"Playfair Display",serif; font-size:28px; font-weight:500; line-height:34px; }
+.error-message p { margin-top:14px; color:var(--muted); font-size:15px; line-height:23px; word-break:keep-all; }
+
+.error-actions { width:calc(100% - 44px); position:absolute; right:22px; bottom:68px; left:22px; display:grid; gap:15px; }
+.error-actions button { width:100%; height:64px; display:flex; align-items:center; justify-content:center; gap:9px; border-radius:12px; font-size:14px; font-weight:600; line-height:1; letter-spacing:1.5px; cursor:pointer; }
+.error-actions img { display:block; }
+.retry-button { border:1px solid var(--button-gold); background:var(--button-gold); color:#302500; }
+.retry-button img { width:12px; height:12px; }
+.ask-staff-button { border:1px solid rgba(242,202,80,.5); color:var(--gold); }
+.ask-staff-button img { width:17px; height:19px; }
+.retry-button:hover { filter:brightness(1.06); }
+.ask-staff-button:hover { background:rgba(242,202,80,.06); }
+.error-actions button:active { transform:scale(.99); }
+.bottom-indicator { width:48px; height:1px; position:absolute; bottom:34px; left:50%; transform:translateX(-50%); background:rgba(242,202,80,.22); }
+
+@media (max-width:414px) { .error-page { width:100%; } }

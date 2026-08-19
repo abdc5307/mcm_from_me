@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCM FROM ME - Option Unavailable</title>
+    <link rel="stylesheet" href="../css/e05_option_unavailable.css" />
+  </head>
+
+  <body>
+    <main class="error-page">
+      <header class="error-header">
+        <button type="button" class="menu-button" aria-label="메뉴 열기">
+          <img src="../images/hamburger_bar.svg" alt="" aria-hidden="true" />
+        </button>
+        <h1>MCM FROM ME</h1>
+      </header>
+
+      <div class="dimmed-content" aria-hidden="true">
+        <div class="dimmed-line dimmed-line--top"></div>
+        <div class="dimmed-line dimmed-line--middle"></div>
+        <button type="button" class="underlying-next" disabled>NEXT STEP</button>
+      </div>
+
+      <section class="option-card" role="alert">
+        <div class="option-icon-box">
+          <img src="../images/option.svg" alt="안내" />
+        </div>
+
+        <h2>
+          This option is not<br />
+          available for your<br />
+          piece.
+        </h2>
+
+        <p>
+          선택한 옵션이 현재 제품과<br />
+          호환되지 않습니다.
+        </p>
+
+        <button type="button" class="choose-option-button">
+          CHOOSE ANOTHER OPTION
+        </button>
+      </section>
+    </main>
+  </body>
+</html>

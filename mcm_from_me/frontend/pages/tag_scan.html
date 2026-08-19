@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>MCM FROM ME - Tag Your Piece</title>
+
+    <link
+      rel="stylesheet"
+      href="{% static 'css/tag_scan.css' %}?v=fallback-button-border-4"
+    />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
+  </head>
+
+  <body
+    data-journey-active="true"
+    data-menu-url="{% url 'hamburger_menu' %}"
+    data-verify-url="{% url 'verify_product_tag' %}"
+    data-chapter2-url="{% url 'chapter2' %}"
+    data-error-e02-url="{% url 'error_e02' %}"
+    data-error-e03-url="{% url 'error_e03' %}"
+    data-error-e04-url="{% url 'error_e04' %}"
+  >
+    <div hidden aria-hidden="true">{% csrf_token %}</div>
+    <main class="tag-scan-page">
+      <!-- 헤더 -->
+      <header class="header">
+        <button
+          type="button"
+          class="menu-button"
+          aria-label="메뉴 열기"
+        >
+          <img
+            src="{% static 'images/hamburger_bar.svg' %}"
+            alt=""
+            aria-hidden="true"
+          />
+        </button>
+
+        <h1 class="brand-title">
+          MCM FROM ME
+        </h1>
+      </header>
+
+      <!-- 챕터 -->
+      <section class="chapter-section">
+        <p class="chapter-label">
+          CHAPTER 2
+        </p>
+
+        <h2 class="chapter-title">
+          Tag Your Piece
+        </h2>
+      </section>
+
+      <!-- 제품 이미지 -->
+      <section class="product-section">
+        <img
+          src="{% static 'images/MCM_NFC.png' %}"
+          alt="NFC와 QR 태그가 포함된 MCM 제품"
+          class="product-image"
+        />
+      </section>
+
+      <!-- 인식 안내 카드 -->
+      <section class="recognition-card">
+        <div class="recognition-icon">
+          <span class="recognition-dot"></span>
+          <span class="recognition-wave recognition-wave--small"></span>
+          <span class="recognition-wave recognition-wave--large"></span>
+        </div>
+
+        <div class="recognition-content">
+          <p class="recognition-status">
+            Ready to recognize.
+          </p>
+
+          <p class="recognition-description">
+            NFC 또는 QR 태그를 인식하면<br />
+            다음 단계로 이동합니다.
+          </p>
+        </div>
+      </section>
+
+      <!-- 하단 버튼 -->
+      <section class="bottom-section">
+        <button
+          type="button"
+          class="scan-button"
+          id="scanButton"
+        >
+          SCAN PRODUCT TAG
+        </button>
+
+        <div class="bottom-indicator"></div>
+      </section>
+      <section class="camera-screen" id="cameraScreen" aria-hidden="true">
+      <div class="camera-view">
+        <video id="cameraVideo" autoplay muted playsinline></video>
+        <canvas id="cameraCanvas" hidden></canvas>
+        <img id="cameraPreview" class="camera-preview" alt="촬영한 제품 이미지" />
+        <div class="camera-shade"></div>
+        <div class="camera-toolbar">
+          <button type="button" id="closeCameraButton" aria-label="카메라 닫기">×</button>
+          <button type="button" id="flashButton" aria-label="플래시 켜기" aria-pressed="false">⚡</button>
+        </div>
+        <div class="camera-guide">
+          <div class="camera-guide-frame"><span>TAG</span></div>
+          <strong>Place your piece inside the frame.</strong>
+          <p id="cameraGuideText">가방과 스트랩이 잘 보이도록 몸을 살짝 돌려주세요.</p>
+        </div>
+      </div>
+      <div class="camera-panel">
+        <nav class="camera-steps" aria-label="촬영 각도">
+          <button type="button" class="camera-step active" data-guide="가방과 스트랩이 잘 보이도록 몸을 살짝 돌려주세요.">FRONT 45°</button>
+          <button type="button" class="camera-step" data-guide="제품의 옆면이 프레임 안에 들어오도록 촬영해 주세요.">SIDE</button>
+          <button type="button" class="camera-step" data-guide="로고와 태그가 선명하게 보이도록 가까이 촬영해 주세요.">DETAIL</button>
+        </nav>
+        <div class="camera-actions">
+          <div class="camera-thumbnail"><img id="cameraThumbnail" alt="최근 촬영 이미지" /></div>
+          <button type="button" class="camera-capture" id="captureButton" aria-label="사진 촬영"><span></span></button>
+          <button type="button" class="camera-switch" id="switchCameraButton" aria-label="카메라 전환">↻</button>
+        </div>
+        <button type="button" class="camera-retake" id="retakeButton" hidden>RETAKE</button>
+      </div>
+      <div class="camera-error" id="cameraError" role="alert" hidden>
+        <p id="cameraErrorMessage"></p>
+        {% if is_development %}
+          <button
+            type="button"
+            id="devTestTagButton"
+            data-tag-code="{{ development_tag_code }}"
+            hidden
+          >
+            TEST WITH {{ development_tag_code }}
+          </button>
+        {% endif %}
+        <button type="button" id="retryCameraButton">다시 시도</button>
+      </div>
+      </section>
+    </main>
+
+    <script src="{% static 'js/vendor/jsQR.min.js' %}?v=1.4.0" defer></script>
+    <script
+      src="{% static 'js/tag_scan.js' %}?v=qr-camera-csrf-1"
+      defer
+    ></script>
+    <script src="{% static 'js/menu_toggle.js' %}" defer></script>
+  </body>
+</html>

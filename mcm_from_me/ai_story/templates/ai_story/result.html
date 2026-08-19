@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>YOUR JOURNEY</h2>
+
+    {% if card %}
+        {% if card.template %}
+            <h3>{{ card.template.theme_name }}</h3>
+        {% endif %}
+        <p>{{ card.card_text }}</p>
+        <p>
+            {{ selection.product.name }} · {{ selection.carry_option.name }} · {{ selection.detail_option.name }}
+        </p>
+
+        {% if selection.is_completed %}
+            <p><strong>Journey가 완료되었습니다.</strong></p>
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" name="complete">COMPLETE MY JOURNEY</button>
+            </form>
+        {% endif %}
+
+        <hr>
+
+        <form method="post" action="{% url 'chapter5-advisor-connect' %}">
+            {% csrf_token %}
+            <input type="hidden" name="selection_id" value="{{ selection.id }}">
+            <button type="submit">CONNECT WITH ADVISOR</button>
+        </form>
+
+        <form method="post" action="{% url 'chapter5-share' card.id %}">
+            {% csrf_token %}
+            <button type="submit">SHARE</button>
+        </form>
+
+        <a href="{% url 'chapter5-product-detail' selection.product.id %}">
+            <button type="button">VIEW DETAILS</button>
+        </a>
+
+    {% else %}
+        선택된 카드가 없습니다.
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>CHAPTER 4 - Capture your chapter</h2>
+    <p>Your styling is complete. Now capture your look and make it yours.</p>
+
+    <p>PIECE: {{ selection.product.name }}</p>
+    <p>CARRY: {{ selection.carry_option.code_name }}</p>
+    <p>DETAIL: {{ selection.detail_option.code_name }}</p>
+
+    <a href="{% url 'chapter4-camera-view' selection.id %}">
+        <button>OPEN CAMERA</button>
+    </a>
+    <br><br>
+    <a href="{% url 'chapter3-flow-detail' selection.id %}">
+        <button>BACK TO STYLE</button>
+    </a>
+</body>
+</html>

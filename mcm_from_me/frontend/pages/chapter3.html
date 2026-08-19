@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MCM FROM ME - Chapter 3</title>
+    <link rel="stylesheet" href="{% static 'css/chapter3.css' %}?v=journey-flow-combinations-1" />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
+  </head>
+
+  <body
+    data-menu-url="{% url 'hamburger_menu' %}"
+    data-journey-active="true"
+    data-session-status-url="{% url 'init_session' %}"
+    data-style-select-url="{% url 'chapter3-select' %}"
+    data-style-save-url="{% url 'save_style_options' %}"
+    data-tag-scan-url="{% url 'tag_scan' %}"
+    data-chapter4-url="{% url 'chapter4' %}"
+    data-top-handle-image="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+    data-crossbody-image="{% static 'images/Ella_Boston_bag_cross.png' %}"
+    data-top-handle-rocket-image="{% static 'images/ella_tophandle_rocket.png' %}"
+    data-crossbody-basic-image="{% static 'images/ella_crossbody_basic.png' %}"
+  >
+    <div hidden>{% csrf_token %}</div>
+    <main class="chapter3-page">
+      <header class="chapter3-header">
+        <button type="button" class="menu-button" aria-label="메뉴 열기">
+          <img src="{% static 'images/hamburger_bar.svg' %}" alt="" aria-hidden="true" />
+        </button>
+        <h1>MCM FROM ME</h1>
+      </header>
+
+      <section class="chapter3-intro" id="chapter3Intro">
+        <p>CHAPTER 3</p>
+        <h2>Shape Your Story</h2>
+      </section>
+
+      <section class="style-preview" id="stylePreview" aria-live="polite">
+        <div class="piece-preview-frame">
+          <img
+            id="piecePreview"
+            class="piece-preview piece-preview--top-handle"
+            src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+            data-fallback-src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+            alt="Selected MCM piece"
+          />
+        </div>
+
+        <article class="story-panel">
+          <img src="{% static 'images/four_line.svg' %}" alt="" aria-hidden="true" />
+          <h3 id="storyHeading">클래식에서 시작되는 당신의 이야기.</h3>
+          <p id="storyDescription">당신만의 방식으로 피스를 완성해 보세요.</p>
+        </article>
+      </section>
+
+      <section class="configuration" id="configuration">
+        <h2>CONFIGURE YOUR STYLE</h2>
+
+        <div class="piece-name-row">
+          <span>PIECE</span>
+          <strong id="configurationPieceName">Ella Boston Bag</strong>
+        </div>
+
+        <fieldset class="option-group" data-option-group="carry">
+          <legend>CARRY</legend>
+          <div class="option-grid">
+            <button type="button" class="style-option" data-value="TOP_HANDLE" data-ai-value="top_handle" aria-pressed="false">
+              <img class="option-check" src="{% static 'images/check_full.svg' %}" alt="Selected" />
+              <img class="option-icon" src="{% static 'images/Top_handle.svg' %}" alt="" />
+              <span>탑 핸들</span>
+            </button>
+            <button type="button" class="style-option" data-value="CROSSBODY" data-ai-value="cross_body" aria-pressed="false">
+              <img class="option-check" src="{% static 'images/check_full.svg' %}" alt="Selected" />
+              <img class="option-icon" src="{% static 'images/crossbody.svg' %}" alt="" />
+              <span>크로스바디</span>
+            </button>
+          </div>
+        </fieldset>
+
+        <fieldset class="option-group" data-option-group="detail">
+          <legend>DETAIL</legend>
+          <div class="option-grid">
+            <button type="button" class="style-option" data-value="BASIC_CHARM" data-ai-value="basic_charm" aria-pressed="false">
+              <img class="option-check" src="{% static 'images/check_full.svg' %}" alt="Selected" />
+              <img class="option-icon" src="{% static 'images/pentagon.svg' %}" alt="" />
+              <span>베이직 참</span>
+            </button>
+            <button type="button" class="style-option" data-value="ROCKET_CHARM" data-ai-value="rocket_charm" aria-pressed="false">
+              <img class="option-check" src="{% static 'images/check_full.svg' %}" alt="Selected" />
+              <img class="option-icon" src="{% static 'images/Rocket_charm.svg' %}" alt="" />
+              <span>로켓 참</span>
+            </button>
+          </div>
+        </fieldset>
+
+        <p class="style-error" id="styleError" role="alert" hidden></p>
+        <button type="button" class="next-button" id="nextStepButton" disabled>NEXT STEP</button>
+      </section>
+
+      <section class="style-result" id="styleResult" hidden>
+        <div class="result-image-frame">
+          <img
+            id="resultPreview"
+            class="result-image result-image--top-handle"
+            src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+            data-fallback-src="{% static 'images/Small_Ella_Boston_Bag.jpg' %}"
+            alt="Completed MCM style"
+          />
+        </div>
+
+        <article class="result-story-card">
+          <h2>Built to move.<br />Made to be yours.</h2>
+          <p id="resultStoryText">당신이 선택한 스타일로 다음 챕터를 시작할 준비가 되었습니다.</p>
+        </article>
+
+        <article class="style-summary-card">
+          <div class="summary-handle" aria-hidden="true"></div>
+          <h2>YOUR STYLE</h2>
+
+          <dl class="style-summary-list">
+            <div><dt>PIECE</dt><dd id="summaryPiece">Ella Boston Bag</dd></div>
+            <div><dt>CARRY</dt><dd id="summaryCarry">-</dd></div>
+            <div><dt>DETAIL</dt><dd id="summaryDetail">-</dd></div>
+            <div><dt>MOMENT</dt><dd id="summaryMoment">-</dd></div>
+          </dl>
+
+          <p class="style-error" id="summaryError" role="alert" hidden></p>
+          <button type="button" class="complete-style-button" id="completeStyleButton">COMPLETE MY STYLE</button>
+          <p class="summary-caption">A HERITAGE REIMAGINED FOR YOU</p>
+        </article>
+      </section>
+    </main>
+
+    <script src="{% static 'js/csrf.js' %}?v=1" defer></script>
+    <script src="{% static 'js/chapter3.js' %}?v=journey-flow-combinations-1" defer></script>
+    <script src="{% static 'js/menu_toggle.js' %}" defer></script>
+  </body>
+</html>

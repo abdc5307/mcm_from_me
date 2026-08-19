@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCM FROM ME — E-13</title>
+  <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/e11_e13_journey_modal.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
+</head>
+<body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
+  <div class="app-container">
+    <div class="error-page modal-bg-page">
+      
+      <!-- Top Bar (배경용) -->
+    <header class="common-header">
+        <button type="button" class="menu-button" aria-label="메뉴 열기">
+            <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
+        </button>
+        <h1>MCM FROM ME</h1>
+    </header>
+
+      <!-- Center Modal Card (E-13) -->
+      <div class="session-center-modal">
+        <div class="modal-card">
+          <div class="modal-icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#F2CA50" stroke-width="1.8">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+          </div>
+
+          <h2 class="modal-title-en">Start a new journey?</h2>
+          <p class="modal-desc-kr">새로운 Journey를 시작하면 현재<br>선택 정보가 초기화됩니다.</p>
+
+          <div class="modal-btn-stack">
+            <button type="button" class="btn-e13-confirm" onclick="location.href='/chapter1/'">START NEW JOURNEY</button>
+            <button type="button" class="btn-e13-cancel" onclick="history.back();">CANCEL</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <script src="{% static 'js/menu_toggle.js' %}"></script>
+</body>
+</html>

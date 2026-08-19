@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCM FROM ME - 준비중</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+</head>
+<body>
+    <div class="app-container preparing-container">
+        <header class="common-header">
+            <button type="button" class="menu-button" aria-label="메뉴 열기">
+                <img src="{% static 'images/hamburger_bar.svg' %}" alt="" aria-hidden="true" />
+            </button>
+            <h1>MCM FROM ME</h1>
+        </header>
+
+        <main class="page-content preparing-content">
+            <div class="preparing-image-wrap">
+                <img src="{% static 'images/preparing_img.png' %}" alt="개발중 아이콘" class="preparing-img" />
+            </div>
+
+            <!-- 안내 문구 텍스트 영역 -->
+            <div class="text-group preparing-text">
+                <h2 class="preparing-title">아직 개발중인 기능입니다.</h2>
+                <p class="preparing-subtitle">
+                    더 나은 서비스를 제공하기위해<br>준비중입니다.
+                </p>
+            </div>
+
+            <!-- 하단 BACK 버튼 -->
+            <div class="action-group">
+                <button type="button" class="btn-enter" onclick="history.back();">
+                    BACK
+                </button>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
