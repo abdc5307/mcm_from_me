@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Option, UserStyleSelection, JourneyCard, HesitationReason, JourneyCardTemplate
+from .models import Product, Option, UserStyleSelection, JourneyCard, HesitationReason, JourneyCardTemplate, ProductRecommendation
 
 
 @admin.register(JourneyCardTemplate)
@@ -11,3 +11,4 @@ admin.site.register(Option)
 admin.site.register(UserStyleSelection)
 admin.site.register(JourneyCard)
 admin.site.register(HesitationReason)
+admin.site.register(ProductRecommendation)

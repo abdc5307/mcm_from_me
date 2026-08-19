@@ -426,9 +426,8 @@ class Chapter5HesitationReasonView(APIView):
             return Response({"error": error_response('E-11')}, status=status.HTTP_404_NOT_FOUND)
 
         try:
-            hesitation, _ = HesitationReason.objects.update_or_create(
-                style_selection=selection,
-                defaults={'reason': reason}
+            hesitation = HesitationReason.objects.create(
+                style_selection=selection, reason=reason
             )
         except Exception as e:
             logger.error(f"고민 이유 저장 실패 (selection_id={selection_id}): {e}")
