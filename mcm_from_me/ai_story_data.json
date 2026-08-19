@@ -1,0 +1,510 @@
+[
+  {
+    "model": "ai_story.product",
+    "pk": 1,
+    "fields": {
+      "name": "Ella Boston Bag",
+      "description": "MCM 시그니처 비세토스 패턴의 클래식 보스턴백. 고급스럽고 포멀한 착장 및 클래식한 무드 연출에 최적화",
+      "image_url": null
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 2,
+    "fields": {
+      "name": "Himmel Backpack",
+      "description": "Visetos Original Warm Sand, 데일리하게 넉넉한 수납공간과 가벼운 나일론 초경량 백팩 (실용/수납 고민 추천)",
+      "image_url": null
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 3,
+    "fields": {
+      "name": "Aren Shopper",
+      "description": "슬림하고 아담한 미니 초경량 토트/쇼퍼백, 데일리하게 가볍게 들기 좋음 (사이즈/착용감 고민 추천)",
+      "image_url": null
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 4,
+    "fields": {
+      "name": "Klassik Crossbody",
+      "description": "세련되고 트렌디한 컴팩트 실루엣, 가볍고 편안하게 착용 가능한 크로스바디백 (디자인/스타일 고민 추천)",
+      "image_url": null
+    }
+  },
+  {
+    "model": "ai_story.option",
+    "pk": 1,
+    "fields": {
+      "group": "carry",
+      "name": "Top Handle",
+      "code_name": "top_handle"
+    }
+  },
+  {
+    "model": "ai_story.option",
+    "pk": 2,
+    "fields": {
+      "group": "carry",
+      "name": "Cross Body",
+      "code_name": "cross_body"
+    }
+  },
+  {
+    "model": "ai_story.option",
+    "pk": 3,
+    "fields": {
+      "group": "detail",
+      "name": "Basic Charm",
+      "code_name": "basic_charm"
+    }
+  },
+  {
+    "model": "ai_story.option",
+    "pk": 4,
+    "fields": {
+      "group": "detail",
+      "name": "Rochet charm",
+      "code_name": "rocket_charm"
+    }
+  },
+  {
+    "model": "ai_story.journeycardtemplate",
+    "pk": 1,
+    "fields": {
+      "theme_name": "NEW HORIZON",
+      "subtitle": "LATEST CHAPTER",
+      "card_text": "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own.",
+      "background_image": "",
+      "is_active": true
+    }
+  },
+  {
+    "model": "ai_story.journeycardtemplate",
+    "pk": 2,
+    "fields": {
+      "theme_name": "MIDNIGHT",
+      "subtitle": "LATEST CHAPTER",
+      "card_text": "When the city quiets down, your story finds its own rhythm. Embrace the night and let your journey unfold in the dark.",
+      "background_image": "",
+      "is_active": true
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 1,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-10T15:31:34.778Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 2,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 4,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T01:48:25.267Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 3,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T02:33:35.988Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 4,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 4,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T02:40:10.097Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 5,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T03:32:29.988Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 6,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T03:37:16.854Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 7,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:34:02.426Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 8,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 4,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:42:23.943Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 9,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:44:00.523Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 10,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:47:32.480Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 11,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:48:32.399Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 12,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:51:22.214Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 13,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 4,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:53:33.359Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 14,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 4,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-11T04:54:17.019Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 15,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Effortless in motion. Timeless by design.",
+      "created_at": "2026-08-11T05:04:06.108Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 16,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Crafted for freedom. Charmed with grace.",
+      "created_at": "2026-08-11T05:04:07.817Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 17,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Crafted to move. Styled to charm.",
+      "created_at": "2026-08-11T05:04:10.530Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 18,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Classic structure. Effortless motion. Timelessly yours.\n\n구조적인 우아함과 실용성을 겸비한 클래식 보스턴백은 시대를 초월하는 완벽한 선택입니다. 크로스바디 스트랩이 선사하는 자유로운 움직임은 일상 속에서 편안한 매력을 더해줍니다. 베이직 참의 섬세한 디테일이 조화롭게 어우러져 당신만의 시그니처 스타일을 완성합니다.",
+      "created_at": "2026-08-11T05:06:19.666Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 19,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Classic by form. Timeless in your hand.\n\n단단하면서도 부드러운 탑 핸들을 손에 쥐는 순간, 일상의 모든 순간이 당신만의 무대로 변화합니다. 베이직 참 포인트로 섬세한 감각을 더해보세요.",
+      "created_at": "2026-08-11T07:22:27.933Z",
+      "is_completed": false,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 20,
+    "fields": {
+      "product": 1,
+      "carry_option": 1,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": "Timeless in form. Elegant in hand.\n\n보스턴백 특유의 입체적인 볼륨감과 클래식한 아우라가 완성됩니다. 손끝에 부드럽게 감기는 탑 핸들과 조화롭게 빛나는 디테일이 세련된 우아함을 전달합니다.",
+      "created_at": "2026-08-11T07:22:30.551Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.userstyleselection",
+    "pk": 21,
+    "fields": {
+      "product": 1,
+      "carry_option": 2,
+      "detail_option": 3,
+      "selected_moment": null,
+      "ai_narration": null,
+      "created_at": "2026-08-14T14:04:19.837Z",
+      "is_completed": true,
+      "completed_at": null
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 1,
+    "fields": {
+      "style_selection": 1,
+      "reason": "WEIGHT",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-10T16:17:32.697Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 2,
+    "fields": {
+      "style_selection": 6,
+      "reason": "COMFORT",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-11T04:11:38.843Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 3,
+    "fields": {
+      "style_selection": 7,
+      "reason": "COMFORT",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-11T04:35:05.354Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 4,
+    "fields": {
+      "style_selection": 8,
+      "reason": "DESIGN",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-11T04:43:43.494Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 5,
+    "fields": {
+      "style_selection": 18,
+      "reason": "DESIGN",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-11T05:08:24.309Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 6,
+    "fields": {
+      "style_selection": 20,
+      "reason": "PRICE",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-11T07:25:26.578Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 7,
+    "fields": {
+      "style_selection": 1,
+      "reason": "WEIGHT",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:25:20.047Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 8,
+    "fields": {
+      "style_selection": 1,
+      "reason": "SIZE",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:25:30.648Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 9,
+    "fields": {
+      "style_selection": 1,
+      "reason": "PRICE",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:27:02.733Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 10,
+    "fields": {
+      "style_selection": 1,
+      "reason": "COMFORT",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:27:26.919Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 11,
+    "fields": {
+      "style_selection": 1,
+      "reason": "SIZE",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:28:19.517Z"
+    }
+  },
+  {
+    "model": "ai_story.hesitationreason",
+    "pk": 12,
+    "fields": {
+      "style_selection": 1,
+      "reason": "SIZE",
+      "ai_reconsidered_card": null,
+      "created_at": "2026-08-19T07:28:21.732Z"
+    }
+  }
+]
