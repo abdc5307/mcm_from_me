@@ -20,7 +20,7 @@ class StyleCombinationSerializer(serializers.ModelSerializer):
 class UserStyleSelectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserStyleSelection
-        fields = ['id', 'product', 'carry_option', 'detail_option', 'ai_narration', 'created_at']
+        fields = ['id', 'product', 'carry_option', 'detail_option', 'selected_moment', 'ai_narration', 'created_at']
         read_only_fields = ['created_at']
 
 class JourneyCardSerializer(serializers.ModelSerializer):

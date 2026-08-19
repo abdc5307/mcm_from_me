@@ -42,6 +42,7 @@ class UserStyleSelection(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     carry_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="user_selected_carry", limit_choices_to={'group': 'carry'})
     detail_option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="user_selected_detail", limit_choices_to={'group': 'detail'})
+    selected_moment = models.CharField(max_length=20, null=True, blank=True, verbose_name="선택된 모먼트")
     ai_narration = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_completed = models.BooleanField(default=False)
