@@ -4,6 +4,7 @@ from django.db import models
 class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name="제품명")
     description = models.TextField(verbose_name="제품 설명")
+    image_url = models.URLField(max_length=500, null=True, blank=True, verbose_name="제품 이미지 URL")
 
     def __str__(self):
         return self.name
