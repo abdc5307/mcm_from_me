@@ -1,4 +1,3 @@
-import os
 import logging
 import requests
 from django.conf import settings
@@ -52,30 +51,26 @@ def generate_ai_card_image(card: JourneyCard) -> JourneyCard:
         photo_bytes = captured_photo.image.read()
         captured_photo.image.close()
 
-        # 3. Gemini 이미지 생성/편집 호출 (2번 영역 - 실제 AI 호출부)
-        response = client.models.generate_content(
-            model="gemini-2.5-flash-image",
-            contents=[
-                types.Part.from_bytes(data=photo_bytes, mime_type="image/jpeg"),
-                prompt,
-            ],
-            config=types.GenerateContentConfig(
-                response_modalities=["TEXT", "IMAGE"]
-            ),
+        # Google Imagen 이미지 생성 호출
+        response = client.models.generate_images(
+            model="imagen-3.0-generate-002",
+            prompt=f"A high-end luxury fashion editorial photo. {prompt}",
+            config=dict(
+                number_of_images=1,
+                output_mime_type="image/jpeg",
+                aspect_ratio="3:4"
+            )
         )
 
         result_image = None
-        for part in response.candidates[0].content.parts:
-            if part.inline_data:
-                result_image = part.inline_data.data
-                break
+        if response.generated_images:
+            result_image = response.generated_images[0].image.image_bytes
 
         if not result_image:
-            raise ValueError("AI가 이미지를 반환하지 않았습니다. (안전 필터 또는 생성 실패)")
+            raise ValueError("AI가 이미지를 반환하지 않았습니다.")
 
-        # 4. 결과 이미지 저장 (3번 영역 - card.card_image.save 파싱)
-        card.card_image.save(f"ai_card_{card.id}.png", ContentFile(result_image), save=False)
-
+        # AI 생성 이미지 저장
+        card.card_image.save(f"ai_card_{card.id}.jpg", ContentFile(result_image), save=False)
         card.status = 'completed'
         card.save()
         return card
@@ -83,12 +78,12 @@ def generate_ai_card_image(card: JourneyCard) -> JourneyCard:
     except Exception as e:
         logger.error(f"[AI Image Generation Error - Card #{card.id}]: {e}")
 
-        # 5. 실패 시 Fallback (Mock 로직 유지 - 데모 중 전면 실패 방지용)
+        # AI 생성 실패 시 유저가 찍은 실제 촬영 사진을 1순위로 유지
         try:
-            if card.template and card.template.background_image:
-                card.card_image = card.template.background_image
-            elif card.captured_photo and card.captured_photo.image:
+            if card.captured_photo and card.captured_photo.image:
                 card.card_image = card.captured_photo.image
+            elif card.template and card.template.background_image:
+                card.card_image = card.template.background_image
             card.status = 'completed'
         except Exception as fallback_error:
             logger.error(f"[Fallback도 실패 - Card #{card.id}]: {fallback_error}")

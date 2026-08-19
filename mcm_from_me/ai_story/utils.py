@@ -25,7 +25,7 @@ Detail 옵션: {detail_option.code_name}
 """
     try:
         response = client.models.generate_content(
-            model="gemini-3.6-flash", contents=prompt
+            model="gemini-2.5-flash", contents=prompt
         )
         return response.text.strip()
     except Exception as e:
@@ -49,7 +49,7 @@ Detail 옵션: {detail_option.code_name}
     for attempt in range(3):
         try:
             response = client.models.generate_content(
-                model="gemini-3.6-flash", contents=prompt
+                model="gemini-2.5-flash", contents=prompt
             )
             return response.text.strip()
         except Exception as e:
@@ -86,7 +86,7 @@ def generate_ai_analysis_and_recommendation(selection, reason, all_products):
 """
     try:
         response = client.models.generate_content(
-            model="gemini-3.6-flash", contents=prompt
+            model="gemini-2.5-flash", contents=prompt
         )
         raw = response.text.strip()
         raw = raw.replace('```json', '').replace('```', '').strip()
