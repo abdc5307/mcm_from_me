@@ -17,6 +17,7 @@ from .serializers import (
 from .utils import (
     generate_ai_narration, generate_journey_card_text, generate_ai_analysis_and_recommendation
 )
+from .services import generate_ai_card_image  # <-- AI 생성 서비스 함수 연동
 from .errors import error_response
 from product.models import CapturedPhoto
 
@@ -190,23 +191,19 @@ class Chapter5GenerateCardsView(APIView):
                 )
                 title = template.theme_name if template else 'My MCM Story Card'
 
-                # 카드 이미지 할당 (템플릿 배경 -> 촬영 원본 순서)
-                assigned_image = None
-                if template and template.background_image:
-                    assigned_image = template.background_image
-                elif captured_photo and captured_photo.image:
-                    assigned_image = captured_photo.image
-
+                # 1. 초기 JourneyCard 객체 생성 (기본 processing 상태)
                 card = JourneyCard.objects.create(
                     style_selection=selection,
                     captured_photo=captured_photo,
                     template=template,
                     title=title,
-                    card_image=assigned_image,
                     card_text=card_text,
                     order=i,
-                    status='completed' if (card_text or assigned_image) else 'failed'
+                    status='processing'
                 )
+
+                # 2. AI 이미지 생성 및 할당 로직 실행
+                card = generate_ai_card_image(card)
                 created_cards.append(card)
 
         except Exception as e:
@@ -469,15 +466,19 @@ class Chapter5SubmitToAIView(APIView):
 
             photo = CapturedPhoto.objects.filter(style_selection=selection, is_used=True).first()
 
+            # 1. JourneyCard 생성
             new_card = JourneyCard.objects.create(
                 style_selection=selection,
                 captured_photo=photo,
-                card_image=photo.image if photo else None,
                 title="RECONSIDERED JOURNEY",
                 card_text=card_text,
                 order=JourneyCard.objects.filter(style_selection=selection).count(),
-                status='completed'
+                status='processing'
             )
+
+            # 2. AI 이미지 생성 로직 실행
+            new_card = generate_ai_card_image(new_card)
+
             hesitation.ai_reconsidered_card = new_card
             hesitation.save()
 
@@ -660,19 +661,18 @@ def chapter5_discover_view(request, selection_id):
         if 'choose' in request.POST:
             JourneyCard.objects.filter(style_selection=selection).update(is_selected=False)
 
-            # 템플릿 배경 이미지 또는 촬영 원본 사진 할당
-            card_img = template.background_image if template.background_image else (photo.image if photo else None)
-
-            JourneyCard.objects.create(
+            card = JourneyCard.objects.create(
                 style_selection=selection,
                 captured_photo=photo,
                 template=template,
-                card_image=card_img,
                 title=template.theme_name,
                 card_text=template.card_text,
                 is_selected=True,
-                status='completed'
+                status='processing'
             )
+            # AI 이미지 생성 로직 실행
+            generate_ai_card_image(card)
+
             return redirect('chapter5-result-view', selection_id=selection_id)
 
         elif 'deciding' in request.POST:
