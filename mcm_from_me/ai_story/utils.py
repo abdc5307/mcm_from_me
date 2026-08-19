@@ -19,11 +19,9 @@ def generate_ai_narration(product, carry_option, detail_option):
 Carry 옵션: {carry_option.code_name}
 Detail 옵션: {detail_option.code_name}
 
-출력 형식은 아래와 같이 정확히 지켜주세요. 다른 설명은 붙이지 마세요.
-
-[영문 카피]
-
-[한국어 해설]
+출력 형식:
+첫 줄에는 영문 카피만 작성하고, 빈 줄을 하나 둔 뒤, 두 번째 줄부터는 한국어 해설 문단만 작성해주세요. 
+앞에 [영문 카피], [한국어 해설] 같은 머리말이나 레이블은 절대 붙이지 마세요.
 """
     try:
         response = client.models.generate_content(
