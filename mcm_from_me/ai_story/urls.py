@@ -5,9 +5,9 @@ from .views import (Chapter5FinalJourneyView, Chapter5AdvisorConnectView, Chapte
 from .views import (Chapter5AnalysisResultView, Chapter5RecommendationAdvisorConnectView, Chapter5RecommendationShareView)
 
 urlpatterns = [
-    path('Chapter3/option', Chapter3DefaultOptionView.as_view(), name='chapter3-option'),
-    path('Chapter3/select', Chapter3SelectOptionView.as_view(), name='chapter3-select'),
-    path('Chapter3/complete', Chapter3CompleteView.as_view(), name='chapter3-complete'),
+    path('chapter3/option/', Chapter3DefaultOptionView.as_view(), name='chapter3-option'),
+    path('chapter3/select/', Chapter3SelectOptionView.as_view(), name='chapter3-select'),
+    path('chapter3/complete/', Chapter3CompleteView.as_view(), name='chapter3-complete'),
     path('chapter3/summary/<int:selection_id>/', Chapter3SummaryView.as_view(), name="chapter3-summary"),
     path('chapter5/generate/', Chapter5GenerateCardsView.as_view(), name="chapter5-generate"),
     path('chapter5/cards/<int:selection_id>/', Chapter5CardListView.as_view(), name="chapter5-cards"),

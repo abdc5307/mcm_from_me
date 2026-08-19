@@ -6,7 +6,7 @@ cffi==2.1.1
 charset-normalizer==3.4.9
 cryptography==50.0.0
 distro==1.9.0
-Django==6.0.7
+Django==5.2.17
 django-cors-headers==4.9.0
 djangorestframework==3.18.0
 google-auth==2.56.3
@@ -16,7 +16,7 @@ h11==0.16.0
 httpcore==1.0.9
 httpx==0.28.1
 idna==3.18
-numpy==2.5.2
+numpy==2.2.6
 openai>=1.0.0
 pillow==12.3.0
 pyasn1==0.6.4

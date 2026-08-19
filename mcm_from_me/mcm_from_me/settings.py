@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-ab2)@k2nm1cek@gb5tlsg-i)@=icqw7x-53syv7y+(el8nf&!s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -131,8 +131,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'frontend']
+STATIC_ROOT = BASE_DIR / 'static'
 
 # [추가] 프론트엔드 연동용 CORS 전체 허용
 CORS_ALLOW_ALL_ORIGINS = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
