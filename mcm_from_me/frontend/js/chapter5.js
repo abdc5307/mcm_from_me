@@ -140,12 +140,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch(`${API_BASE_CH5}/chapter5/cards/${selectionId}/`);
       const data = await res.json();
       console.log("chapter5/cards 응답 원본:", data);
-
+    
       const cards = data.cards || data.data || data.results || [];
       if (cards.length === 0) {
         console.warn("카드 목록이 비어있습니다. selection_id:", selectionId);
       }
-      renderCards(cards);
+    
+      // 최근 생성된 카드가 맨 앞(3, 2, 1 순서)으로 오도록 정렬
+      const sortedCards = [...cards].sort((a, b) => {
+        if (a.created_at && b.created_at) {
+          return new Date(b.created_at) - new Date(a.created_at); // 최신순 내림차순
+        }
+        return (b.id ?? 0) - (a.id ?? 0); // created_at 없으면 id로 대체
+      });
+    
+      renderCards(sortedCards);
     } catch (err) {
       console.error("스토리 카드 조회 실패:", err);
     }
