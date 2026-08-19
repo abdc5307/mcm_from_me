@@ -924,3 +924,49 @@
 .result-bottom-bar.still-result-bar {
   background: transparent;
 }
+
+/* =====================================================
+   단일 카드(1장)일 때 큰 카드 레이아웃 (C5-05)
+   ===================================================== */
+.discover-container.is-single .discover-carousel-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.discover-container.is-single .swiper-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  transform: none !important;
+}
+
+/* ★ 단일 카드 크기 확대 및 기본 흐림(블러)/투명도 완벽 제거 ★ */
+.discover-container.is-single .discover-card {
+  width: 320px !important;
+  max-width: 88vw;
+  height: 520px !important;
+  max-height: 64vh;
+  margin: 0 auto !important;
+  transform: none !important;
+  opacity: 1 !important;      /* 투명도 100% 원상복구 */
+  filter: none !important;    /* 블러 효과 제거 */
+}
+
+/* 도트 페이지네이션 숨김 */
+.discover-container.is-single .discover-dots {
+  display: none !important;
+}
+
+/* 단일 카드 오버레이(검은 필름) 조정: 위쪽은 투명하게, 글씨가 있는 아래쪽만 어둡게 */
+.discover-container.is-single .discover-card-overlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.85) 100%) !important;
+}
+
+/* 이미지 투명도 초기화 */
+.discover-container.is-single .discover-card-img {
+    opacity: 1 !important;
+    filter: none !important;
+}
