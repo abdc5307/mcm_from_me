@@ -1,5 +1,6 @@
 const chapterItems = document.querySelectorAll(".chapter-item");
 const chapterLinks = document.querySelectorAll(".chapter-link");
+const homeLink = document.querySelector(".home-link");
 const resumeButton = document.querySelector(".resume-button");
 const advisorLink = document.querySelector(".advisor-link");
 
@@ -94,6 +95,10 @@ async function syncChapterProgress() {
 }
 
 syncChapterProgress();
+
+homeLink?.addEventListener("click", () => {
+  navigateParent(document.body.dataset.landingUrl);
+});
 
 chapterLinks.forEach((link) => {
   link.addEventListener("click", async () => {
