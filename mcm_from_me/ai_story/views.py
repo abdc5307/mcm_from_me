@@ -88,6 +88,7 @@ class Chapter3CompleteView(APIView):
         product_id = request.data.get('product_id')
         carry_id = request.data.get('carry_id')
         detail_id = request.data.get('detail_id')
+        moment = request.data.get('moment')
 
         if not product_id or not carry_id or not detail_id:
             return Response({"error": "필수 옵션이 선택되지 않았습니다."}, status=status.HTTP_400_BAD_REQUEST)
@@ -95,7 +96,8 @@ class Chapter3CompleteView(APIView):
         data = {
             "product": product_id,
             "carry_option": carry_id,
-            "detail_option": detail_id
+            "detail_option": detail_id,
+            "selected_moment": moment,
         }
 
         serializer = UserStyleSelectionSerializer(data=data)
