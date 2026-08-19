@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, 150);
 
-  // API 호출
+  // API 호출 - 응답이 오면(성공/실패 모두) 곧바로 처리, 불필요한 고정 대기 없음
   fetch(`${API_BASE_CH5}/chapter5/generate/`, {
     method: "POST",
     headers: jsonHeaders(),
@@ -63,21 +63,24 @@ document.addEventListener("DOMContentLoaded", () => {
         card_count: 1 
     }),
   })
+    .then((res) => {
+      if (!res.ok) {
+        console.warn("카드 생성 API 실패 응답:", res.status);
+      }
+      return res;
+    })
     .catch((err) => {
       console.warn("AI 생성 API 호출 실패:", err);
     })
     .finally(() => {
-      // 무조건 15초 대기 후 딱 1번만 새로고침
-      setTimeout(() => {
-        clearInterval(interval);
-        if (progressEl) progressEl.textContent = "100%";
-        
-        // 브라우저에게 "나 방금 카드 만들었어!" 라고 메모 남기기
-        sessionStorage.setItem("cardGenerated", "true");
-        
-        // 새로고침 실행 (새로고침 되면서 저장된 카드가 예쁘게 화면에 뜹니다)
-        window.location.reload();
-      }, 15000); 
+      clearInterval(interval);
+      if (progressEl) progressEl.textContent = "100%";
+
+      // 브라우저에게 "나 방금 카드 만들었어!" 라고 메모 남기기
+      sessionStorage.setItem("cardGenerated", "true");
+
+      // 응답 도착 즉시 새로고침 (Gemini 응답 시간 그대로가 곧 사용자 대기 시간)
+      window.location.reload();
     });
 });
 
