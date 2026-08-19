@@ -4,7 +4,7 @@
   "pk": 1,
   "fields": {
     "name": "Ella Boston Bag",
-    "description": "MCM 시그니처 비세토스 패턴의 클래식 보스턴백. 고급스럽고 포멀한 착장 및 클래식한 무드 연출에 최적화",
+    "description": "MCM �ñ״�ó ���佺 ������ Ŭ���� �����Ϲ�. ���޽����� ������ ���� �� Ŭ������ ���� ���⿡ ����ȭ",
     "image_url": null
   }
 },
@@ -13,7 +13,7 @@
   "pk": 2,
   "fields": {
     "name": "Himmel Backpack",
-    "description": "Visetos Original Warm Sand, 실용적인 넉넉한 수납공간과 양손이 자유로운 초경량 백팩 (수납/무게 고민 추천)",
+    "description": "Visetos Original Warm Sand, �ǿ����� �˳��� ���������� ����� �����ο� �ʰ淮 ���� (����/���� ���� ��õ)",
     "image_url": null
   }
 },
@@ -22,7 +22,7 @@
   "pk": 3,
   "fields": {
     "name": "Aren Shopper",
-    "description": "슬림하고 아담한 미니 초경량 토트/쇼퍼백, 데일리하게 가볍게 들기 좋음 (사이즈/착용감 고민 추천)",
+    "description": "�����ϰ� �ƴ��� �̴� �ʰ淮 ��Ʈ/���۹�, ���ϸ��ϰ� ������ ��� ���� (������/���밨 ���� ��õ)",
     "image_url": null
   }
 },
@@ -31,7 +31,7 @@
   "pk": 4,
   "fields": {
     "name": "Klassik Crossbody",
-    "description": "세련되고 트렌디한 포인트 디자인, 컴팩트하면서 부담 없는 가격대의 크로스바디백 (디자인/가격 고민 추천)",
+    "description": "���õǰ� Ʈ������ ����Ʈ ������, ����Ʈ�ϸ鼭 �δ� ���� ���ݴ��� ũ�ν��ٵ�� (������/���� ���� ��õ)",
     "image_url": null
   }
 },
@@ -69,407 +69,6 @@
     "group": "detail",
     "name": "Rochet charm",
     "code_name": "rocket_charm"
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 1,
-  "fields": {
-    "product": 1,
-    "carry_option": 1,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-10T15:31:34.778Z",
-    "is_completed": true,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 2,
-  "fields": {
-    "product": 1,
-    "carry_option": 1,
-    "detail_option": 4,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T01:48:25.267Z",
-    "is_completed": true,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 3,
-  "fields": {
-    "product": 1,
-    "carry_option": 1,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T02:33:35.988Z",
-    "is_completed": true,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 4,
-  "fields": {
-    "product": 1,
-    "carry_option": 2,
-    "detail_option": 4,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T02:40:10.097Z",
-    "is_completed": true,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 5,
-  "fields": {
-    "product": 1,
-    "carry_option": 2,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T03:32:29.988Z",
-    "is_completed": true,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 6,
-  "fields": {
-    "product": 1,
-    "carry_option": 1,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T03:37:16.854Z",
-    "is_completed": true,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 7,
-  "fields": {
-    "product": 1,
-    "carry_option": 1,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T04:34:02.426Z",
-    "is_completed": true,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 8,
-  "fields": {
-    "product": 1,
-    "carry_option": 1,
-    "detail_option": 4,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T04:42:23.943Z",
-    "is_completed": true,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 9,
-  "fields": {
-    "product": 1,
-    "carry_option": 2,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T04:44:00.523Z",
-    "is_completed": false,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 10,
-  "fields": {
-    "product": 1,
-    "carry_option": 2,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T04:47:32.480Z",
-    "is_completed": false,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 11,
-  "fields": {
-    "product": 1,
-    "carry_option": 1,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T04:48:32.399Z",
-    "is_completed": false,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 12,
-  "fields": {
-    "product": 1,
-    "carry_option": 1,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T04:51:22.214Z",
-    "is_completed": false,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 13,
-  "fields": {
-    "product": 1,
-    "carry_option": 2,
-    "detail_option": 4,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T04:53:33.359Z",
-    "is_completed": false,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 14,
-  "fields": {
-    "product": 1,
-    "carry_option": 1,
-    "detail_option": 4,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-11T04:54:17.019Z",
-    "is_completed": false,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 15,
-  "fields": {
-    "product": 1,
-    "carry_option": 2,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": "Effortless in motion. Timeless by design.",
-    "created_at": "2026-08-11T05:04:06.108Z",
-    "is_completed": false,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 16,
-  "fields": {
-    "product": 1,
-    "carry_option": 2,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": "Crafted for freedom. Charmed with grace.",
-    "created_at": "2026-08-11T05:04:07.817Z",
-    "is_completed": false,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 17,
-  "fields": {
-    "product": 1,
-    "carry_option": 2,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": "Crafted to move. Styled to charm.",
-    "created_at": "2026-08-11T05:04:10.530Z",
-    "is_completed": false,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 18,
-  "fields": {
-    "product": 1,
-    "carry_option": 2,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": "Classic structure. Effortless motion. Timelessly yours.\n\n���� ������ ���� �ô븦 �ʿ��ϴ� Ŭ������ ���������� ��ġ �ʴ� ������� ���մϴ�. ũ�ν��ٵ� ��Ʈ���� �����ϴ� ������ �������� ����� �ϻ� �����Ӱ� ������ ������ �����ݴϴ�. ���⿡ �����ϰ� ������ ������ �� �������� ������ ���� �ϼ��ϸ�, ���� ��𼭳� ����� ������ �����ϰ� �����ݴϴ�.",
-    "created_at": "2026-08-11T05:06:19.666Z",
-    "is_completed": true,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 19,
-  "fields": {
-    "product": 1,
-    "carry_option": 1,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": "Classic by form. Timeless in your hand.\n\n�����ϰ� ���� ���� ������ ���� Ŭ������ �Ƿ翧�� �ô��� �帧�� �پ�Ѵ� ������ ǰ���� �巯���ϴ�. �ܴ��ϸ鼭�� �ε巯�� ž �ڵ��� �տ� ��� ����, �ϻ��� ��� �������� ����� �ຸ�� �����մϴ�. ������ ���� �ӿ� ������ ������ ������ �� �������� ������ ���� ���õ� ���簨�� �ϼ��մϴ�. ����� �ճ����� ��μ� �ϼ��Ǵ� �� ������ �Ƹ��ٿ����� ������ Ư���ϰ� ä��������.",
-    "created_at": "2026-08-11T07:22:27.933Z",
-    "is_completed": false,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 20,
-  "fields": {
-    "product": 1,
-    "carry_option": 1,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": "Timeless in form. Elegant in hand.\n\n�����Ϲ� Ư���� ��ü���̰� �߰��� ������ �ô븦 �ʿ��ϴ� Ŭ������ �ƿ�� �ϼ��մϴ�. �ճ��� �ε巴�� ����� ž �ڵ��� ����� �����Ӹ��� ������ ǰ�ݰ� ������� �����ݴϴ�. ���⿡ ������ ������ ���� ������ �� �������� ������ ��췯�� ������ ������ �����ϴ�. �տ� ��� ���� ��μ� ����� �ϻ��� ���� �Ϻ��� ������ �˴ϴ�.",
-    "created_at": "2026-08-11T07:22:30.551Z",
-    "is_completed": true,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.userstyleselection",
-  "pk": 21,
-  "fields": {
-    "product": 1,
-    "carry_option": 2,
-    "detail_option": 3,
-    "selected_moment": null,
-    "ai_narration": null,
-    "created_at": "2026-08-14T14:04:19.837Z",
-    "is_completed": true,
-    "completed_at": null
-  }
-},
-{
-  "model": "ai_story.journeycardtemplate",
-  "pk": 1,
-  "fields": {
-    "theme_name": "NEW HORIZON",
-    "subtitle": "LATEST CHAPTER",
-    "card_text": "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own.",
-    "background_image": "",
-    "is_active": true
-  }
-},
-{
-  "model": "ai_story.journeycardtemplate",
-  "pk": 2,
-  "fields": {
-    "theme_name": "MIDNIGHT",
-    "subtitle": "LATEST CHAPTER",
-    "card_text": "When the city quiets down, your story finds its own rhythm. Embrace the night and let your journey unfold in the dark.",
-    "background_image": "",
-    "is_active": true
-  }
-},
-{
-  "model": "ai_story.journeycard",
-  "pk": 48,
-  "fields": {
-    "style_selection": 1,
-    "captured_photo": 108,
-    "card_image": "journey_cards/ai_card_48.png",
-    "title": "NEW HORIZON",
-    "card_text": "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own.",
-    "order": 0,
-    "is_selected": false,
-    "status": "completed",
-    "created_at": "2026-08-19T06:25:40.930Z",
-    "share_token": null,
-    "template": 1
-  }
-},
-{
-  "model": "ai_story.journeycard",
-  "pk": 49,
-  "fields": {
-    "style_selection": 1,
-    "captured_photo": 110,
-    "card_image": "journey_cards/ai_card_49.png",
-    "title": "NEW HORIZON",
-    "card_text": "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own.",
-    "order": 0,
-    "is_selected": true,
-    "status": "completed",
-    "created_at": "2026-08-19T06:27:14.830Z",
-    "share_token": null,
-    "template": 1
-  }
-},
-{
-  "model": "ai_story.journeycard",
-  "pk": 50,
-  "fields": {
-    "style_selection": 1,
-    "captured_photo": 110,
-    "card_image": "journey_cards/ai_card_50.png",
-    "title": "NEW HORIZON",
-    "card_text": "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own.",
-    "order": 0,
-    "is_selected": false,
-    "status": "completed",
-    "created_at": "2026-08-19T06:28:29.907Z",
-    "share_token": null,
-    "template": 1
-  }
-},
-{
-  "model": "ai_story.journeycard",
-  "pk": 51,
-  "fields": {
-    "style_selection": 1,
-    "captured_photo": 111,
-    "card_image": "journey_cards/ai_card_51.png",
-    "title": "NEW HORIZON",
-    "card_text": "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own.",
-    "order": 0,
-    "is_selected": false,
-    "status": "completed",
-    "created_at": "2026-08-19T06:37:28.510Z",
-    "share_token": null,
-    "template": 1
-  }
-},
-{
-  "model": "ai_story.journeycard",
-  "pk": 52,
-  "fields": {
-    "style_selection": 1,
-    "captured_photo": 113,
-    "card_image": "journey_cards/ai_card_52.png",
-    "title": "NEW HORIZON",
-    "card_text": "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own.",
-    "order": 0,
-    "is_selected": false,
-    "status": "completed",
-    "created_at": "2026-08-19T07:09:15.144Z",
-    "share_token": null,
-    "template": 1
   }
 },
 {
@@ -593,111 +192,25 @@
   }
 },
 {
-  "model": "ai_story.productrecommendation",
-  "pk": 7,
+  "model": "ai_story.journeycardtemplate",
+  "pk": 1,
   "fields": {
-    "hesitation": 6,
-    "recommended_product": 4,
-    "analysis_text": "새로운 여정을 시작하는 'NEW JOURNEY' 무드를 선호하시지만, 선뜻 구매하기에는 가격적인 부담이 있으셨던 것으로 보입니다. Ella Boston Bag은 매력적인 클래식 디자인이지만 다소 부담스러운 가격대로 인해 구매를 주저하셨을 수 있습니다. 'NEW JOURNEY'의 감성은 그대로 유지하면서, 한결 합리적인 가격으로 트렌디하게 연출할 수 있는 스타일은 어떠신가요?",
-    "reason_tags": "부담 없는 합리적 가격, 트렌디한 포인트 디자인, NEW JOURNEY 무드",
-    "share_token": null,
-    "created_at": "2026-08-11T07:25:34.488Z"
+    "theme_name": "NEW HORIZON",
+    "subtitle": "LATEST CHAPTER",
+    "card_text": "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own.",
+    "background_image": "",
+    "is_active": true
   }
 },
 {
-  "model": "ai_story.productrecommendation",
-  "pk": 9,
+  "model": "ai_story.journeycardtemplate",
+  "pk": 2,
   "fields": {
-    "hesitation": 1,
-    "recommended_product": 4,
-    "analysis_text": "새로운 여정(NEW JOURNEY)을 향한 첫걸음에서는 스타일의 매력만큼이나 부담 없이 오랫동안 즐길 수 있는 합리적인 선택이 매우 중요합니다. Ella Boston Bag은 클래식한 매력이 돋보이지만 다소 높은 가격대가 망설임의 요인이 되었을 수 있습니다. NEW JOURNEY 무드의 세련 감각은 그대로 유지하면서, 가격 부담을 낮추고 더욱 트렌디하게 연출할 수 있는 아이템은 어떠신가요?",
-    "reason_tags": "합리적인 가격대, 컴팩트한 크로스바디, NEW JOURNEY 무드",
-    "share_token": null,
-    "created_at": "2026-08-19T06:38:38.482Z"
-  }
-},
-{
-  "model": "ai_story.productrecommendation",
-  "pk": 10,
-  "fields": {
-    "hesitation": 1,
-    "recommended_product": 4,
-    "analysis_text": "새로운 변화를 뜻하는 'NEW JOURNEY' 무드를 원하시지만, 현재 제품의 가격대에 부담을 느끼신 것으로 보입니다. Ella Boston Bag은 클래식한 매력이 있지만 선뜻 선택하시기에는 가격적인 고민이 크셨을 것입니다. 동일한 'NEW JOURNEY' 무드를 유지하면서도, 가격 부담을 낮추고 트렌디하게 연출할 수 있는 컴팩트한 백은 어떠신가요?",
-    "reason_tags": "부담 없는 가격대, 트렌디한 크로스바디, NEW JOURNEY 무드",
-    "share_token": null,
-    "created_at": "2026-08-19T06:38:38.770Z"
-  }
-},
-{
-  "model": "ai_story.productrecommendation",
-  "pk": 11,
-  "fields": {
-    "hesitation": 7,
-    "recommended_product": null,
-    "analysis_text": "고객님의 선택을 바탕으로 새로운 여정을 계속 찾아드릴게요.",
-    "reason_tags": "",
-    "share_token": null,
-    "created_at": "2026-08-19T07:25:25.365Z"
-  }
-},
-{
-  "model": "ai_story.productrecommendation",
-  "pk": 12,
-  "fields": {
-    "hesitation": 8,
-    "recommended_product": 3,
-    "analysis_text": "'NEW JOURNEY' 무드를 완벽히 즐기기 위해서는 여정의 자유로움을 높여줄 최적의 사이즈 선택이 무엇보다 중요합니다. Ella Boston Bag의 입체적인 부피와 사이즈가 활동적인 이동이나 데일리 착용 시 다소 부담스럽게 느껴지셨을 수 있습니다. 동일한 'NEW JOURNEY' 감성을 유지하면서, 훨씬 슬림하고 가볍게 들 수 있는 아담한 미니 쇼퍼백은 어떠신가요?",
-    "reason_tags": "슬림한 미니 사이즈, 초경량의 가벼움, NEW JOURNEY 무드",
-    "share_token": null,
-    "created_at": "2026-08-19T07:26:01.526Z"
-  }
-},
-{
-  "model": "ai_story.productrecommendation",
-  "pk": 13,
-  "fields": {
-    "hesitation": 9,
-    "recommended_product": null,
-    "analysis_text": "고객님의 선택을 바탕으로 새로운 여정을 계속 찾아드릴게요.",
-    "reason_tags": "",
-    "share_token": null,
-    "created_at": "2026-08-19T07:27:18.599Z"
-  }
-},
-{
-  "model": "ai_story.productrecommendation",
-  "pk": 14,
-  "fields": {
-    "hesitation": 10,
-    "recommended_product": 2,
-    "analysis_text": "'NEW JOURNEY' 무드로 새로운 여정을 준비하고 계시지만, 이동 시 느껴지는 착용감과 편안함(COMFORT)을 가장 중요하게 고려하고 계신 것으로 파악됩니다. 엘라 보스턴백은 고급스러운 클래식함이 돋보이지만, 손으로 직접 들거나 한쪽 어깨로만 매야 해서 장시간 이동 시 무게감과 피로감을 느끼셨을 수 있습니다. 'NEW JOURNEY' 무드의 설렘을 그대로 이어가면서, 양손의 자유로움과 완벽한 경량감으로 여정을 더 편안하게 만들어줄 백팩 스타일은 어떠신가요?",
-    "reason_tags": "양손이 자유로운 이동, 초경량의 편안함, NEW JOURNEY 무드",
-    "share_token": null,
-    "created_at": "2026-08-19T07:27:36.284Z"
-  }
-},
-{
-  "model": "ai_story.productrecommendation",
-  "pk": 15,
-  "fields": {
-    "hesitation": 11,
-    "recommended_product": 3,
-    "analysis_text": "'NEW JOURNEY'라는 새로운 여정의 설렘 속에서 제품의 크기가 이동과 활동성에 다소 부담스럽게 느껴지셨을 수 있습니다. Ella Boston Bag은 멋스럽지만 일상이나 여행 중 가볍게 들고 다니기에는 사이즈나 볼륨감 면에서 아쉬움이 있으셨을 것입니다. 'NEW JOURNEY'의 경쾌하고 자유로운 무드는 유지하면서, 한결 가볍고 컴팩트하게 연출할 수 있는 미니 사이즈를 시도해 보는 건 어떨까요?",
-    "reason_tags": "컴팩트한 미니 사이즈, 가벼운 착용감, NEW JOURNEY 무드",
-    "share_token": null,
-    "created_at": "2026-08-19T07:28:31.193Z"
-  }
-},
-{
-  "model": "ai_story.productrecommendation",
-  "pk": 16,
-  "fields": {
-    "hesitation": 12,
-    "recommended_product": 3,
-    "analysis_text": "'NEW JOURNEY' 무드로 새로운 감성을 표현하고 싶으셨지만, 선택하신 제품의 사이즈가 고객님의 용도와 조금 맞지 않아 고민하신 것 같습니다. Ella Boston Bag의 매력적인 디자인에도 불구하고, 일상에서 부피감이나 크기 면에서 다소 부담스럽거나 아쉽게 느껴지셨을 수 있습니다. 'NEW JOURNEY'의 세련된 무드는 그대로 유지하면서, 한결 가볍고 아담한 미니 사이즈로 데일리하게 연출해 보시는 건 어떨까요?",
-    "reason_tags": "컴팩트한 미니 사이즈, 가벼운 착용감, NEW JOURNEY 무드",
-    "share_token": null,
-    "created_at": "2026-08-19T07:28:42.278Z"
+    "theme_name": "MIDNIGHT",
+    "subtitle": "LATEST CHAPTER",
+    "card_text": "When the city quiets down, your story finds its own rhythm. Embrace the night and let your journey unfold in the dark.",
+    "background_image": "",
+    "is_active": true
   }
 }
 ]
