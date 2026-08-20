@@ -161,6 +161,41 @@ class Chapter3SummaryView(APIView):
 # Chapter 5 REST APIs
 # =====================================================
 
+def _generate_journey_cards(selection, card_count=1):
+    """selection에 대해 JourneyCard를 card_count장 생성하고, 완성된(status='completed') 카드 목록을 반환한다."""
+    captured_photo = CapturedPhoto.objects.filter(style_selection=selection, is_used=True).first()
+    templates = list(JourneyCardTemplate.objects.filter(is_active=True)[:card_count])
+
+    created_cards = []
+    for i in range(card_count):
+        template = templates[i] if i < len(templates) else None
+
+        card_text = template.card_text if template else generate_journey_card_text(
+            selection.product,
+            selection.carry_option,
+            selection.detail_option,
+            selection.ai_narration
+        )
+        title = template.theme_name if template else 'My MCM Story Card'
+
+        # 1. 초기 JourneyCard 객체 생성 (기본 processing 상태)
+        card = JourneyCard.objects.create(
+            style_selection=selection,
+            captured_photo=captured_photo,
+            template=template,
+            title=title,
+            card_text=card_text,
+            order=i,
+            status='processing'
+        )
+
+        # 2. AI 이미지 생성 및 할당 로직 실행
+        card = generate_ai_card_image(card)
+        created_cards.append(card)
+
+    return [c for c in created_cards if c.status == 'completed']
+
+
 # 카드 생성 요청시
 class Chapter5GenerateCardsView(APIView):
     def post(self, request):
@@ -177,46 +212,12 @@ class Chapter5GenerateCardsView(APIView):
         except UserStyleSelection.DoesNotExist:
             return Response({"error": "선택 데이터를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
 
-        captured_photo = CapturedPhoto.objects.filter(style_selection=selection, is_used=True).first()
-        templates = list(JourneyCardTemplate.objects.filter(is_active=True)[:card_count])
-
-        created_cards = []
         try:
-            for i in range(card_count):
-                template = templates[i] if i < len(templates) else None
-
-                card_text = generate_journey_card_text(
-                    selection.product,
-                    selection.carry_option,
-                    selection.detail_option,
-                    selection.ai_narration,
-                    selection.selected_moment,
-                )
-                if not card_text:
-                    card_text = template.card_text if template else "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own."
-
-                title = template.theme_name if template else 'My MCM Story Card'
-
-                # 1. 초기 JourneyCard 객체 생성 (기본 processing 상태)
-                card = JourneyCard.objects.create(
-                    style_selection=selection,
-                    captured_photo=captured_photo,
-                    template=template,
-                    title=title,
-                    card_text=card_text,
-                    order=i,
-                    status='processing'
-                )
-
-                # 2. AI 이미지 생성 및 할당 로직 실행
-                card = generate_ai_card_image(card)
-                created_cards.append(card)
-
+            valid_cards = _generate_journey_cards(selection, card_count)
         except Exception as e:
             logger.error(f"카드 생성 실패 (selection_id={selection_id}): {e}")
             return Response({"error": error_response('E-11')}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        valid_cards = [c for c in created_cards if c.status == 'completed']
         if not valid_cards:
             return Response({"error": error_response('E-11')}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -238,6 +239,27 @@ class Chapter5CardListView(APIView):
             style_selection_id=selection_id,
             status='completed'
         ).order_by('order')
+
+        if not cards.exists():
+            # Chapter4 "USE THIS PHOTO" 이후 곧바로 Discover 화면으로 넘어오는 흐름이라
+            # 카드를 미리 생성해주는 단계가 없다. 여기서 카드가 하나도 없으면
+            # 최초 진입 시점에 즉시 1장을 생성한다.
+            try:
+                selection = UserStyleSelection.objects.select_related(
+                    'product', 'carry_option', 'detail_option'
+                ).get(id=selection_id)
+            except UserStyleSelection.DoesNotExist:
+                return Response({"error": error_response('E-11')}, status=status.HTTP_404_NOT_FOUND)
+
+            try:
+                _generate_journey_cards(selection, card_count=1)
+            except Exception as e:
+                logger.error(f"카드 자동 생성 실패 (selection_id={selection_id}): {e}")
+
+            cards = JourneyCard.objects.filter(
+                style_selection_id=selection_id,
+                status='completed'
+            ).order_by('order')
 
         if not cards.exists():
             return Response({"error": error_response('E-11')}, status=status.HTTP_404_NOT_FOUND)
@@ -518,20 +540,24 @@ class Chapter5AnalysisResultView(APIView):
             result = generate_ai_analysis_and_recommendation(selection, hesitation.reason, all_products)
 
             if not result:
-                recommendation = ProductRecommendation.objects.create(
-                    hesitation=hesitation,
-                    recommended_product=None,
-                    analysis_text="고객님의 선택을 바탕으로 새로운 여정을 계속 찾아드릴게요.",
-                    reason_tags=""
-                )
-            else:
-                product = Product.objects.filter(id=result.get("recommended_product_id")).first()
-                recommendation = ProductRecommendation.objects.create(
-                    hesitation=hesitation,
-                    recommended_product=product,
-                    analysis_text=result.get("analysis_text", ""),
-                    reason_tags=result.get("reason_tags", "")
-                )
+                # 실패 결과는 저장하지 않는다 - 다음 요청에서 AI 생성을 다시 시도할 수 있도록 한다.
+                return Response({
+                    "status": "success",
+                    "data": {
+                        "analysis_text": "고객님의 선택을 바탕으로 새로운 여정을 계속 찾아드릴게요.",
+                        "recommended_product": {"id": None, "name": "추천 제품 준비 중", "image_url": None},
+                        "reason_tags": [],
+                        "recommendation_id": None,
+                    },
+                }, status=status.HTTP_200_OK)
+
+            product = Product.objects.filter(id=result.get("recommended_product_id")).first()
+            recommendation = ProductRecommendation.objects.create(
+                hesitation=hesitation,
+                recommended_product=product,
+                analysis_text=result.get("analysis_text", ""),
+                reason_tags=result.get("reason_tags", "")
+            )
 
         product_image_url = None
         if recommendation.recommended_product and hasattr(recommendation.recommended_product, 'image_url'):
@@ -735,7 +761,9 @@ def chapter5_analysis_view(request, hesitation_id):
         result = generate_ai_analysis_and_recommendation(selection, hesitation.reason, all_products)
 
         if not result:
-            recommendation = ProductRecommendation.objects.create(
+            # 실패 결과는 저장하지 않는다 - 다음 요청에서 AI 생성을 다시 시도할 수 있도록 한다.
+            # (DB에 저장하지 않은 인스턴스이므로 템플릿에는 그대로 렌더링만 되고 재조회되지 않는다)
+            recommendation = ProductRecommendation(
                 hesitation=hesitation,
                 recommended_product=None,
                 analysis_text="고객님의 선택을 바탕으로 새로운 여정을 계속 찾아드릴게요.",

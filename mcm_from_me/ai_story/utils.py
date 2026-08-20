@@ -7,6 +7,10 @@ import re
 
 client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
+# 짧은 문구/JSON 생성 용도라 무거운 추론형 모델은 불필요하다.
+# gemini-3.6-flash는 4~27초까지 응답 편차가 커서, 가볍고 응답이 일관되게 빠른(1~3초) 모델을 사용한다.
+TEXT_MODEL = "gemini-3.1-flash-lite"
+
 
 def generate_ai_narration(product, carry_option, detail_option):
     prompt = f"""
@@ -26,7 +30,7 @@ Detail 옵션: {detail_option.code_name}
 """
     try:
         response = client.models.generate_content(
-            model="gemini-3.6-flash", contents=prompt
+            model=TEXT_MODEL, contents=prompt
         )
         raw_text = response.text.strip() if response and response.text else ""
 
@@ -69,7 +73,7 @@ Detail 옵션: {detail_option.code_name}
     for attempt in range(3):
         try:
             response = client.models.generate_content(
-                model="gemini-3.6-flash", contents=prompt
+                model=TEXT_MODEL, contents=prompt
             )
             return response.text.strip()
         except Exception as e:
@@ -104,25 +108,28 @@ def generate_ai_analysis_and_recommendation(selection, reason, all_products):
 제품 목록:
 {product_list_text}
 """
-    try:
-        response = client.models.generate_content(
-            model="gemini-3.6-flash", contents=prompt
-        )
-        raw = response.text.strip()
-        raw = raw.replace('```json', '').replace('```', '').strip()
-        parsed = json.loads(raw)
+    for attempt in range(3):
+        try:
+            response = client.models.generate_content(
+                model=TEXT_MODEL, contents=prompt
+            )
+            raw = response.text.strip()
+            raw = raw.replace('```json', '').replace('```', '').strip()
+            parsed = json.loads(raw)
 
-        analysis_text = " ".join([
-            parsed.get("keyword_analysis", ""),
-            parsed.get("current_product_interpretation", ""),
-            parsed.get("question_suggestion", ""),
-        ]).strip()
+            analysis_text = " ".join([
+                parsed.get("keyword_analysis", ""),
+                parsed.get("current_product_interpretation", ""),
+                parsed.get("question_suggestion", ""),
+            ]).strip()
 
-        return {
-            "analysis_text": analysis_text,
-            "recommended_product_id": int(parsed.get("recommended_product_id")),
-            "reason_tags": ", ".join(parsed.get("reason_tags", [])),
-        }
-    except Exception as e:
-        print(f"AI 분석/추천 생성 오류: {e}")
-        return None
+            return {
+                "analysis_text": analysis_text,
+                "recommended_product_id": int(parsed.get("recommended_product_id")),
+                "reason_tags": ", ".join(parsed.get("reason_tags", [])),
+            }
+        except Exception as e:
+            print(f"AI 분석/추천 생성 오류 (시도 {attempt+1}/3): {e}")
+            if attempt < 2:
+                time.sleep(2)
+    return None
