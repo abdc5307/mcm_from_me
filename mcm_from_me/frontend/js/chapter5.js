@@ -316,6 +316,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("submitBtn");
   if (!submitBtn) return;
 
+  const defaultBtnText = submitBtn.textContent;
+
+  // 뒤로가기(bfcache)로 이 페이지에 돌아왔을 때, 나가기 직전의 "ANALYZING..." 상태가
+  // 그대로 복원되지 않도록 버튼과 선택 상태를 초기화한다.
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted) return;
+    submitBtn.disabled = false;
+    submitBtn.textContent = defaultBtnText;
+  });
+
   const urlParts = window.location.pathname.split("/").filter(Boolean);
   const idFromUrl = urlParts[urlParts.length - 1];
   const selectionId =
@@ -609,32 +619,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       const data = json.data;
 
       const analysisDescEl = document.getElementById("aiAnalysisDesc");
-      if (analysisDescEl && data.analysis_text) {
-        analysisDescEl.textContent = data.analysis_text;
+      if (analysisDescEl) {
+        analysisDescEl.textContent =
+          data.analysis_text || "고객님의 선택을 바탕으로 새로운 여정을 계속 찾아드릴게요.";
       }
 
       const product = data.recommended_product;
-      if (product) {
-        const titleEl = document.getElementById("recommendProductTitle");
-        if (titleEl && product.name) {
-          titleEl.innerHTML = product.name.replace(" ", "<br>");
-        }
+      const titleEl = document.getElementById("recommendProductTitle");
+      if (titleEl) {
+        titleEl.innerHTML = (product?.name || "추천 제품 준비 중").replace(" ", "<br>");
+      }
 
-        const imgEl = document.getElementById("recommendProductImg");
-        if (imgEl && product.image_url) {
-          imgEl.src = product.image_url;
-        }
+      const imgEl = document.getElementById("recommendProductImg");
+      if (imgEl) {
+        imgEl.src = product?.image_url || STATIC_FALLBACK_IMG;
       }
 
       const tagsContainer = document.getElementById("recommendProductTags");
-      if (
-        tagsContainer &&
-        Array.isArray(data.reason_tags) &&
-        data.reason_tags.length > 0
-      ) {
-        tagsContainer.innerHTML = data.reason_tags
-          .map((tag) => `<span class="product-tag">${tag}</span>`)
-          .join("");
+      if (tagsContainer) {
+        tagsContainer.innerHTML =
+          Array.isArray(data.reason_tags) && data.reason_tags.length > 0
+            ? data.reason_tags
+                .map((tag) => `<span class="product-tag">${tag}</span>`)
+                .join("")
+            : "";
       }
     }
   } catch (err) {

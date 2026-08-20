@@ -7,6 +7,11 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import JourneySession, Product
 from .serializers import JourneySessionSerializer, ProductSerializer
 from .utils import generate_product_story
+from ai_story.models import (
+    Product as AiStoryProduct,
+    Option as AiStoryOption,
+    UserStyleSelection,
+)
 
 import base64
 import requests
@@ -170,6 +175,46 @@ def verify_product_tag(request):
 
 
 # [C3-11 / C3-17] Chapter 3 스타일 옵션 저장
+AI_STORY_CARRY_CODE_MAP = {'TOP_HANDLE': 'top_handle', 'CROSSBODY': 'cross_body'}
+AI_STORY_DETAIL_CODE_MAP = {'BASIC_CHARM': 'basic_charm', 'ROCKET_CHARM': 'rocket_charm'}
+
+
+def _link_ai_story_selection(request, session, carry_option, detail_option):
+    """journey 세션에서 확정된 제품/스타일 선택을 ai_story.UserStyleSelection으로 연결한다.
+
+    Chapter4(촬영)/Chapter5(AI 합성)는 journey 앱이 아니라 product/ai_story 앱의
+    UserStyleSelection을 기준으로 동작하므로, 여기서 만든 selection의 id를
+    Django 세션에 저장해 chapter4_page_view가 그대로 이어받게 한다.
+    매칭 실패 시 조용히 넘어가고(기존 기본 동작 유지), selection_id는 세팅되지 않는다.
+    """
+    if not session.product:
+        return
+
+    # ai_story 제품 카탈로그의 이름은 "Himmel Backpack in Visetos"처럼 접미사가 붙어있을 수 있어
+    # journey 제품명("Himmel Backpack")을 포함(부분 일치)하는 항목으로 매칭한다.
+    product = AiStoryProduct.objects.filter(name__icontains=session.product.name).first()
+    if not product:
+        return
+
+    try:
+        carry = AiStoryOption.objects.get(
+            group='carry', code_name=AI_STORY_CARRY_CODE_MAP.get(carry_option, '')
+        )
+        detail = AiStoryOption.objects.get(
+            group='detail', code_name=AI_STORY_DETAIL_CODE_MAP.get(detail_option, '')
+        )
+    except AiStoryOption.DoesNotExist:
+        return
+
+    selection = UserStyleSelection.objects.create(
+        product=product,
+        carry_option=carry,
+        detail_option=detail,
+        selected_moment=session.selected_moment,
+    )
+    request.session['selection_id'] = selection.id
+
+
 @csrf_exempt
 @api_view(['POST'])
 @authentication_classes([])
@@ -196,6 +241,9 @@ def save_style_options(request):
         session.current_chapter = "C4" if action == 'COMPLETE' else "C3"
         session.last_active_screen = "C4-01" if action == 'COMPLETE' else "C3-SUMMARY"
         session.save()
+
+        if action == 'COMPLETE':
+            _link_ai_story_selection(request, session, carry_option, detail_option)
 
         return Response({
             'status': 'SUCCESS',
