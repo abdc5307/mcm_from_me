@@ -11,6 +11,12 @@
 </head>
 <body data-selection-id="{{ selection_id|default:'1' }}"
     data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
+
+    <!-- Processing 로딩 화면 -->
+    <div id="stillProcessingWrapper" style="display: none;">
+        {% include 'chapter5_processing.html' %}
+    </div>
+
     <div class="app-container still-container">
         <!-- 상단 헤더 -->
         <header class="common-header">
@@ -36,7 +42,7 @@
                 <p class="still-subtext">What made you hesitate?</p>
             </div>
 
-            <!-- 선택 리스트 (이미지 사용) -->
+            <!-- 선택 리스트 -->
             <div class="still-option-list">
                 <button type="button" class="still-option-btn" data-option="SIZE">
                     <img src="{% static 'images/icon_size.svg' %}" alt="size" class="option-img" />

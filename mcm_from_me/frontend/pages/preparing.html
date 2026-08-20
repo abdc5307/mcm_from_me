@@ -9,10 +9,11 @@
     <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
 </head>
 <body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
-    <div class="app-container preparing-container">
+    <div class="app-container processing-container" id="processingOverlay">
         <header class="common-header">
+            <!-- 햄버거 메뉴 화면으로 이동 -->
             <button type="button" class="menu-button" aria-label="메뉴 열기">
-                <img src="{% static 'images/hamburger_bar.svg' %}" alt="" aria-hidden="true" />
+                <img src="{% static 'images/hamburger_bar.svg' %}" alt="메뉴" aria-hidden="true" />
             </button>
             <h1>MCM FROM ME</h1>
         </header>

@@ -17,20 +17,22 @@ function jsonHeaders() {
 }
 
 // =====================================================
-// [Processing] 로딩 화면 (15초 대기 후 안전하게 1회 새로고침)
+// [Processing] 로딩 화면 (API 응답 기반 안전 처리)
 // =====================================================
 document.addEventListener("DOMContentLoaded", () => {
+  // discover-container가 없는 페이지(Still Deciding 등)에서는 자동 실행 안 함
+  if (!document.querySelector(".discover-container")) return;
+
   const overlay =
     document.getElementById("processingOverlay") ||
     document.querySelector(".processing-overlay, .loading-screen");
   if (!overlay) return;
 
-  // ★ 무한 루프 방지 핵심 안전장치 ★
-  // 이미 카드를 생성하고 새로고침되어 돌아온 상태라면, API를 또 부르지 않고 로딩창만 즉시 없앱니다.
+  // 무한 루프 방지: 이미 생성 완료 후 새로고침된 상태라면 오버레이 제거 후 종료
   if (sessionStorage.getItem("cardGenerated") === "true") {
     overlay.style.display = "none";
-    sessionStorage.removeItem("cardGenerated"); // 다음번 테스트를 위해 메모 초기화
-    return; // 여기서 실행을 완전히 멈춤!
+    sessionStorage.removeItem("cardGenerated");
+    return;
   }
 
   const progressEl =
@@ -44,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let percent = 0;
 
-  // 15초 동안 99%까지 올라가도록 조절
+  // 15초 동안 99%까지 카운팅
   const interval = setInterval(() => {
     if (percent < 99) {
       percent += 1;
@@ -54,13 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, 150);
 
-  // API 호출 - 응답이 오면(성공/실패 모두) 곧바로 처리, 불필요한 고정 대기 없음
   fetch(`${API_BASE_CH5}/chapter5/generate/`, {
     method: "POST",
     headers: jsonHeaders(),
     body: JSON.stringify({ 
-        selection_id: selectionId,
-        card_count: 1 
+      selection_id: selectionId,
+      card_count: 1 
     }),
   })
     .then((res) => {
@@ -76,21 +77,22 @@ document.addEventListener("DOMContentLoaded", () => {
       clearInterval(interval);
       if (progressEl) progressEl.textContent = "100";
 
-      // 브라우저에게 "나 방금 카드 만들었어!" 라고 메모 남기기
       sessionStorage.setItem("cardGenerated", "true");
 
-      // 응답 도착 즉시 새로고침 (Gemini 응답 시간 그대로가 곧 사용자 대기 시간)
-      window.location.reload();
+      // 100이 화면에 0.3초간 렌더링된 후 새로고침
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
     });
 });
 
 // =====================================================
-// [Discover] 카드 목록 로드 + CHOOSE / STILL DECIDING + E-11 연동
+// [Discover] 카드 목록 로드 + CHOOSE / STILL DECIDING + E-11
 // =====================================================
 document.addEventListener("DOMContentLoaded", () => {
   const discoverContainer = document.querySelector(".discover-container");
   const swiperWrapper = document.getElementById("discoverSwiperWrapper");
-  if (!discoverContainer || !swiperWrapper) return; // discover 페이지가 아니면 종료
+  if (!discoverContainer || !swiperWrapper) return;
 
   const urlParts = window.location.pathname.split("/").filter(Boolean);
   const idFromUrl = urlParts[urlParts.length - 1];
@@ -105,9 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnStill = document.getElementById("btnStillDeciding");
 
   let activeCardId = null;
-  let activeCardImageUrl = null; // 현재 활성 카드의 AI 생성 이미지 URL
+  let activeCardImageUrl = null;
   let swiperInstance = null;
-  const cardImageMap = {}; // 카드 ID -> AI 이미지 URL 매핑
+  const cardImageMap = {};
 
   // E-11 에러 화면 표시 함수
   function showSaveError() {
@@ -146,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.warn("카드 목록이 비어있습니다. selection_id:", selectionId);
       }
     
-      // 최근 생성된 카드가 맨 앞(3, 2, 1 순서)으로 오도록 정렬
+      // 최근 생성된 카드가 맨 앞으로 오도록 정렬
       const sortedCards = [...cards].sort((a, b) => {
         if (a.created_at && b.created_at) {
           return new Date(b.created_at) - new Date(a.created_at); // 최신순 내림차순
@@ -175,7 +177,6 @@ document.addEventListener("DOMContentLoaded", () => {
           card.image_url ||
           STATIC_FALLBACK_IMG;
 
-        // 카드 ID -> AI 이미지 URL 매핑 저장 (CHOOSE 시 activeCardImageUrl로 사용)
         cardImageMap[card.id] = imageUrl;
 
         const titleText = card.title || `NEW HORIZON`;
@@ -241,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // CHOOSE THIS JOURNEY 클릭 시 처리
+  // CHOOSE THIS JOURNEY 클릭 시
   if (btnChoose) {
     btnChoose.addEventListener("click", async () => {
       if (!activeCardId) {
@@ -299,7 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // =====================================================
-// [Still Deciding] 옵션 토글 & SUBMIT TO AI
+// [Still Deciding] 옵션 토글 & SUBMIT TO AI (버튼 텍스트 변경 방식)
 // =====================================================
 document.addEventListener("DOMContentLoaded", () => {
   const optionBtns = document.querySelectorAll(".still-option-btn");
@@ -334,7 +335,9 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.getItem("journeySelectionId") ||
         document.body.dataset.selectionId;
 
-  submitBtn.addEventListener("click", async () => {
+  submitBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+
     const activeOption = document.querySelector(".still-option-btn.is-active");
     if (!activeOption) {
       alert("망설인 이유를 하나 선택해주세요.");
@@ -342,8 +345,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const reason = activeOption.dataset.option;
 
+    // 1. Processing 오버레이 표시 + 진행률(0~99%) 카운팅 시작
+    const processingWrapper = document.getElementById("stillProcessingWrapper");
+    const progressEl = document.getElementById("progressNumber");
+
+    if (!processingWrapper) console.warn("stillProcessingWrapper 요소를 찾을 수 없습니다.");
+    if (!progressEl) console.warn("progressNumber 요소를 찾을 수 없습니다.");
+
     submitBtn.disabled = true;
-    submitBtn.textContent = "ANALYZING...";
+    if (processingWrapper) processingWrapper.style.display = "block";
+
+    // 오버레이가 뜨는 시점에 반드시 0으로 초기화
+    if (progressEl) progressEl.textContent = "0";
+    console.log("[chapter5.js] 진행률 초기화:", progressEl ? progressEl.textContent : "(요소 없음)");
+
+    const COUNT_DURATION = 12000; // ms
+    const startTime = Date.now();
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const computed = Math.min(99, Math.floor((elapsed / COUNT_DURATION) * 99));
+      if (progressEl) progressEl.textContent = computed;
+    }, 100);
+
+    // 2. 백엔드 AI 분석 요청
     try {
       const hesitationRes = await fetch(
         `${API_BASE_CH5}/chapter5/hesitation/`,
@@ -351,26 +375,45 @@ document.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           headers: jsonHeaders(),
           body: JSON.stringify({ selection_id: selectionId, reason }),
-        },
+        }
       );
       const hesitationData = await hesitationRes.json();
-      if (!hesitationRes.ok) throw new Error("hesitation 저장 실패");
-
       const hesitationId = hesitationData.data?.id || hesitationData.id;
+      console.log("[chapter5.js] hesitation 등록 완료, hesitationId:", hesitationId);
 
-      // AI 분석/추천을 여기서 미리 생성해 캐시해둔다. 이렇게 하면 다음 페이지는
-      // 새 페이지(로딩 화면)를 거치지 않고 완성된 결과로 바로 넘어간다.
-      await fetch(`${API_BASE_CH5}/chapter5/analysis/${hesitationId}/`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+      // 진짜 AI 분석 결과가 준비될 때까지 대기
+      const analysisRes = await fetch(
+        `${API_BASE_CH5}/chapter5/analysis/${hesitationId}/`
+      );
 
-      window.location.href = `${API_BASE_CH5}/view/chapter5/analysis/${hesitationId}/`;
+      if (!analysisRes.ok) {
+        throw new Error(`AI 분석 응답 에러: ${analysisRes.status}`);
+      }
+
+      await analysisRes.json(); // 완료 여부 확인
+      console.log("[chapter5.js] AI 분석 응답 도착");
+
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, COUNT_DURATION - elapsed);
+      await new Promise((resolve) => setTimeout(resolve, remaining));
+
+      // 100%로 채운 뒤 0.3초 보여주고 결과 화면으로 이동
+      clearInterval(interval);
+      if (progressEl) progressEl.textContent = "100";
+
+      setTimeout(() => {
+        window.location.href = `${API_BASE_CH5}/view/chapter5/analysis/${hesitationId}/`;
+      }, 300);
+
     } catch (err) {
-      console.error("제출 실패:", err);
-      alert("처리 중 오류가 발생했습니다. 다시 시도해주세요.");
+      console.error("제출 실패 상세 로그:", err);
+      clearInterval(interval);
+
+      // 에러 발생 시 오버레이 숨기고 버튼 복구
+      if (processingWrapper) processingWrapper.style.display = "none";
       submitBtn.disabled = false;
-      submitBtn.textContent = defaultBtnText;
+
+      alert("서버와 통신 중 문제가 발생했습니다. 다시 시도해주세요.");
     }
   });
 });
@@ -449,8 +492,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!resultContainer) return;
 
   const selectionId = document.body.dataset.selectionId;
-  const aiCardImageUrl = localStorage.getItem("aiCardImageUrl"); // Discover에서 CHOOSE한 AI 생성 이미지
-  const localPhoto = localStorage.getItem("capturedPhotoUrl"); // 웹캠 사진 (AI 이미지가 없을 때만 쓰는 fallback)
+  const aiCardImageUrl = localStorage.getItem("aiCardImageUrl");
+  const localPhoto = localStorage.getItem("capturedPhotoUrl");
 
   function applyResultPhoto(photoUrl) {
     if (!photoUrl) return;
@@ -463,8 +506,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     resultContainer.style.backgroundRepeat = "no-repeat";
   }
 
-  // AI가 생성한 이미지를 최우선으로 즉시 적용합니다. (내가 찍은 사진이 아님)
-  // AI 이미지가 아직 없을 때만 임시로 웹캠 사진을 보여줍니다.
+  // AI가 생성한 이미지를 최우선으로 적용
+  // AI 이미지가 아직 없을 때만 임시로 웹캠 사진
   if (aiCardImageUrl) {
     applyResultPhoto(aiCardImageUrl);
   } else if (localPhoto) {
@@ -491,7 +534,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     ROCKET_CHARM: "Rocket Charm",
   };
 
-  // 1. Chapter 3의 스토리지 데이터 강제 추출 및 렌더링
+  // Chapter 3의 스토리지 데이터 강제 추출 및 렌더링
   try {
     const storedProduct = JSON.parse(sessionStorage.getItem("journeyProduct") || "{}");
     const storedStyle = JSON.parse(sessionStorage.getItem("journeyStyle") || "{}");
@@ -500,8 +543,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const carryMode = summaryDisplayNames[storedStyle.carry] || storedStyle.carry || "CROSSBODY";
     const detailMode = summaryDisplayNames[storedStyle.detail] || storedStyle.detail || "ROCKET CHARM";
     
-    // 모먼트 이름을 다양한 세션/로컬 스토리지 키 및 journeyProduct 내부 속성에서 탐색
-    const momentName =
+    // 모먼트 이름을 가져옴
+    const rawMomentName =
       storedProduct.moment ||
       storedProduct.moment_name ||
       storedProduct.theme ||
@@ -511,7 +554,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       localStorage.getItem("selectedMoment") ||
       sessionStorage.getItem("moment") ||
       localStorage.getItem("moment") ||
-      "URBAN OASIS"; // 기본값도 URBAN으로 변경
+      "URBAN ESCAPE"; 
+      
+    const momentName = rawMomentName.replace(/_/g, " ");
   
     if (keywordItems.length >= 4) {
       setKeywordHtml(keywordItems[0], prodName.toUpperCase());
@@ -523,7 +568,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.warn("로컬 세션 데이터 파싱 실패:", err);
   }
 
-  // 2. 서버 API 이미지 연동 (단, API의 키워드 더미데이터가 로컬을 덮어쓰지 않도록 차단)
+  // 서버 API 이미지 연동)
   if (!selectionId) return;
 
   try {
@@ -534,12 +579,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const json = await res.json();
 
     if (json.status === "success" && json.data) {
-      // 서버가 내려주는 AI 이미지가 최우선, 그 다음 로컬에 저장된 AI 이미지, 마지막이 웹캠 사진
       const serverPhotoUrl =
         json.data.image_url || aiCardImageUrl || localPhoto || STATIC_FALLBACK_IMG;
       applyResultPhoto(serverPhotoUrl);
-      
-      // 의도적으로 json.data의 키워드를 덮어쓰는 로직은 삭제했습니다. (Chapter 3 실제 데이터 보호)
     }
   } catch (err) {
     console.error("최종 결과 API 호출 실패:", err);
