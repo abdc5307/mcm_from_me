@@ -35,6 +35,7 @@ urlpatterns = [
             extra_context={
                 'is_development': settings.DEBUG,
                 'development_tag_code': 'NFC_ELLA_001',
+                'sample_tag_code': 'NFC_ELLA_001',
             },
         ),
         name='tag_scan',

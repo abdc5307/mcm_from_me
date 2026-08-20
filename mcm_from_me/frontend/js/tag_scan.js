@@ -10,6 +10,7 @@ const retakeButton = $("retakeButton");
 const flashButton = $("flashButton");
 const errorBox = $("cameraError");
 const devTestTagButton = $("devTestTagButton");
+const fallbackScanButton = $("fallbackScanButton");
 const hamburgerButton = document.querySelector(".menu-button");
 let stream = null;
 let facingMode = "environment";
@@ -283,6 +284,17 @@ $("retryCameraButton").addEventListener("click", async () => {
 devTestTagButton?.addEventListener("click", async () => {
   devTestTagButton.disabled = true;
   await verifyProductTag(devTestTagButton.dataset.tagCode);
+});
+fallbackScanButton?.addEventListener("click", async () => {
+  const originalText = fallbackScanButton.textContent;
+  fallbackScanButton.disabled = true;
+  fallbackScanButton.textContent = "연결 중...";
+  try {
+    await verifyProductTag(document.body.dataset.sampleTagCode);
+  } finally {
+    fallbackScanButton.disabled = false;
+    fallbackScanButton.textContent = originalText;
+  }
 });
 $("switchCameraButton").addEventListener("click", async () => {
   facingMode = facingMode === "environment" ? "user" : "environment";
