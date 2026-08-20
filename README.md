@@ -53,6 +53,7 @@
 <td align="center">@abdc5307</td>
 <td align="center">@yulmoo75</td>
 </tr>
+</table>
 
 <hr/>
 
@@ -63,7 +64,6 @@
 <p align="center">
   <img src="docs/images/preview-2.jpg" width="400">
   <br>
-  <img src="assets/qr_code.png" width="200">
   <br>
   <em>👆 스마트폰 카메라로 스캔해 보세요!</em>
 </p>
