@@ -271,6 +271,36 @@ button {
   transform: scale(0.98);
 }
 
+.fallback-scan-button {
+  padding: 2px 6px;
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: 0.3px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  opacity: 0.6;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.fallback-scan-button:hover {
+  opacity: 1;
+}
+
+.fallback-scan-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
 .bottom-indicator {
   width: 48px;
   height: 1px;

@@ -13,7 +13,7 @@
 
     <link
       rel="stylesheet"
-      href="{% static 'css/tag_scan.css' %}?v=fallback-button-border-4"
+      href="{% static 'css/tag_scan.css' %}?v=pc-fallback-button-3"
     />
     <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
   </head>
@@ -26,6 +26,7 @@
     data-error-e02-url="{% url 'error_e02' %}"
     data-error-e03-url="{% url 'error_e03' %}"
     data-error-e04-url="{% url 'error_e04' %}"
+    data-sample-tag-code="{{ sample_tag_code }}"
   >
     <div hidden aria-hidden="true">{% csrf_token %}</div>
     <main class="tag-scan-page">
@@ -98,6 +99,14 @@
           SCAN PRODUCT TAG
         </button>
 
+        <button
+          type="button"
+          class="fallback-scan-button"
+          id="fallbackScanButton"
+        >
+          [PC 체험용] 샘플 사진으로 계속하기
+        </button>
+
         <div class="bottom-indicator"></div>
       </section>
       <section class="camera-screen" id="cameraScreen" aria-hidden="true">
@@ -148,7 +157,7 @@
 
     <script src="{% static 'js/vendor/jsQR.min.js' %}?v=1.4.0" defer></script>
     <script
-      src="{% static 'js/tag_scan.js' %}?v=qr-camera-csrf-1"
+      src="{% static 'js/tag_scan.js' %}?v=pc-fallback-button-2"
       defer
     ></script>
     <script src="{% static 'js/menu_toggle.js' %}" defer></script>
