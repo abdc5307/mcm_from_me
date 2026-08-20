@@ -5,7 +5,7 @@
     "fields": {
       "name": "Ella Boston Bag",
       "description": "MCM 시그니처 비세토스 패턴의 클래식 보스턴백. 고급스럽고 포멀한 착장 및 클래식한 무드 연출에 최적화",
-      "image_url": null
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MWBESEA02CO001_01"
     }
   },
   {
@@ -14,7 +14,7 @@
     "fields": {
       "name": "Himmel Backpack",
       "description": "Visetos Original Warm Sand, 데일리하게 넉넉한 수납공간과 가벼운 나일론 초경량 백팩 (실용/수납 고민 추천)",
-      "image_url": null
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MMKFSVE06BK001_01"
     }
   },
   {
@@ -23,7 +23,7 @@
     "fields": {
       "name": "Aren Shopper",
       "description": "슬림하고 아담한 미니 초경량 토트/쇼퍼백, 데일리하게 가볍게 들기 좋음 (사이즈/착용감 고민 추천)",
-      "image_url": null
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MWPGSLR02CO001_01"
     }
   },
   {
@@ -32,7 +32,106 @@
     "fields": {
       "name": "Klassik Crossbody",
       "description": "세련되고 트렌디한 컴팩트 실루엣, 가볍고 편안하게 착용 가능한 크로스바디백 (디자인/스타일 고민 추천)",
-      "image_url": null
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MMRAAKC02CO001_01"
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 5,
+    "fields": {
+      "name": "Ottomar Weekender Bag in Visetos",
+      "description": "[SIZE] 넉넉하고 웅장한 오버사이즈 실루엣으로 큼직한 가방 크기를 선호하거나 많은 짐을 담을 때 돋보이는 대형 트래블백.",
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MMVAAVY02CO001_01"
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 6,
+    "fields": {
+      "name": "Aren Sling Bag in Visetos",
+      "description": "[WEIGHT] 부피가 큰 백팩의 무게 부담을 덜어낸 슬림한 바디감으로, 가벼운 외출 및 활동적인 일상에서 무게감 없이 편안하게 휴대할 수 있는 슬링백.",
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MMLGSTA02BK001_01"
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 7,
+    "fields": {
+      "name": "Toni Shopper in Visetos",
+      "description": "[WEIGHT] 경량 비세토스 캔버스 소재로 제작되어 장시간 들고 다녀도 손목과 어깨에 무게 부담이 없는 실용적인 데일리 쇼퍼백.",
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MWPGSMT02CO001_01"
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 8,
+    "fields": {
+      "name": "Aren Shopper in Visetos",
+      "description": "[STORAGE] 넓은 메인 수납공간과 탁월한 깊이감으로 노트북, 파우치, 서류 등 많은 짐을 여유롭게 보관할 수 있는 대용량 쇼퍼백.",
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MWPGSLR02CO001_01"
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 9,
+    "fields": {
+      "name": "Stark Backpack in Visetos",
+      "description": "[STORAGE] 다수의 내외부 포켓과 압도적인 수납 용량을 갖추어 데일리 짐부터 단기 여행 소지품까지 거뜬히 수납하는 백팩.",
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MMKEAVE05CO001_01"
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 10,
+    "fields": {
+      "name": "Himmel Backpack in Visetos",
+      "description": "[COMFORT] 어깨에 가해지는 무게를 분산시키는 인체공학적 쿠셔닝 스트랩으로 오랜 시간 착용해도 피로감이 없는 백팩.",
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MMKFSVE06BK001_01"
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 11,
+    "fields": {
+      "name": "Aren Hobo Bag in Visetos",
+      "description": "[COMFORT] 몸의 곡선에 부드럽게 감기는 초승달 실루엣과 편안한 숄더 피팅감으로 착용감이 뛰어난 숄더백.",
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MWHFATA02CO001_01"
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 12,
+    "fields": {
+      "name": "Visetos Original Pouch & Clutch",
+      "description": "[PRICE] MCM의 정통 헤리티지 디자인을 가장 부담 없는 가격대로 만나볼 수 있는 실용적인 클러치 겸 파우치.",
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MYZGSTA09CO001_01"
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 13,
+    "fields": {
+      "name": "Small Aren Crossbody in Visetos",
+      "description": "[PRICE] 합리적인 가격대와 높은 활용도로 일상 어디에나 손쉽게 매치할 수 있는 실속형 미니 크로스백.",
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MMTGSTA04CO001_01"
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 14,
+    "fields": {
+      "name": "Klassik Crossbody in Visetos",
+      "description": "[DESIGN] 클래식한 비세토스 모노그램 패턴과 각 잡힌 실루엣으로 어떤 룩에도 럭셔리한 포인트가 되는 아이코닉 크로스백.",
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MMRAAKC02CO001_01"
+    }
+  },
+  {
+    "model": "ai_story.product",
+    "pk": 15,
+    "fields": {
+      "name": "Milla Tote Bag in Spanish Leather",
+      "description": "[DESIGN] 스페인산 고급 천연 가죽의 모던하고 우아한 실루엣으로 포멀하고 세련된 스타일을 완성해 주는 토트백.",
+      "image_url": "https://images.mcmworldwide.com/i/mcmworldwide/MWTGSMA02BK001_01"
     }
   },
   {

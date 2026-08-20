@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .finally(() => {
       clearInterval(interval);
-      if (progressEl) progressEl.textContent = "100%";
+      if (progressEl) progressEl.textContent = "100";
 
       // 브라우저에게 "나 방금 카드 만들었어!" 라고 메모 남기기
       sessionStorage.setItem("cardGenerated", "true");
