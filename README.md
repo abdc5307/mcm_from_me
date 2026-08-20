@@ -5,10 +5,6 @@
 ### 💡 프로젝트 소개
 ![MCM FROM ME preview](docs/images/preview.png)
 
-<div align="center">
-  <p>🚀 <b>지금 바로 웹에서 체험하기:</b> <a href="https://mcmory.store/" target="_blank">https://mcmory.store/</a></p>
-</div>
-
 <hr/>
 
 ### 💡 서비스 소개
