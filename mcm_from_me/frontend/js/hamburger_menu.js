@@ -50,6 +50,25 @@ function getActiveJourneySessionId() {
   }
 }
 
+function isParentJourneyActive() {
+  try {
+    return window.parent !== window && window.parent.document.body.dataset.journeyActive === "true";
+  } catch (error) {
+    console.error("Journey session context could not be read", error);
+    return false;
+  }
+}
+
+function getStoredJourneySessionId() {
+  try {
+    if (window.parent === window) return null;
+    return window.parent.localStorage.getItem("journeySessionId");
+  } catch (error) {
+    console.error("Journey session context could not be read", error);
+    return null;
+  }
+}
+
 function updateChapterProgress(currentChapter) {
   const currentNumber = Number.parseInt(currentChapter?.replace("C", ""), 10);
   if (!Number.isInteger(currentNumber) || currentNumber < 1 || currentNumber > 5) return;
@@ -142,9 +161,20 @@ chapterLinks.forEach((link) => {
 resumeButton?.addEventListener("click", async () => {
   if (resumeButton.disabled) return;
 
-  const sessionId = getActiveJourneySessionId();
+  // 상황 1: 이미 특정 챕터 화면 위에 오버레이로 열린 경우 -> 메뉴만 닫고 현재 화면 유지
+  if (isParentJourneyActive()) {
+    try {
+      window.parent.closeMenu?.();
+    } catch (error) {
+      console.error("Failed to close journey menu overlay", error);
+    }
+    return;
+  }
+
+  // 상황 2: 홈/외부 페이지에서 진입한 경우 -> 저장된 마지막 진행 지점으로 이동
+  const sessionId = getStoredJourneySessionId();
   if (!sessionId) {
-    navigateParent(document.body.dataset.errorE01Url);
+    navigateParent(document.body.dataset.chapter1Url);
     return;
   }
 
