@@ -11,7 +11,6 @@ logger = logging.getLogger('journey_save')
 
 client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
-
 MOMENT_PROMPT_MAP = {
     'URBAN_ESCAPE': '도심을 벗어난 한적한 자연 속, 여유로운 풍경',
     'NEW_JOURNEY': '떠오르는 아침 햇살 아래 공항 또는 기차역 같은 새로운 출발의 장소',
@@ -55,10 +54,6 @@ def _load_product_reference_image(product_name, carry_code, detail_code):
 
 
 def generate_ai_card_image(card: JourneyCard) -> JourneyCard:
-    """
-    JourneyCard의 유저 선택값과 촬영 사진을 조합하여
-    Gemini 이미지 생성 API를 호출하고 card_image에 저장하는 서비스 함수
-    """
     try:
         selection = card.style_selection
         product_name = selection.product.name if (selection and selection.product) else "MCM Bag"
@@ -73,9 +68,17 @@ def generate_ai_card_image(card: JourneyCard) -> JourneyCard:
         )
 
         # 2. 촬영 사진이 있어야 합성 가능 (없으면 바로 실패 처리)
-        if not (captured_photo and captured_photo.image):
-            raise ValueError("촬영된 사진이 없어 AI 이미지를 생성할 수 없습니다.")
+        prompt = (
+            f"Please create a high-fashion editorial photo based on this person's photo. "
+            f"Keep the person's face and key features recognizable, set the background to {moment_desc}, "
+            f"and show them holding or wearing a {product_name} in {carry_opt} style with {detail_opt} details. "
+            f"Make it look like a luxury fashion magazine photoshoot."
+        )
 
+        if not (captured_photo and captured_photo.image):
+            raise ValueError("촬영된 사진이 없습니다.")
+
+        # 촬영된 사진 바이너리 읽기
         captured_photo.image.open('rb')
         photo_bytes = captured_photo.image.read()
         captured_photo.image.close()
@@ -148,7 +151,7 @@ def generate_ai_card_image(card: JourneyCard) -> JourneyCard:
     except Exception as e:
         logger.error(f"[AI Image Generation Error - Card #{card.id}]: {e}")
 
-        # AI 생성 실패 시 유저가 찍은 실제 촬영 사진을 1순위로 유지
+        # AI 생성 실패 시 원본 사진 유지
         try:
             if card.captured_photo and card.captured_photo.image:
                 card.card_image = card.captured_photo.image
@@ -156,7 +159,7 @@ def generate_ai_card_image(card: JourneyCard) -> JourneyCard:
                 card.card_image = card.template.background_image
             card.status = 'completed'
         except Exception as fallback_error:
-            logger.error(f"[Fallback도 실패 - Card #{card.id}]: {fallback_error}")
+            logger.error(f"[Fallback 실패 - Card #{card.id}]: {fallback_error}")
             card.status = 'failed'
 
         card.save()
