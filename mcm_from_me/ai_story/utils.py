@@ -33,13 +33,9 @@ Detail 옵션: {detail_option.code_name}
         )
         raw_text = response.text.strip() if response and response.text else ""
 
-        cleaned_text = (
-            raw_text.replace("[영문 카피]", "")
-            .replace("[한국어 해설]", "")
-            .replace("[영문카피]", "")
-            .replace("[한국어해설]", "")
-            .strip()
-        )
+        # 모델이 지시를 어기고 "[영문 카피]", "[한국어 해설]:" 같은 머리말을 붙이는 경우가 있어,
+        # 띄어쓰기/콜론 유무와 상관없이 대괄호 라벨을 통째로 제거한다.
+        cleaned_text = re.sub(r"\[\s*(영문\s*카피|한국어\s*해설)\s*\]\s*:?\s*", "", raw_text).strip()
 
         return cleaned_text
     except Exception as e:

@@ -114,7 +114,7 @@ def generate_ai_card_image(card: JourneyCard) -> JourneyCard:
         for attempt in range(3):
             try:
                 response = client.models.generate_content(
-                    model="gemini-2.5-flash-image",
+                    model="gemini-3.1-flash-lite-image",
                     contents=contents,
                 )
                 candidates = response.candidates or []
