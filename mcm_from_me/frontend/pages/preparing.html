@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCM FROM ME - 준비중</title>
     <link rel="stylesheet" href="{% static 'css/common.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/menu_toggle.css' %}" />
 </head>
-<body>
+<body data-menu-url="{% url 'hamburger_menu' %}" data-journey-active="true">
     <div class="app-container preparing-container">
         <header class="common-header">
             <button type="button" class="menu-button" aria-label="메뉴 열기">
@@ -37,5 +38,6 @@
             </div>
         </main>
     </div>
+    <script src="{% static 'js/menu_toggle.js' %}"></script>
 </body>
 </html>
