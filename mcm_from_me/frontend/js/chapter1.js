@@ -31,6 +31,11 @@ continueButton.addEventListener("click", async () => {
     return;
   }
 
+  localStorage.setItem("journeyMoment", selectedMoment);
+  sessionStorage.setItem("journeyMoment", selectedMoment);
+  localStorage.setItem("moment", selectedMoment);
+  sessionStorage.setItem("moment", selectedMoment);
+
   continueButton.disabled = true;
   continueButton.setAttribute("aria-busy", "true");
 
