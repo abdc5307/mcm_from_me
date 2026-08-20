@@ -4,8 +4,12 @@
 
 ### 💡 프로젝트 소개
 ![MCM FROM ME preview](docs/images/preview.png)
+
+<div align="center">
+  <p>🚀 <b>지금 바로 웹에서 체험하기:</b> <a href="https://mcmory.store/" target="_blank">https://mcmory.store/</a></p>
+</div>
+
 <hr/>
-https://mcmory.store/
 
 ### 💡 서비스 소개
 
@@ -57,7 +61,8 @@ MCM FROM ME는 고객의 실제 선택과 스타일링 행동을 AI가 해석해
 스마트폰 카메라로 아래 QR 코드를 스캔해서 실제 서비스 화면을 직접 체험해 보세요!
 
 <p align="center">
-  img src="docs/images/preview-2.jpg" width="400">
+  <img src="docs/images/preview-2.jpg" width="400">
+  <br>
   <img src="assets/qr_code.png" width="200">
   <br>
   <em>👆 스마트폰 카메라로 스캔해 보세요!</em>
