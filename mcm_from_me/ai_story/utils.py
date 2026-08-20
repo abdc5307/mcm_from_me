@@ -3,6 +3,7 @@ from django.conf import settings
 import json
 import time
 from google import genai
+import re
 
 client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
@@ -25,20 +26,39 @@ Detail 옵션: {detail_option.code_name}
 """
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash", contents=prompt
+            model="gemini-3.6-flash", contents=prompt
         )
-        return response.text.strip()
+        raw_text = response.text.strip() if response and response.text else ""
+
+        cleaned_text = (
+            raw_text.replace("[영문 카피]", "")
+            .replace("[한국어 해설]", "")
+            .replace("[영문카피]", "")
+            .replace("[한국어해설]", "")
+            .strip()
+        )
+
+        return cleaned_text
     except Exception as e:
         print(f"Gemini API 호출 실패: {e}")
         return None
 
+MOMENT_TEXT_MAP = {
+    'URBAN_ESCAPE': '도심을 벗어난 여유로운 순간',
+    'NEW_JOURNEY': '새로운 시작을 앞둔 순간',
+    'CREATIVE_FLOW': '자유로운 영감이 흐르는 순간',
+    'MIDNIGHT_MOVE': '밤의 도시를 즐기는 순간',
+}
 
-def generate_journey_card_text(product, carry_option, detail_option, narration):
+def generate_journey_card_text(product, carry_option, detail_option, narration, selected_moment=None):
+    moment_desc = MOMENT_TEXT_MAP.get(selected_moment, '특별한 순간')
+
     prompt = f"""
 당신은 럭셔리 브랜드의 스토리텔러입니다.
 아래 정보를 바탕으로 사용자의 스타일링 여정을 담은 짧은 카드 문구를 작성해주세요.
 2~3문장 이내, 감성적이고 개인화된 톤으로 작성해주세요.
 
+무드: {moment_desc}
 제품: {product.name}
 Carry 옵션: {carry_option.code_name}
 Detail 옵션: {detail_option.code_name}
@@ -49,7 +69,7 @@ Detail 옵션: {detail_option.code_name}
     for attempt in range(3):
         try:
             response = client.models.generate_content(
-                model="gemini-2.5-flash", contents=prompt
+                model="gemini-3.6-flash", contents=prompt
             )
             return response.text.strip()
         except Exception as e:
@@ -86,7 +106,7 @@ def generate_ai_analysis_and_recommendation(selection, reason, all_products):
 """
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash", contents=prompt
+            model="gemini-3.6-flash", contents=prompt
         )
         raw = response.text.strip()
         raw = raw.replace('```json', '').replace('```', '').strip()

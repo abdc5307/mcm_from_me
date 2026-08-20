@@ -185,12 +185,16 @@ class Chapter5GenerateCardsView(APIView):
             for i in range(card_count):
                 template = templates[i] if i < len(templates) else None
 
-                card_text = template.card_text if template else generate_journey_card_text(
+                card_text = generate_journey_card_text(
                     selection.product,
                     selection.carry_option,
                     selection.detail_option,
-                    selection.ai_narration
+                    selection.ai_narration,
+                    selection.selected_moment,
                 )
+                if not card_text:
+                    card_text = template.card_text if template else "Where timeless heritage meets the energy of tomorrow. Step forward and shape a journey that is entirely your own."
+
                 title = template.theme_name if template else 'My MCM Story Card'
 
                 # 1. 초기 JourneyCard 객체 생성 (기본 processing 상태)
