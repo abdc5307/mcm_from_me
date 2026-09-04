@@ -239,18 +239,27 @@ document.addEventListener("DOMContentLoaded", () => {
     btnShutter.addEventListener("click", () => {
       if (!video || !video.videoWidth) return;
 
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      const MAX_DIMENSION = 1920;
+      let targetWidth = video.videoWidth;
+      let targetHeight = video.videoHeight;
+      if (Math.max(targetWidth, targetHeight) > MAX_DIMENSION) {
+        const scale = MAX_DIMENSION / Math.max(targetWidth, targetHeight);
+        targetWidth = Math.round(targetWidth * scale);
+        targetHeight = Math.round(targetHeight * scale);
+      }
+
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
       canvas
         .getContext("2d")
-        .drawImage(video, 0, 0, canvas.width, canvas.height);
+        .drawImage(video, 0, 0, targetWidth, targetHeight);
 
       canvas.toBlob(
         (blob) => {
           if (blob) uploadCapture(blob);
         },
         "image/jpeg",
-        0.9
+        0.85
       );
     });
   }
@@ -286,7 +295,11 @@ document.addEventListener("DOMContentLoaded", () => {
         resetCameraOverlays();
         goTo(data.redirect_to);
       } else {
-        handleCaptureFail(data.error?.code, data.photo_id ?? null);
+        handleCaptureFail(
+          data.error?.code,
+          data.photo_id ?? null,
+          data.error?.message
+        );
       }
     } catch (err) {
       console.error("사진 업로드 실패:", err);
@@ -296,7 +309,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function handleCaptureFail(code, photoId) {
+  function handleCaptureFail(code, photoId, message) {
     if (code === "E-08") {
       setCameraGuideState("aligning");
     } else if (code === "E-09") {
@@ -305,7 +318,8 @@ document.addEventListener("DOMContentLoaded", () => {
       pendingPhotoId = photoId;
       if (modalE10) modalE10.style.display = "flex";
     } else {
-      console.warn("알 수 없는 캡처 에러 코드:", code);
+      console.warn("처리되지 않은 캡처 에러 코드:", code);
+      alert(message || "사진 저장에 실패했습니다. 다시 시도해주세요.");
     }
   }
 

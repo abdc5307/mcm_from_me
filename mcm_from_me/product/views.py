@@ -70,16 +70,21 @@ class Chapter4CaptureUploadView(APIView):
             pass
 
         image_file.seek(0)
-        photo = CapturedPhoto.objects.create(
-            style_selection=selection,
-            image=image_file,
-            shot_mode=shot_mode,
-            brightness_score=scores.get('brightness', 80),
-            blur_score=scores.get('blur', 80),
-            is_in_frame=True,
-        )
-
-        serializer = CapturedPhotoSerializer(photo, context={'request': request})
+        try:
+            photo = CapturedPhoto.objects.create(
+                style_selection=selection,
+                image=image_file,
+                shot_mode=shot_mode,
+                brightness_score=scores.get('brightness', 80),
+                blur_score=scores.get('blur', 80),
+                is_in_frame=True,
+            )
+            serializer = CapturedPhotoSerializer(photo, context={'request': request})
+        except Exception:
+            return Response(
+                {"error": error_response('E-11')},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
         return Response({
             "status": "success",
             "message": "촬영이 완료되었습니다.",
